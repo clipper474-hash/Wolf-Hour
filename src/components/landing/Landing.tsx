@@ -456,6 +456,9 @@ export function Landing() {
           <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[14px]">
             <a href="#features">Features</a>
             <a href="#faq">FAQ</a>
+            <Link href="/pomodoro-timer">Pomodoro Timer</Link>
+            <Link href="/study-sounds">Study Sounds</Link>
+            <Link href="/aspirant-mode">Aspirant Mode</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
             <button onClick={share} className="inline-flex items-center gap-1.5">

@@ -22,6 +22,24 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 1,
     },
     {
+      url: `${BASE}/pomodoro-timer`,
+      lastModified: lastmod("app/(content)/pomodoro-timer/page.tsx"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE}/study-sounds`,
+      lastModified: lastmod("app/(content)/study-sounds/page.tsx"),
+      changeFrequency: "monthly",
+      priority: 0.7,
+    },
+    {
+      url: `${BASE}/aspirant-mode`,
+      lastModified: lastmod("app/(content)/aspirant-mode/page.tsx"),
+      changeFrequency: "monthly",
+      priority: 0.8,
+    },
+    {
       url: `${BASE}/privacy`,
       lastModified: lastmod("app/(legal)/privacy/page.tsx"),
       changeFrequency: "yearly",
