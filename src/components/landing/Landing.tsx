@@ -21,42 +21,53 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Reveal } from "./Reveal";
 import "./landing.css";
 
-const FEATURES = [
+// Teasers, not essays: one hook per feature. Features with a dedicated page
+// link out via a real crawlable <a href> — depth lives on the feature page.
+const FEATURES: {
+  icon: React.ComponentType<{ className?: string }>;
+  color: string;
+  title: string;
+  body: string;
+  href?: string;
+}[] = [
   {
     icon: Film,
     color: "#2dd4bf",
     title: "Live cinematic scenes",
-    body: "Hand-picked scenes that loop seamlessly and cross-dissolve like film — misty shrines, golden hours, still water.",
+    body: "Misty shrines, golden hours, still water — scenes that dissolve like film.",
   },
   {
     icon: Timer,
     color: "#38bdf8",
-    title: "Focus & study timers",
-    body: "Pomodoro, deep-work sessions, and a fullscreen timer that quietly melts the rest of the world away.",
+    title: "Pomodoro timer",
+    body: "25 on, 5 off, world muted. A pomodoro timer that feels like a ritual.",
+    href: "/pomodoro-timer",
   },
   {
     icon: GraduationCap,
     color: "#818cf8",
     title: "Aspirant study mode",
-    body: "Per-subject timers, streaks, badges, and a live study-trend chart that turns effort into momentum.",
+    body: "Per-subject study tracking. See where your hours really go.",
+    href: "/aspirant-mode",
   },
   {
     icon: AudioLines,
     color: "#10b981",
-    title: "Calming soundscapes",
-    body: "Layer rain, waves, and gentle ambience into your own perfect mix — free to start in seconds.",
+    title: "Study sounds",
+    body: "Rain, waves, café hum — layer your own study sounds mix.",
+    href: "/study-sounds",
   },
   {
     icon: Clock3,
     color: "#22d3ee",
     title: "Clock & font styles",
-    body: "Beautiful, switchable clock faces — flip, LED, LCD, glitch, ember — and typefaces to match.",
+    body: "Flip, LED, LCD, glitch, ember — clock faces with typefaces to match.",
   },
   {
     icon: Sparkles,
     color: "#a78bfa",
     title: "Tasks, quotes & rewards",
-    body: "Gentle structure — a quiet to-do list, a daily word to steady you, and badges you actually earn.",
+    body: "A quiet to-do list, a daily word, badges you actually earn.",
   },
 ];
 
@@ -320,6 +331,13 @@ export function Landing() {
                 </span>
                 <h3 className="font-display">{f.title}</h3>
                 <p>{f.body}</p>
+                {f.href && (
+                  <p className="mt-2 text-[13.5px]">
+                    <Link href={f.href} className="text-cyan-300 underline-offset-2 hover:underline">
+                      Learn more →
+                    </Link>
+                  </p>
+                )}
               </div>
             </Reveal>
           ))}
