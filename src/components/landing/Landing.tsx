@@ -204,7 +204,7 @@ export function Landing() {
       <nav className="lp-nav">
         <span className="flex items-center gap-2.5">
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src="/brand/logo-white.png" alt="" width={388} height={420} className="lp-logo-img h-5 w-auto opacity-85" />
+          <img src="/brand/logo-white.png" alt="Wolfhour" width={388} height={420} className="lp-logo-img h-5 w-auto opacity-85" />
           <span className="text-[13px] font-extrabold tracking-[0.16em]">WOLFHOUR</span>
         </span>
         <span className="lp-navlinks">
@@ -240,9 +240,10 @@ export function Landing() {
             <span className="lp-rise" style={{ animationDelay: "0.34s" }}>outside.</span>
             <br />
             <span className="lp-warm lp-rise" style={{ animationDelay: "0.5s" }}>Stay</span>{" "}
-            <span className="lp-warm lp-rise" style={{ animationDelay: "0.6s" }}>warm</span>{" "}
+            <span className="lp-warm lp-rise" style={{ animationDelay: "0.6s" }}>focused</span>{" "}
             <span className="lp-warm lp-rise" style={{ animationDelay: "0.7s" }}>in</span>{" "}
-            <span className="lp-warm lp-rise" style={{ animationDelay: "0.8s" }}>here.</span>
+            <span className="lp-warm lp-rise" style={{ animationDelay: "0.8s" }}>here</span>{" "}
+            <span className="lp-rise" style={{ animationDelay: "0.9s" }}>— your study timer &amp; ambience dashboard.</span>
           </h1>
           <p className="lp-sub">
             Live cinematic backgrounds, calming soundscapes, and gentle timers —

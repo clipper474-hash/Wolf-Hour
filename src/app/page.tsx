@@ -14,16 +14,6 @@ export const metadata: Metadata = {
   title: "Wolfhour — A beautiful place to focus & study",
   description:
     "A calm focus & ambience dashboard — cinematic backgrounds, soundscapes, and gentle study timers for deep work. Free, works offline, syncs everywhere.",
-  keywords: [
-    "focus app",
-    "study timer",
-    "pomodoro",
-    "ambience",
-    "focus dashboard",
-    "study with me",
-    "soundscapes",
-    "deep work",
-  ],
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -49,7 +39,7 @@ const JSON_LD = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "Wolfhour",
-  url: "https://wolfhour.vercel.app",
+  url: "https://wolfhour.vercel.app/",
   applicationCategory: "ProductivityApplication",
   operatingSystem: "Any",
   description:
