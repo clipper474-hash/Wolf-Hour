@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -25,6 +26,14 @@ export default function PomodoroTimerPage() {
         breathing behind the clock, and when time is up there&rsquo;s no
         jarring buzzer, no red flashing zero — the room stays calm.
       </p>
+      <Image
+        src="/showcase/pomodoro-timer-ui.jpg"
+        alt="The Wolfhour pomodoro timer in Focus mode — 25-minute countdown over a cinematic scene"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+        priority
+      />
 
       <h2>Why pomodoro works for studying</h2>
       <ul>

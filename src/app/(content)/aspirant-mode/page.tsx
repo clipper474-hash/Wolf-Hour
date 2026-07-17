@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -27,6 +28,14 @@ export default function AspirantModePage() {
         two of geography, one of the optional you&rsquo;ve been quietly
         avoiding for two weeks.
       </p>
+      <Image
+        src="/showcase/aspirant-mode-analytics.jpg"
+        alt="Aspirant Mode analytics in Wolfhour — per-subject breakdown with a daily trend chart"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+        priority
+      />
 
       <h2>What it tracks</h2>
       <ul>
