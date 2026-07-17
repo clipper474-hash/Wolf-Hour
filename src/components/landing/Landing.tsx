@@ -44,7 +44,7 @@ const FEATURES = [
     icon: AudioLines,
     color: "#10b981",
     title: "Calming soundscapes",
-    body: "Layer rain, waves, and gentle ambience into your own perfect mix — no accounts, no ads.",
+    body: "Layer rain, waves, and gentle ambience into your own perfect mix — free to start in seconds.",
   },
   {
     icon: Clock3,
@@ -61,7 +61,7 @@ const FEATURES = [
 ];
 
 const FAQS = [
-  { q: "Is Wolfhour free?", a: "Yes. Every scene, sound, and timer is free — no ads, no paywalls." },
+  { q: "Is Wolfhour free?", a: "Yes — the core experience is free to use. Every scene, sound, and timer is included; start focusing in seconds." },
   {
     q: "Do I need an account?",
     a: "Yes — a free account signs you in and keeps your setup (scenes, sounds, timers, tasks, study stats) synced across your devices.",
@@ -268,7 +268,7 @@ export function Landing() {
               Nothing else. That&rsquo;s the point.
             </p>
             <div className="lp-checks">
-              <span>Free forever — no ads, no paywalls</span>
+              <span>Free core experience — start focusing in seconds</span>
               <span>Works offline as a PWA</span>
               <span>Syncs across all your devices</span>
             </div>
@@ -367,7 +367,7 @@ export function Landing() {
       <section ref={instRef} className="lp-inst">
         <div className="lp-blob lp-b1" aria-hidden /><div className="lp-blob lp-b2" aria-hidden />
         <span className="lp-scrib" style={{ right: "12%", top: "14%" }}>works offline!</span>
-        <span className="lp-scrib" style={{ left: "10%", bottom: "12%", animationDelay: "-2s" }}>no ads, ever</span>
+        <span className="lp-scrib" style={{ left: "10%", bottom: "12%", animationDelay: "-2s" }}>free to use!</span>
         <div className="lp-inst-wrap">
           <Reveal>
             <h2 className="font-display">
@@ -405,7 +405,7 @@ export function Landing() {
       <section className="lp-cta">
         <div className="lp-mesh" aria-hidden />
         <Reveal className="lp-frame">
-          <span className="lp-eyebrow">Focus · Ambience · Free forever</span>
+          <span className="lp-eyebrow">Focus · Ambience · Free to use</span>
           <h2 className="font-display">
             Ready to <span className="lp-flow">lock in?</span>
           </h2>
@@ -415,7 +415,7 @@ export function Landing() {
             <a href="#faq" className="lp-ghost">See FAQ</a>
           </div>
           <div className="lp-logos">
-            <span>PWA</span><span>OFFLINE-FIRST</span><span>NO ADS</span><span>CROSS-DEVICE SYNC</span>
+            <span>PWA</span><span>OFFLINE-FIRST</span><span>FREE TO USE</span><span>CROSS-DEVICE SYNC</span>
           </div>
         </Reveal>
       </section>

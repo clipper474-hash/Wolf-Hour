@@ -4,7 +4,7 @@ import Link from "next/link";
 export const metadata: Metadata = {
   title: "Privacy Policy",
   description:
-    "What Wolfhour stores, where it lives, and how to remove it. Local-first, no ads, no trackers.",
+    "What Wolfhour stores, where it lives, and how to remove it. Local-first, no trackers.",
   alternates: { canonical: "/privacy" },
 };
 
