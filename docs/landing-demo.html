@@ -1,0 +1,330 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wolfhour — Landing Redesign Demos</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800&family=Space+Grotesk:wght@400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@400;500;700&family=Unbounded:wght@500;700;900&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body { background: #05060a; color: #eef1f7; font-family: "Archivo", system-ui, sans-serif; }
+  .demo-label {
+    position: sticky; top: 0; z-index: 50;
+    display: flex; align-items: center; gap: 12px;
+    padding: 10px 20px; background: #0c0e14; border-bottom: 1px solid rgba(255,255,255,0.08);
+    font-family: "JetBrains Mono", monospace; font-size: 13px; color: #8b93a7;
+  }
+  .demo-label .num {
+    display: inline-flex; align-items: center; justify-content: center;
+    width: 28px; height: 28px; border-radius: 8px;
+    background: #22d3ee; color: #05060a; font-weight: 700; font-size: 14px;
+  }
+  .demo { position: relative; min-height: 92vh; overflow: hidden; display: flex; flex-direction: column; }
+  .nav { position: relative; z-index: 5; display: flex; align-items: center; justify-content: space-between; padding: 22px 44px; }
+  .logo { font-weight: 800; letter-spacing: 0.16em; font-size: 13px; }
+  .navlinks { display: flex; gap: 26px; font-size: 13.5px; color: rgba(255,255,255,0.6); }
+  .hero { position: relative; z-index: 5; flex: 1; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 40px 24px 80px; }
+  .cta { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 14px 30px; font-size: 15px; font-weight: 600; cursor: pointer; border: none; }
+  .ghostbtn { display: inline-flex; align-items: center; border-radius: 999px; padding: 14px 26px; font-size: 15px; color: #eef1f7; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.04); cursor: pointer; }
+  .divider { height: 60px; background: #05060a; }
+
+  /* ── 1 · BENTO GRID ─────────────────────────────────────── */
+  .d1 { background: #06070c; }
+  .d1 .hero { justify-content: flex-start; padding-top: 60px; }
+  .d1 h1 { font-family: "Space Grotesk"; font-size: clamp(44px, 6vw, 76px); font-weight: 700; letter-spacing: -0.03em; line-height: 1.04; }
+  .d1 h1 .grad { background: linear-gradient(120deg, #2dd4bf, #38bdf8, #818cf8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .d1 .sub { margin-top: 18px; max-width: 560px; color: rgba(255,255,255,0.6); font-size: 17px; line-height: 1.6; }
+  .d1 .cta { margin-top: 28px; background: #eef1f7; color: #06070c; }
+  .bento { margin-top: 54px; display: grid; width: min(1060px, 92vw); grid-template-columns: repeat(4, 1fr); grid-auto-rows: 150px; gap: 14px; }
+  .bento .cell {
+    border-radius: 20px; border: 1px solid rgba(255,255,255,0.08);
+    background: linear-gradient(160deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
+    padding: 20px; text-align: left; position: relative; overflow: hidden;
+  }
+  .bento .cell h3 { font-family: "Space Grotesk"; font-size: 16px; font-weight: 600; }
+  .bento .cell p { margin-top: 6px; font-size: 13px; color: rgba(255,255,255,0.5); line-height: 1.5; }
+  .bento .big { grid-column: span 2; grid-row: span 2; display: flex; flex-direction: column; justify-content: flex-end; }
+  .bento .big .clockmock { position: absolute; inset: 0; display: flex; align-items: center; justify-content: center; font-family: "Space Grotesk"; font-size: 76px; font-weight: 700; letter-spacing: 0.02em; color: rgba(255,255,255,0.9); text-shadow: 0 0 60px rgba(56,189,248,0.5); background: radial-gradient(80% 80% at 50% 20%, rgba(56,189,248,0.18), transparent 70%); }
+  .bento .wide { grid-column: span 2; }
+  .bento .glow1 { box-shadow: inset 0 0 0 1px rgba(45,212,191,0.15); }
+  .bento .glow1::after { content: ""; position: absolute; right: -30px; top: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(45,212,191,0.25); filter: blur(40px); }
+  .bento .glow2::after { content: ""; position: absolute; right: -30px; bottom: -30px; width: 120px; height: 120px; border-radius: 50%; background: rgba(129,140,248,0.25); filter: blur(40px); }
+
+  /* ── 2 · EDITORIAL SERIF ────────────────────────────────── */
+  .d2 { background: #0a0a0a; }
+  .d2 .nav { border-bottom: 1px solid rgba(255,255,255,0.1); }
+  .d2 .hero { align-items: flex-start; text-align: left; padding-left: 6vw; padding-right: 6vw; }
+  .d2 .kicker { font-family: "JetBrains Mono"; font-size: 12px; letter-spacing: 0.3em; color: #d4b483; text-transform: uppercase; }
+  .d2 h1 { margin-top: 22px; font-family: "Instrument Serif", serif; font-weight: 400; font-size: clamp(58px, 9vw, 128px); line-height: 0.98; letter-spacing: -0.02em; }
+  .d2 h1 em { font-style: italic; color: #d4b483; }
+  .d2 .row { margin-top: 44px; display: flex; align-items: center; gap: 40px; width: 100%; }
+  .d2 .cta { background: #d4b483; color: #0a0a0a; border-radius: 4px; }
+  .d2 .meta { font-family: "JetBrains Mono"; font-size: 12.5px; color: rgba(255,255,255,0.4); line-height: 1.8; }
+  .d2 .rule { flex: 1; height: 1px; background: rgba(255,255,255,0.15); }
+  .d2 .bigword { position: absolute; bottom: -0.18em; right: -0.05em; font-family: "Instrument Serif", serif; font-style: italic; font-size: 24vw; color: rgba(212,180,131,0.06); pointer-events: none; line-height: 1; }
+
+  /* ── 3 · SPOTLIGHT BEAM ─────────────────────────────────── */
+  .d3 { background: #030308; }
+  .d3 .beam { position: absolute; top: -40%; left: 50%; transform: translateX(-50%); width: 140vw; height: 100vh; background: conic-gradient(from 90deg at 50% 0%, transparent 42%, rgba(56,189,248,0.22) 50%, transparent 58%); pointer-events: none; }
+  .d3 .grid-floor { position: absolute; inset: 0; background-image: linear-gradient(rgba(255,255,255,0.05) 1px, transparent 1px), linear-gradient(90deg, rgba(255,255,255,0.05) 1px, transparent 1px); background-size: 56px 56px; mask-image: radial-gradient(60% 55% at 50% 42%, #000 30%, transparent 75%); pointer-events: none; }
+  .d3 .badge { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; border: 1px solid rgba(56,189,248,0.35); background: rgba(56,189,248,0.08); padding: 7px 16px; font-size: 12.5px; color: #7dd3fc; }
+  .d3 .badge .dot { width: 6px; height: 6px; border-radius: 50%; background: #38bdf8; box-shadow: 0 0 10px #38bdf8; }
+  .d3 h1 { margin-top: 26px; font-family: "Archivo"; font-weight: 800; font-size: clamp(48px, 7vw, 92px); letter-spacing: -0.035em; line-height: 1.02; }
+  .d3 h1 .shine { background: linear-gradient(180deg, #fff 30%, rgba(125,211,252,0.7)); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .d3 .sub { margin-top: 20px; max-width: 540px; color: rgba(255,255,255,0.55); font-size: 17px; line-height: 1.65; }
+  .d3 .cta { margin-top: 30px; background: linear-gradient(180deg, #38bdf8, #2563eb); color: #fff; box-shadow: 0 0 40px rgba(56,189,248,0.4), inset 0 1px 0 rgba(255,255,255,0.3); }
+  .d3 .stats { margin-top: 56px; display: flex; gap: 0; border: 1px solid rgba(255,255,255,0.1); border-radius: 16px; background: rgba(255,255,255,0.03); backdrop-filter: blur(10px); }
+  .d3 .stat { padding: 20px 38px; text-align: center; }
+  .d3 .stat + .stat { border-left: 1px solid rgba(255,255,255,0.1); }
+  .d3 .stat b { display: block; font-family: "Space Grotesk"; font-size: 26px; font-weight: 700; color: #7dd3fc; }
+  .d3 .stat span { font-size: 12.5px; color: rgba(255,255,255,0.45); }
+
+  /* ── 4 · SPLIT SCREEN APP-FIRST ─────────────────────────── */
+  .d4 { background: #07080d; }
+  .d4 .wrap { position: relative; z-index: 5; flex: 1; display: grid; grid-template-columns: 1.05fr 1fr; align-items: center; gap: 40px; padding: 20px 5vw 60px; }
+  .d4 .left h1 { font-family: "Bricolage Grotesque"; font-weight: 800; font-size: clamp(44px, 5.4vw, 78px); letter-spacing: -0.03em; line-height: 1.02; }
+  .d4 .left h1 .hl { color: #2dd4bf; }
+  .d4 .left .sub { margin-top: 20px; max-width: 480px; color: rgba(255,255,255,0.58); font-size: 17px; line-height: 1.65; }
+  .d4 .left .row { margin-top: 30px; display: flex; gap: 14px; }
+  .d4 .cta { background: #2dd4bf; color: #06251f; }
+  .d4 .checks { margin-top: 28px; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: rgba(255,255,255,0.65); }
+  .d4 .checks span::before { content: "✓"; color: #2dd4bf; margin-right: 10px; font-weight: 700; }
+  .d4 .device { position: relative; border-radius: 24px; border: 1px solid rgba(255,255,255,0.12); overflow: hidden; aspect-ratio: 16/10.5; background: linear-gradient(160deg, #12303a, #0a1420 55%, #131029); box-shadow: 0 40px 100px rgba(0,0,0,0.6), 0 0 80px rgba(45,212,191,0.12); }
+  .d4 .device .scene { position: absolute; inset: 0; background: radial-gradient(70% 60% at 70% 25%, rgba(45,212,191,0.25), transparent 70%), radial-gradient(60% 60% at 25% 75%, rgba(59,130,246,0.22), transparent 70%); }
+  .d4 .device .clk { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; }
+  .d4 .device .clk .t { font-family: "Space Grotesk"; font-size: 64px; font-weight: 700; text-shadow: 0 2px 30px rgba(0,0,0,0.5); }
+  .d4 .device .clk .g { font-size: 13px; color: rgba(255,255,255,0.65); }
+  .d4 .device .dock { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; padding: 8px 14px; border-radius: 999px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px); }
+  .d4 .device .dock i { width: 22px; height: 22px; border-radius: 7px; background: rgba(255,255,255,0.16); display: block; }
+  .d4 .floaty { position: absolute; border-radius: 14px; border: 1px solid rgba(255,255,255,0.14); background: rgba(10,14,22,0.85); backdrop-filter: blur(8px); padding: 12px 16px; font-size: 12.5px; box-shadow: 0 20px 50px rgba(0,0,0,0.5); }
+  .d4 .f1 { top: 8%; right: -18px; } .d4 .f1 b { color: #2dd4bf; }
+  .d4 .f2 { bottom: 14%; left: -24px; } .d4 .f2 b { color: #38bdf8; }
+
+  /* ── 5 · TERMINAL / MONO ────────────────────────────────── */
+  .d5 { background: #050807; font-family: "JetBrains Mono", monospace; }
+  .d5 .scan { position: absolute; inset: 0; background: repeating-linear-gradient(0deg, rgba(0,0,0,0.25) 0 1px, transparent 1px 3px); pointer-events: none; opacity: 0.5; }
+  .d5 .nav { font-size: 12.5px; }
+  .d5 .navlinks { font-family: "JetBrains Mono"; font-size: 12px; color: rgba(140,255,190,0.55); }
+  .d5 .term { width: min(760px, 92vw); border: 1px solid rgba(140,255,190,0.25); border-radius: 12px; background: rgba(6,14,10,0.85); box-shadow: 0 0 60px rgba(60,255,140,0.08), inset 0 0 40px rgba(60,255,140,0.03); text-align: left; overflow: hidden; }
+  .d5 .term .bar { display: flex; gap: 7px; padding: 12px 16px; border-bottom: 1px solid rgba(140,255,190,0.15); }
+  .d5 .term .bar i { width: 11px; height: 11px; border-radius: 50%; background: rgba(140,255,190,0.2); display: block; }
+  .d5 .term .body { padding: 26px 28px 30px; font-size: 14.5px; line-height: 2; color: #9ef0bb; }
+  .d5 .term .body .cmt { color: rgba(158,240,187,0.4); }
+  .d5 .term .body .p { color: #5eead4; }
+  .d5 h1 { margin-top: 34px; font-family: "JetBrains Mono"; font-weight: 700; font-size: clamp(34px, 4.6vw, 56px); letter-spacing: -0.02em; color: #d9ffe8; }
+  .d5 h1 .c { color: #34d399; text-shadow: 0 0 24px rgba(52,211,153,0.6); }
+  .d5 .cta { margin-top: 28px; border-radius: 8px; background: #34d399; color: #04120b; font-family: "JetBrains Mono"; font-weight: 700; }
+  .d5 .hint { margin-top: 14px; font-size: 12px; color: rgba(158,240,187,0.4); }
+
+  /* ── 6 · GLASS ORBS / DREAMY ────────────────────────────── */
+  .d6 { background: linear-gradient(180deg, #0b0e1a, #101528 60%, #0a0d18); }
+  .d6 .orb { position: absolute; border-radius: 50%; filter: blur(70px); opacity: 0.55; }
+  .d6 .o1 { width: 480px; height: 480px; left: -120px; top: -80px; background: #2dd4bf; }
+  .d6 .o2 { width: 520px; height: 520px; right: -140px; top: 10%; background: #6366f1; }
+  .d6 .o3 { width: 420px; height: 420px; left: 30%; bottom: -220px; background: #0ea5e9; }
+  .d6 .glasscard { position: relative; width: min(880px, 92vw); border-radius: 32px; border: 1px solid rgba(255,255,255,0.18); background: rgba(255,255,255,0.06); backdrop-filter: blur(24px); box-shadow: 0 40px 120px rgba(0,0,0,0.45), inset 0 1px 0 rgba(255,255,255,0.25); padding: 70px 60px; }
+  .d6 h1 { font-family: "Space Grotesk"; font-weight: 700; font-size: clamp(42px, 5.6vw, 72px); letter-spacing: -0.03em; line-height: 1.05; }
+  .d6 h1 .soft { background: linear-gradient(120deg, #99f6e4, #a5b4fc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .d6 .sub { margin-top: 18px; color: rgba(255,255,255,0.65); font-size: 17px; line-height: 1.65; max-width: 520px; margin-inline: auto; }
+  .d6 .row { margin-top: 30px; display: flex; gap: 14px; justify-content: center; }
+  .d6 .cta { background: rgba(255,255,255,0.92); color: #10132a; }
+  .d6 .pills { margin-top: 34px; display: flex; flex-wrap: wrap; gap: 10px; justify-content: center; }
+  .d6 .pill { border-radius: 999px; border: 1px solid rgba(255,255,255,0.16); background: rgba(255,255,255,0.05); padding: 8px 18px; font-size: 13px; color: rgba(255,255,255,0.7); }
+
+  /* ── 7 · RETRO HORIZON ──────────────────────────────────── */
+  .d7 { background: #0a0614; }
+  .d7 .sun { position: absolute; left: 50%; top: 30%; transform: translateX(-50%); width: 340px; height: 340px; border-radius: 50%; background: linear-gradient(180deg, #fcd34d, #fb7185 55%, #a855f7); filter: blur(2px); opacity: 0.85; mask-image: linear-gradient(#000 55%, transparent 56%, #000 60%, transparent 61%, #000 66%, transparent 67%, #000 74%, transparent 75%, #000); }
+  .d7 .haze { position: absolute; inset: 0; background: radial-gradient(60% 45% at 50% 46%, rgba(251,113,133,0.25), transparent 70%); }
+  .d7 .floor { position: absolute; left: 0; right: 0; bottom: 0; height: 42%; perspective: 300px; overflow: hidden; }
+  .d7 .floor .lines { position: absolute; inset: -60% -40% 0; background-image: linear-gradient(rgba(168,85,247,0.5) 2px, transparent 2px), linear-gradient(90deg, rgba(168,85,247,0.5) 2px, transparent 2px); background-size: 70px 70px; transform: rotateX(62deg); mask-image: linear-gradient(#000 20%, transparent); }
+  .d7 .hero { justify-content: flex-start; padding-top: 8vh; }
+  .d7 h1 { font-family: "Unbounded"; font-weight: 900; font-size: clamp(38px, 5.6vw, 74px); letter-spacing: 0.01em; line-height: 1.1; text-transform: uppercase; background: linear-gradient(180deg, #fff, #f0abfc); -webkit-background-clip: text; background-clip: text; color: transparent; text-shadow: 0 0 50px rgba(240,171,252,0.3); }
+  .d7 .sub { margin-top: 16px; color: rgba(255,255,255,0.6); font-size: 16px; }
+  .d7 .cta { margin-top: 26px; background: linear-gradient(90deg, #f472b6, #a855f7); color: #fff; box-shadow: 0 0 40px rgba(244,114,182,0.45); }
+
+  /* ── 8 · NOIR MINIMAL ───────────────────────────────────── */
+  .d8 { background: #060606; }
+  .d8 .grain { position: absolute; inset: 0; opacity: 0.5; background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='120' height='120'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.9' numOctaves='2'/%3E%3C/filter%3E%3Crect width='120' height='120' filter='url(%23n)' opacity='0.06'/%3E%3C/svg%3E"); pointer-events: none; }
+  .d8 .nav { padding: 26px 5vw; }
+  .d8 .hero { align-items: stretch; text-align: left; padding: 0 5vw 60px; justify-content: flex-end; }
+  .d8 h1 { font-family: "Archivo"; font-weight: 800; font-size: clamp(72px, 13.5vw, 210px); letter-spacing: -0.045em; line-height: 0.92; color: #f5f5f4; }
+  .d8 h1 .out { color: transparent; -webkit-text-stroke: 1.5px rgba(245,245,244,0.5); }
+  .d8 .baseline { margin-top: 34px; display: flex; align-items: flex-end; justify-content: space-between; gap: 30px; border-top: 1px solid rgba(255,255,255,0.14); padding-top: 22px; }
+  .d8 .baseline p { max-width: 420px; color: rgba(255,255,255,0.55); font-size: 15.5px; line-height: 1.65; }
+  .d8 .cta { background: #f5f5f4; color: #060606; border-radius: 2px; }
+  .d8 .tick { position: absolute; top: 18%; right: 5vw; font-family: "JetBrains Mono"; font-size: 13px; color: rgba(255,255,255,0.35); text-align: right; line-height: 2; }
+</style>
+</head>
+<body>
+
+<!-- ═══ 1 · BENTO GRID ═══ -->
+<div class="demo-label"><span class="num">1</span> BENTO GRID — app-first, feature cells, quiet gradient type</div>
+<section class="demo d1">
+  <nav class="nav"><span class="logo">WOLFHOUR</span><span class="navlinks"><span>Features</span><span>FAQ</span><span>Open app</span></span></nav>
+  <div class="hero">
+    <h1>Deep focus,<br /><span class="grad">beautifully engineered.</span></h1>
+    <p class="sub">Scenes, soundscapes, and timers arranged around one goal — getting you into the zone and keeping you there.</p>
+    <button class="cta">Open Wolfhour →</button>
+    <div class="bento">
+      <div class="cell big"><div class="clockmock">21:47</div></div>
+      <div class="cell glow1"><h3>Focus timers</h3><p>Pomodoro & deep-work sessions.</p></div>
+      <div class="cell"><h3>Soundscapes</h3><p>Rain, waves, ambience — your mix.</p></div>
+      <div class="cell"><h3>Aspirant mode</h3><p>Per-subject study analytics.</p></div>
+      <div class="cell glow2"><h3>Works offline</h3><p>Installs as a PWA, syncs later.</p></div>
+      <div class="cell wide"><h3>Live cinematic scenes</h3><p>Hand-picked loops that cross-dissolve like film.</p></div>
+      <div class="cell wide"><h3>Tasks, quotes & rewards</h3><p>Gentle structure — badges you actually earn.</p></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ 2 · EDITORIAL SERIF ═══ -->
+<div class="demo-label"><span class="num">2</span> EDITORIAL SERIF — magazine cover, warm gold accent, italic display</div>
+<section class="demo d2">
+  <nav class="nav"><span class="logo">WOLFHOUR</span><span class="navlinks"><span>Features</span><span>FAQ</span><span>Open app</span></span></nav>
+  <div class="bigword">focus</div>
+  <div class="hero">
+    <span class="kicker">Focus · Ambience · Est. the quiet hours</span>
+    <h1>The art of<br />doing <em>one thing</em><br />at a time.</h1>
+    <div class="row">
+      <button class="cta">Enter the hour</button>
+      <div class="rule"></div>
+      <div class="meta">FREE — NO ADS<br />WORKS OFFLINE · SYNCS EVERYWHERE</div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ 3 · SPOTLIGHT BEAM ═══ -->
+<div class="demo-label"><span class="num">3</span> SPOTLIGHT BEAM — linear.app style, light cone, grid floor, stats bar</div>
+<section class="demo d3">
+  <div class="beam"></div>
+  <div class="grid-floor"></div>
+  <nav class="nav"><span class="logo">WOLFHOUR</span><span class="navlinks"><span>Features</span><span>FAQ</span><span>Open app</span></span></nav>
+  <div class="hero">
+    <span class="badge"><span class="dot"></span> Now with Aspirant study mode</span>
+    <h1><span class="shine">Where deep work<br />actually happens.</span></h1>
+    <p class="sub">A precision-built focus environment — cinematic scenes, layered soundscapes, and timers that melt distractions away.</p>
+    <button class="cta">Start focusing →</button>
+    <div class="stats">
+      <div class="stat"><b>25+</b><span>live scenes</span></div>
+      <div class="stat"><b>100%</b><span>free, no ads</span></div>
+      <div class="stat"><b>Offline</b><span>installs as PWA</span></div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ 4 · SPLIT SCREEN ═══ -->
+<div class="demo-label"><span class="num">4</span> SPLIT SCREEN — copy left, floating app device right, teal accent</div>
+<section class="demo d4">
+  <nav class="nav"><span class="logo">WOLFHOUR</span><span class="navlinks"><span>Features</span><span>FAQ</span><span>Open app</span></span></nav>
+  <div class="wrap">
+    <div class="left">
+      <h1>Your calmest,<br />most <span class="hl">productive</span><br />hour.</h1>
+      <p class="sub">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything tuned for deep, distraction-free focus.</p>
+      <div class="row">
+        <button class="cta">Open Wolfhour →</button>
+        <button class="ghostbtn">See what's inside</button>
+      </div>
+      <div class="checks">
+        <span>Free forever — no ads, no paywalls</span>
+        <span>Works offline as a PWA</span>
+        <span>Syncs across all your devices</span>
+      </div>
+    </div>
+    <div style="position: relative;">
+      <div class="device">
+        <div class="scene"></div>
+        <div class="clk"><span class="g">Good evening, wanderer</span><span class="t">21:47</span></div>
+        <div class="dock"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="floaty f1"><b>▲ 2h 40m</b> studied today</div>
+      <div class="floaty f2"><b>🌊 Ocean + rain</b> mix playing</div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ 5 · TERMINAL ═══ -->
+<div class="demo-label"><span class="num">5</span> TERMINAL — hacker/mono aesthetic, green phosphor, typed session</div>
+<section class="demo d5">
+  <div class="scan"></div>
+  <nav class="nav"><span class="logo" style="color:#9ef0bb">WOLFHOUR_</span><span class="navlinks"><span>./features</span><span>./faq</span><span>./app</span></span></nav>
+  <div class="hero">
+    <div class="term">
+      <div class="bar"><i></i><i></i><i></i></div>
+      <div class="body">
+        <span class="p">$</span> wolfhour --start<br />
+        <span class="cmt"># loading scene: misty_shrine.webm ... ok</span><br />
+        <span class="cmt"># mixing: rain(40%) + waves(25%) ... ok</span><br />
+        <span class="p">›</span> focus session started — 50:00 remaining<br />
+        <span class="p">›</span> the rest of the world: muted<span style="animation: none;">▌</span>
+      </div>
+    </div>
+    <h1>Enter <span class="c">flow state</span>.<br />Exit distraction.</h1>
+    <button class="cta">$ open wolfhour</button>
+    <p class="hint">free · offline-first · no ads · no tracking</p>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ 6 · GLASS ORBS ═══ -->
+<div class="demo-label"><span class="num">6</span> GLASS ORBS — dreamy frosted card over huge color orbs</div>
+<section class="demo d6">
+  <div class="orb o1"></div><div class="orb o2"></div><div class="orb o3"></div>
+  <nav class="nav"><span class="logo">WOLFHOUR</span><span class="navlinks"><span>Features</span><span>FAQ</span><span>Open app</span></span></nav>
+  <div class="hero">
+    <div class="glasscard">
+      <h1>Slip into<br /><span class="soft">something calmer.</span></h1>
+      <p class="sub">A beautiful place to focus — living scenes, soft soundscapes, and timers that keep you gently on track.</p>
+      <div class="row">
+        <button class="cta">Open Wolfhour →</button>
+        <button class="ghostbtn">Explore features</button>
+      </div>
+      <div class="pills">
+        <span class="pill">🎬 Cinematic scenes</span>
+        <span class="pill">🎧 Layered sound</span>
+        <span class="pill">⏱ Focus timers</span>
+        <span class="pill">🎓 Study mode</span>
+        <span class="pill">📴 Works offline</span>
+      </div>
+    </div>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ 7 · RETRO HORIZON ═══ -->
+<div class="demo-label"><span class="num">7</span> RETRO HORIZON — synthwave sun + perspective grid, bold display type</div>
+<section class="demo d7">
+  <div class="sun"></div>
+  <div class="haze"></div>
+  <div class="floor"><div class="lines"></div></div>
+  <nav class="nav"><span class="logo">WOLFHOUR</span><span class="navlinks"><span>Features</span><span>FAQ</span><span>Open app</span></span></nav>
+  <div class="hero">
+    <h1>Ride the<br />wolf hour</h1>
+    <p class="sub">The quiet hours belong to you. Scenes, sound, and timers for going deep.</p>
+    <button class="cta">Begin →</button>
+  </div>
+</section>
+<div class="divider"></div>
+
+<!-- ═══ 8 · NOIR MINIMAL ═══ -->
+<div class="demo-label"><span class="num">8</span> NOIR MINIMAL — massive baseline type, outline accent, film grain</div>
+<section class="demo d8">
+  <div class="grain"></div>
+  <nav class="nav"><span class="logo">WOLFHOUR</span><span class="navlinks"><span>Features</span><span>FAQ</span><span>Open app</span></span></nav>
+  <div class="tick">22:00 — 04:00<br />THE WOLF HOUR<br />NOTHING ELSE EXISTS</div>
+  <div class="hero">
+    <h1>FOCUS IS<br />A <span class="out">PLACE</span>.<br />THIS IS IT.</h1>
+    <div class="baseline">
+      <p>Cinematic scenes, calming soundscapes, and gentle timers — a quiet room on the internet where the work finally happens.</p>
+      <button class="cta">Enter →</button>
+    </div>
+  </div>
+</section>
+
+</body>
+</html>

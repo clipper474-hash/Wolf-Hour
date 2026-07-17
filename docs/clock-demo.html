@@ -1,0 +1,441 @@
+<!doctype html>
+<!-- STANDALONE CLOCK DEMO — zero connection to the app. Safe to delete. -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wolfhour — clock design candidates</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Doto:wght@600;700&family=Orbitron:wght@500;600&family=Share+Tech+Mono&family=Bebas+Neue&family=Space+Grotesk:wght@500;600&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { background: #020409; color: #f4f6fb; font-family: "Hanken Grotesk", sans-serif; padding: 48px 20px 80px; }
+  h1 { font-size: 22px; font-weight: 600; text-align: center; }
+  .sub { text-align: center; color: rgba(244,246,251,.45); font-size: 13px; margin: 6px 0 40px; }
+  .card {
+    max-width: 860px; margin: 0 auto 28px; padding: 44px 24px 30px;
+    border: 1px solid rgba(255,255,255,.08); border-radius: 24px;
+    background: radial-gradient(120% 140% at 50% 0%, rgba(56,89,138,.14), rgba(2,4,9,0) 60%), rgba(255,255,255,.02);
+    text-align: center; position: relative;
+  }
+  .tag {
+    position: absolute; top: 14px; left: 16px; font-size: 11.5px; letter-spacing: .08em;
+    text-transform: uppercase; color: rgba(244,246,251,.5);
+    background: rgba(255,255,255,.06); padding: 4px 10px; border-radius: 999px;
+  }
+  .note { margin-top: 20px; font-size: 12.5px; color: rgba(244,246,251,.42); }
+  .clock { display: flex; justify-content: center; align-items: center; font-variant-numeric: tabular-nums; }
+  .colon { opacity: .55; padding: 0 .05em; }
+
+  /* ============ 1. FLIP — fixed: real 3D split-flap ============ */
+  .flipclock { gap: .08em; font-family: "Hanken Grotesk"; font-weight: 700; font-size: 86px; }
+  .fd { position: relative; width: .72em; height: 1.18em; perspective: 300px; }
+  .fd .h {
+    position: absolute; left: 0; right: 0; height: 50%; overflow: hidden;
+    background: linear-gradient(180deg, #262b36, #1d222c);
+    box-shadow: inset 0 0 0 1px rgba(255,255,255,.05);
+  }
+  .fd .h.t { top: 0; border-radius: .1em .1em 0 0;
+    background: linear-gradient(180deg, #2b3140, #232837); }
+  .fd .h.b { bottom: 0; border-radius: 0 0 .1em .1em;
+    background: linear-gradient(180deg, #1b202a, #161a22); }
+  .fd .h.t::after { content: ""; position: absolute; left: 0; right: 0; bottom: 0; height: 1.5px; background: rgba(0,0,0,.55); }
+  .fd .g { display: block; height: 1.18em; line-height: 1.18em; text-align: center; color: #eef1f7; }
+  .fd .h.b .g { margin-top: -0.59em; }
+  .fd .flap { z-index: 2; backface-visibility: hidden; }
+  .fd .flap.t { transform-origin: bottom center; animation: fT .28s cubic-bezier(.37,.01,.94,.35) forwards; }
+  .fd .flap.b { transform-origin: top center; transform: rotateX(90deg); animation: fB .3s cubic-bezier(.15,.45,.28,1) .26s forwards; }
+  @keyframes fT { to { transform: rotateX(-90deg); } }
+  @keyframes fB { to { transform: rotateX(0deg); } }
+  .fd .flap.t .g { text-shadow: 0 2px 6px rgba(0,0,0,.4); }
+
+  /* ============ 2. NIXIE 2.0 — real tube with ghost stack ============ */
+  .nixie { gap: .14em; font-family: "Share Tech Mono", monospace; font-size: 84px; }
+  .nx {
+    position: relative; width: .78em; height: 1.3em; border-radius: .16em;
+    background: linear-gradient(180deg, rgba(50,28,10,.55), rgba(20,10,4,.75));
+    box-shadow: inset 0 0 .14em rgba(255,150,50,.25), inset 0 0 0 1px rgba(255,180,90,.12), 0 0 18px rgba(255,120,30,.1);
+    overflow: hidden;
+  }
+  .nx::before { /* hex grid like real nixie anode mesh */
+    content: ""; position: absolute; inset: 0; opacity: .18;
+    background-image: radial-gradient(rgba(255,170,80,.5) .5px, transparent .6px);
+    background-size: 5px 5px;
+  }
+  .nx .ghost, .nx .lit {
+    position: absolute; inset: 0; display: grid; place-items: center; line-height: 1;
+  }
+  .nx .ghost { color: rgba(255,150,60,.09); }
+  .nx .lit {
+    color: #ffb46a;
+    text-shadow: 0 0 6px rgba(255,140,40,.95), 0 0 18px rgba(255,110,20,.6), 0 0 42px rgba(255,90,10,.35);
+    transition: opacity .34s ease, filter .34s ease;
+  }
+  .nx.chg .lit { animation: nxSwap .4s ease; }
+  @keyframes nxSwap { 0% { opacity: 0; filter: blur(4px); } 100% { opacity: 1; filter: blur(0); } }
+  .nixie .colon { color: rgba(255,150,60,.5); text-shadow: 0 0 10px rgba(255,120,30,.5); }
+
+  /* ============ 3. LED MATRIX — Doto dot font ============ */
+  .ledm { gap: .1em; font-family: "Doto", sans-serif; font-weight: 700; font-size: 84px; }
+  .lm { position: relative; width: .7em; text-align: center; color: #7dffa9;
+    text-shadow: 0 0 8px rgba(60,255,140,.8), 0 0 30px rgba(40,220,110,.35); }
+  .lm .old, .lm .new { position: absolute; inset: 0; }
+  .lm .old { animation: lmOut .3s ease forwards; }
+  .lm .new { animation: lmIn .3s ease .12s both; }
+  @keyframes lmOut { to { opacity: 0; } }
+  @keyframes lmIn { from { opacity: 0; } to { opacity: 1; } }
+  .lm { height: 1.05em; line-height: 1.05em; }
+  .ledm .colon { color: rgba(125,255,169,.7); text-shadow: 0 0 10px rgba(60,255,140,.5); }
+
+  /* ============ 4. LCD SEGMENT — ghost 88:88 underlay ============ */
+  .lcd { position: relative; display: inline-flex; font-family: "Share Tech Mono", monospace; font-size: 84px; }
+  .lcd .under { color: rgba(120,220,255,.07); }
+  .lcd .over { position: absolute; inset: 0; display: flex; justify-content: center; color: #9be5ff;
+    text-shadow: 0 0 8px rgba(90,200,255,.75), 0 0 26px rgba(60,160,255,.3); }
+  .lcd .over span.dg { transition: opacity .25s; }
+  .lcd .over span.dg.chg { animation: lcdIn .3s ease; }
+  @keyframes lcdIn { 0% { opacity: .2; } 100% { opacity: 1; } }
+
+  /* ============ 5. NEON SIGN — Orbitron, dual-color tube ============ */
+  .neon { gap: .06em; font-family: "Orbitron", sans-serif; font-weight: 600; font-size: 74px; }
+  .nn { width: .82em; height: 1.15em; line-height: 1.15em; text-align: center; position: relative;
+    color: #fff;
+    text-shadow: 0 0 4px #fff, 0 0 12px #38e8ff, 0 0 28px #22b9ff, 0 0 60px rgba(34,150,255,.55); }
+  .nn .old, .nn .new { position: absolute; inset: 0; }
+  .nn .old { animation: nnOut .36s ease forwards; }
+  .nn .new { animation: nnIn .5s ease both; }
+  @keyframes nnOut { 30% { opacity: .4; } 55% { opacity: .9; } 100% { opacity: 0; } } /* tube flicker out */
+  @keyframes nnIn { 0% { opacity: 0; } 35% { opacity: .85; } 50% { opacity: .3; } 65% { opacity: 1; } 100% { opacity: 1; } } /* strike-on flicker */
+  .neon .colon { color: #ff7ad9; text-shadow: 0 0 6px #ff7ad9, 0 0 18px #ff2fbd, 0 0 40px rgba(255,47,189,.5); animation: colonPulse 1s steps(1) infinite; }
+  @keyframes colonPulse { 50% { opacity: .25; } }
+
+  /* ============ 6. SLIDE — odometer glide with blur ============ */
+  .slide { gap: .04em; font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 86px; }
+  .sl { position: relative; width: .64em; height: 1.1em; overflow: hidden; }
+  .sl span { position: absolute; inset: 0; line-height: 1.1em; text-align: center; }
+  .sl .old { animation: slOut .45s cubic-bezier(.5,0,.6,1) forwards; }
+  .sl .new { animation: slIn .45s cubic-bezier(.22,1,.36,1) both; }
+  @keyframes slOut { to { transform: translateY(-105%); filter: blur(5px); opacity: 0; } }
+  @keyframes slIn { from { transform: translateY(105%); filter: blur(5px); opacity: 0; } to { transform: translateY(0); filter: blur(0); opacity: 1; } }
+
+  /* ============ 7. BREATH — blur cross-morph, ultra calm ============ */
+  .breath { gap: .02em; font-family: "Hanken Grotesk", sans-serif; font-weight: 300; font-size: 88px; letter-spacing: -0.02em; }
+  .br { position: relative; width: .6em; height: 1.1em; }
+  .br span { position: absolute; inset: 0; line-height: 1.1em; text-align: center; color: #eef1f7; }
+  .br .old { animation: brOut .55s ease forwards; }
+  .br .new { animation: brIn .55s ease both; }
+  @keyframes brOut { to { opacity: 0; filter: blur(10px); transform: scale(1.12); } }
+  @keyframes brIn { from { opacity: 0; filter: blur(10px); transform: scale(.9); } to { opacity: 1; filter: blur(0); transform: scale(1); } }
+
+  /* ============ 8. TALL — Bebas condensed, slide+fade ============ */
+  .tall { gap: .1em; font-family: "Bebas Neue", sans-serif; font-size: 104px; letter-spacing: .02em; }
+  .tl { position: relative; width: .52em; height: 1em; overflow: hidden; }
+  .tl span { position: absolute; inset: 0; line-height: 1em; text-align: center;
+    background: linear-gradient(180deg, #fff, #9fb4d8); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  .tl .old { animation: slOut .4s cubic-bezier(.5,0,.6,1) forwards; }
+  .tl .new { animation: slIn .4s cubic-bezier(.22,1,.36,1) both; }
+
+  /* ============ 9. AURORA ROLL — living gradient + vertical roll ============ */
+  .auro { gap: .04em; font-family: "Space Grotesk", sans-serif; font-weight: 600; font-size: 86px; }
+  .au { position: relative; width: .64em; height: 1.1em; overflow: hidden; }
+  .au span {
+    position: absolute; inset: 0; line-height: 1.1em; text-align: center;
+    background: linear-gradient(110deg,#a5f3fc,#a78bfa 30%,#f0abfc 55%,#a5f3fc 80%);
+    background-size: 300% auto; -webkit-background-clip: text; background-clip: text; color: transparent;
+    animation: auShift 7s linear infinite;
+  }
+  @keyframes auShift { to { background-position: 300% center; } }
+  .au .old { animation: auShift 7s linear infinite, slOut .45s cubic-bezier(.5,0,.6,1) forwards; }
+  .au .new { animation: auShift 7s linear infinite, slIn .45s cubic-bezier(.22,1,.36,1) both; }
+  .auro .colon { background: linear-gradient(110deg,#a5f3fc,#f0abfc); -webkit-background-clip: text; background-clip: text; color: transparent; }
+
+  /* ============ 10. DEPTH — 3D extruded digits, slab shadow ============ */
+  .depth { gap: .08em; font-family: "Bebas Neue", sans-serif; font-size: 96px; }
+  .dp { position: relative; width: .56em; height: 1em; overflow: hidden; }
+  .dp span {
+    position: absolute; inset: 0; line-height: 1em; text-align: center; color: #e8edf7;
+    text-shadow: 1px 1px 0 #5b6b8c, 2px 2px 0 #51608025, 3px 3px 0 #47546f, 4px 4px 0 #3d4960,
+      5px 5px 0 #333d51, 6px 6px 12px rgba(0,0,0,.65);
+  }
+  .dp .old { animation: dpOut .4s ease-in forwards; }
+  .dp .new { animation: dpIn .4s cubic-bezier(.22,1,.36,1) .1s both; }
+  @keyframes dpOut { to { transform: translateY(-70%) scale(.8); opacity: 0; } }
+  @keyframes dpIn { from { transform: translateY(70%) scale(.8); opacity: 0; } to { transform: none; opacity: 1; } }
+  .depth .colon { color: #e8edf7; text-shadow: 2px 2px 0 #47546f, 4px 4px 8px rgba(0,0,0,.6); }
+
+  /* ============ 11. GLITCH — cyberpunk RGB split on change ============ */
+  .glitch { gap: .06em; font-family: "Orbitron", sans-serif; font-weight: 600; font-size: 74px; }
+  .gl { position: relative; width: .82em; height: 1.15em; line-height: 1.15em; text-align: center; color: #e6f6ff; }
+  .gl .old, .gl .new { position: absolute; inset: 0; }
+  .gl .old { animation: glOut .28s steps(3) forwards; }
+  .gl .new { animation: glIn .34s steps(4) both; }
+  @keyframes glOut {
+    0% { transform: none; opacity: 1; }
+    40% { transform: translateX(.06em); text-shadow: -.08em 0 #f0f, .08em 0 #0ff; }
+    100% { transform: translateX(-.1em); opacity: 0; text-shadow: .1em 0 #f0f, -.1em 0 #0ff; }
+  }
+  @keyframes glIn {
+    0% { opacity: 0; transform: translateX(.08em); text-shadow: -.1em 0 #f0f, .1em 0 #0ff; }
+    55% { opacity: 1; transform: translateX(-.04em); text-shadow: .06em 0 #f0f, -.06em 0 #0ff; }
+    100% { opacity: 1; transform: none; text-shadow: 0 0 12px rgba(120,220,255,.4); }
+  }
+  .glitch .colon { color: #7de3ff; animation: colonPulse 1s steps(1) infinite; }
+
+  /* ============ 12. EMBER — fire glow, sparks upward ============ */
+  .ember { gap: .05em; font-family: "Hanken Grotesk", sans-serif; font-weight: 700; font-size: 84px; }
+  .em { position: relative; width: .62em; height: 1.1em; overflow: visible; }
+  .em span {
+    position: absolute; inset: 0; line-height: 1.1em; text-align: center;
+    background: linear-gradient(180deg,#fff7e0,#ffc26e 45%,#ff7a3c 80%,#e8481f);
+    -webkit-background-clip: text; background-clip: text; color: transparent;
+    filter: drop-shadow(0 0 10px rgba(255,120,40,.55));
+  }
+  .em .old { animation: emOut .5s ease forwards; }
+  .em .new { animation: emIn .5s ease both; }
+  @keyframes emOut { to { transform: translateY(-.35em); opacity: 0; filter: drop-shadow(0 0 18px rgba(255,140,40,.9)) blur(6px); } }
+  @keyframes emIn { from { transform: translateY(.2em); opacity: 0; filter: drop-shadow(0 0 2px rgba(255,120,40,.2)) blur(4px); } to { transform: none; opacity: 1; } }
+  .ember .colon { background: linear-gradient(180deg,#ffd9a0,#ff8a4a); -webkit-background-clip: text; background-clip: text; color: transparent; filter: drop-shadow(0 0 8px rgba(255,120,40,.5)); }
+
+  /* ============ 13. MOONLIGHT — soft silver, halo breathing ============ */
+  .moon { gap: .03em; font-family: "Hanken Grotesk", sans-serif; font-weight: 200; font-size: 92px; letter-spacing: -0.01em; }
+  .mo { position: relative; width: .58em; height: 1.1em; }
+  .mo span {
+    position: absolute; inset: 0; line-height: 1.1em; text-align: center; color: #dbe4f5;
+    text-shadow: 0 0 18px rgba(190,210,255,.45), 0 0 50px rgba(150,180,255,.2);
+    animation: moBreathe 4s ease-in-out infinite;
+  }
+  @keyframes moBreathe { 50% { text-shadow: 0 0 26px rgba(190,210,255,.65), 0 0 70px rgba(150,180,255,.3); } }
+  .mo .old { animation: moBreathe 4s ease-in-out infinite, brOut .6s ease forwards; }
+  .mo .new { animation: moBreathe 4s ease-in-out infinite, brIn .6s ease both; }
+  .moon .colon { color: rgba(219,228,245,.6); animation: colonPulse 2s ease-in-out infinite; }
+</style>
+</head>
+<body>
+
+<h1>Wolfhour — clock candidates</h1>
+<p class="sub">All ticking live with seconds so you can judge the change animation. Watch a full minute rollover if you can.</p>
+
+<section class="card">
+  <span class="tag">1 · Flip — fixed split-flap</span>
+  <div class="clock flipclock" id="c-flip"></div>
+  <p class="note">The real deal now: 3D perspective, card halves, hinge shadow. Top folds down, bottom snaps in.</p>
+</section>
+
+<section class="card">
+  <span class="tag">2 · Nixie 2.0 — real tubes</span>
+  <div class="clock nixie" id="c-nixie"></div>
+  <p class="note">Ghost digit stack + anode mesh + warm triple glow inside actual tube capsules. Digits blur-swap like gas re-igniting.</p>
+</section>
+
+<section class="card">
+  <span class="tag">3 · LED Matrix — dot font</span>
+  <div class="clock ledm" id="c-ledm"></div>
+  <p class="note">True dot-matrix glyphs (Doto), green board glow, dissolve between digits. Replaces old "LED".</p>
+</section>
+
+<section class="card">
+  <span class="tag">4 · LCD — ghost segments</span>
+  <div class="clock"><div class="lcd" id="c-lcd"></div></div>
+  <p class="note">Unlit "88:88:88" ghost underlay behind lit digits — reads as a real LCD panel. Replaces old "Mono".</p>
+</section>
+
+<section class="card">
+  <span class="tag">5 · Neon Sign — tube flicker</span>
+  <div class="clock neon" id="c-neon"></div>
+  <p class="note">Cyan tubes + pink pulsing colon; digits strike on with a fluorescent flicker. Replaces old "Neon".</p>
+</section>
+
+<section class="card">
+  <span class="tag">6 · Slide — odometer glide</span>
+  <div class="clock slide" id="c-slide"></div>
+  <p class="note">Digits glide vertically with motion blur. Smoothest "counting" feel of the set.</p>
+</section>
+
+<section class="card">
+  <span class="tag">7 · Breath — blur morph</span>
+  <div class="clock breath" id="c-breath"></div>
+  <p class="note">Old digit exhales out of focus, new one inhales in. The calmest — very Wolfhour.</p>
+</section>
+
+<section class="card">
+  <span class="tag">8 · Tall — condensed gradient</span>
+  <div class="clock tall" id="c-tall"></div>
+  <p class="note">Towering condensed digits with silver gradient + slide. Replaces old "Condensed".</p>
+</section>
+
+<section class="card">
+  <span class="tag">9 · Aurora Roll — living gradient</span>
+  <div class="clock auro" id="c-auro"></div>
+  <p class="note">Aurora shimmer that never stops drifting + odometer roll on change. Upgrade of the app's static Aurora.</p>
+</section>
+
+<section class="card">
+  <span class="tag">10 · Depth — 3D extrude</span>
+  <div class="clock depth" id="c-depth"></div>
+  <p class="note">Digits cut from slabs with a long 3D shadow — poster energy, scale-roll transition.</p>
+</section>
+
+<section class="card">
+  <span class="tag">11 · Glitch — cyberpunk RGB split</span>
+  <div class="clock glitch" id="c-glitch"></div>
+  <p class="note">Digits tear apart into magenta/cyan ghosts and snap back. Loud — for the gamer crowd.</p>
+</section>
+
+<section class="card">
+  <span class="tag">12 · Ember — fire gradient</span>
+  <div class="clock ember" id="c-ember"></div>
+  <p class="note">White-hot → orange → red gradient; old digit floats up and burns out like a spark.</p>
+</section>
+
+<section class="card">
+  <span class="tag">13 · Moonlight — breathing halo</span>
+  <div class="clock moon" id="c-moon"></div>
+  <p class="note">Ultra-thin silver digits with a halo that slowly breathes. The most wolf-hour of everything here.</p>
+</section>
+
+<script>
+  // ---- shared time source ----
+  const pad = n => String(n).padStart(2, "0");
+  function digits() {
+    const d = new Date();
+    return pad(d.getHours()) + pad(d.getMinutes()) + pad(d.getSeconds()); // "HHMMSS"
+  }
+
+  // Generic swap-digit clock: 6 digit cells + colons; on change injects
+  // .old/.new spans (CSS per design animates them), settles to plain text.
+  function makeSwapClock(rootId, cellClass) {
+    const root = document.getElementById(rootId);
+    const cells = [];
+    for (let i = 0; i < 6; i++) {
+      if (i === 2 || i === 4) {
+        const c = document.createElement("span");
+        c.className = "colon"; c.textContent = ":";
+        root.appendChild(c);
+      }
+      const cell = document.createElement("span");
+      cell.className = cellClass;
+      root.appendChild(cell);
+      cells.push({ el: cell, v: null });
+    }
+    return function update(ds) {
+      cells.forEach((c, i) => {
+        const v = ds[i];
+        if (v === c.v) return;
+        if (c.v === null) { c.el.textContent = v; }
+        else {
+          c.el.innerHTML = '<span class="old">' + c.v + '</span><span class="new">' + v + '</span>';
+          const el = c.el;
+          setTimeout(() => { el.textContent = el.querySelector(".new") ? v : el.textContent; }, 600);
+        }
+        c.v = v;
+      });
+    };
+  }
+
+  // Flip clock: dedicated split-flap markup.
+  function makeFlipClock(rootId) {
+    const root = document.getElementById(rootId);
+    const cells = [];
+    for (let i = 0; i < 6; i++) {
+      if (i === 2 || i === 4) {
+        const c = document.createElement("span");
+        c.className = "colon"; c.textContent = ":";
+        root.appendChild(c);
+      }
+      const d = document.createElement("span");
+      d.className = "fd";
+      root.appendChild(d);
+      cells.push({ el: d, v: null });
+    }
+    const half = (cls, v) => '<span class="h ' + cls + '"><span class="g">' + v + "</span></span>";
+    return function update(ds) {
+      cells.forEach((c, i) => {
+        const v = ds[i];
+        if (v === c.v) return;
+        const prev = c.v ?? v;
+        c.v = v;
+        c.el.innerHTML =
+          half("t", v) + half("b", prev) +           // static: new top, old bottom (bottom catches up via flap)
+          half("t flap", prev) + half("b flap", v);  // animated flaps
+        const el = c.el;
+        setTimeout(() => { el.innerHTML = half("t", v) + half("b", v); }, 640);
+      });
+    };
+  }
+
+  // Nixie: tube cells with ghost stack + lit digit.
+  function makeNixieClock(rootId) {
+    const root = document.getElementById(rootId);
+    const cells = [];
+    for (let i = 0; i < 6; i++) {
+      if (i === 2 || i === 4) {
+        const c = document.createElement("span");
+        c.className = "colon"; c.textContent = ":";
+        root.appendChild(c);
+      }
+      const t = document.createElement("span");
+      t.className = "nx";
+      t.innerHTML = '<span class="ghost">8</span><span class="lit"></span>';
+      root.appendChild(t);
+      cells.push({ el: t, lit: t.querySelector(".lit"), v: null });
+    }
+    return function update(ds) {
+      cells.forEach((c, i) => {
+        const v = ds[i];
+        if (v === c.v) return;
+        c.v = v;
+        c.lit.textContent = v;
+        c.el.classList.remove("chg");
+        void c.el.offsetWidth; // restart animation
+        c.el.classList.add("chg");
+      });
+    };
+  }
+
+  // LCD: ghost underlay + lit overlay digits.
+  function makeLcdClock(rootId) {
+    const root = document.getElementById(rootId);
+    root.innerHTML = '<span class="under">88:88:88</span><span class="over"></span>';
+    const over = root.querySelector(".over");
+    const cells = [];
+    for (let i = 0; i < 8; i++) {
+      const s = document.createElement("span");
+      if (i === 2 || i === 5) { s.textContent = ":"; }
+      else { s.className = "dg"; cells.push({ el: s, v: null }); }
+      over.appendChild(s);
+    }
+    return function update(ds) {
+      cells.forEach((c, i) => {
+        const v = ds[i];
+        if (v === c.v) return;
+        c.v = v;
+        c.el.textContent = v;
+        c.el.classList.remove("chg");
+        void c.el.offsetWidth;
+        c.el.classList.add("chg");
+      });
+    };
+  }
+
+  const updaters = [
+    makeFlipClock("c-flip"),
+    makeNixieClock("c-nixie"),
+    makeSwapClock("c-ledm", "lm"),
+    makeLcdClock("c-lcd"),
+    makeSwapClock("c-neon", "nn"),
+    makeSwapClock("c-slide", "sl"),
+    makeSwapClock("c-breath", "br"),
+    makeSwapClock("c-tall", "tl"),
+    makeSwapClock("c-auro", "au"),
+    makeSwapClock("c-depth", "dp"),
+    makeSwapClock("c-glitch", "gl"),
+    makeSwapClock("c-ember", "em"),
+    makeSwapClock("c-moon", "mo"),
+  ];
+  function tick() { const ds = digits(); updaters.forEach(u => u(ds)); }
+  tick();
+  setInterval(tick, 1000);
+</script>
+</body>
+</html>

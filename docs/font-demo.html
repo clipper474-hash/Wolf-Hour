@@ -1,0 +1,193 @@
+<!doctype html>
+<!-- STANDALONE FONT DEMO — not linked to the app in any way. Safe to delete. -->
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wolfhour — font candidates demo</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Hanken+Grotesk:wght@400;600;700&family=Inter:wght@400;500&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,700&family=Instrument+Serif:ital@0;1&family=Sora:wght@400;600;700&family=Manrope:wght@400;500;600&family=Fraunces:opsz,wght@9..144,400;9..144,600&family=Outfit:wght@400;500;600&family=Geist:wght@400;500&family=Playfair+Display:ital,wght@0,500;0,600;1,500&family=Source+Sans+3:wght@400;500;600&family=Cormorant+Garamond:ital,wght@0,500;0,600;1,500&family=DM+Serif+Display:ital@0;1&family=DM+Sans:opsz,wght@9..40,400;9..40,500;9..40,600&family=Space+Grotesk:wght@400;500;600&family=Syne:wght@500;600;700&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; box-sizing: border-box; }
+  body { background: #020409; color: #f4f6fb; }
+  .card {
+    position: relative; overflow: hidden;
+    max-width: 880px; margin: 28px auto; padding: 56px 40px 44px;
+    border: 1px solid rgba(255,255,255,0.10); border-radius: 28px;
+    background:
+      radial-gradient(45% 55% at 20% 15%, rgba(45,212,191,0.14), transparent 70%),
+      radial-gradient(50% 60% at 85% 20%, rgba(59,130,246,0.14), transparent 70%),
+      #060a12;
+  }
+  .tag {
+    display: inline-block; margin-bottom: 26px; padding: 5px 14px;
+    border: 1px solid rgba(255,255,255,0.18); border-radius: 999px;
+    font: 600 11px/1 Inter, sans-serif; letter-spacing: 0.18em; text-transform: uppercase;
+    color: #7dd3fc;
+  }
+  .mark { font-size: 13px !important; letter-spacing: 0.22em; color: rgba(255,255,255,0.75); margin-bottom: 14px; }
+  h1 { font-size: clamp(38px, 6vw, 60px); font-weight: 600; line-height: 1.06; letter-spacing: -0.02em; margin-bottom: 18px; }
+  h1 .grad { background: linear-gradient(100deg, #2dd4bf, #22d3ee, #38bdf8, #3b82f6); -webkit-background-clip: text; background-clip: text; color: transparent; }
+  p.body { max-width: 560px; font-size: 17px; line-height: 1.65; color: rgba(255,255,255,0.72); margin-bottom: 26px; }
+  .btn {
+    display: inline-block; padding: 13px 26px; border-radius: 999px; border: 0;
+    background: linear-gradient(#22d3ee, #2563eb); color: #fff;
+    font-size: 15px; font-weight: 600; box-shadow: 0 10px 34px rgba(56,189,248,0.35);
+  }
+  .clock { margin-top: 30px; font-size: 64px; font-weight: 600; letter-spacing: 0.02em; color: rgba(255,255,255,0.92); }
+  .note { margin-top: 18px; font: 400 13px/1.6 Inter, sans-serif; color: rgba(255,255,255,0.45); max-width: 620px; }
+  header { max-width: 880px; margin: 40px auto 0; padding: 0 40px; font: 400 14px/1.6 Inter, sans-serif; color: rgba(255,255,255,0.55); }
+  header b { color: #fff; }
+
+  /* ---- pairings ---- */
+  .f-current  h1, .f-current  .mark, .f-current  .clock { font-family: "Hanken Grotesk", sans-serif; }
+  .f-current  p.body, .f-current .btn { font-family: Inter, sans-serif; }
+
+  .f-bricolage h1, .f-bricolage .mark, .f-bricolage .clock { font-family: "Bricolage Grotesque", sans-serif; }
+  .f-bricolage p.body, .f-bricolage .btn { font-family: Inter, sans-serif; }
+
+  .f-instrument h1 { font-family: "Instrument Serif", serif; font-weight: 400; letter-spacing: 0; }
+  .f-instrument h1 em { font-style: italic; }
+  .f-instrument .mark, .f-instrument .clock { font-family: Geist, sans-serif; }
+  .f-instrument p.body, .f-instrument .btn { font-family: Geist, Inter, sans-serif; }
+
+  .f-sora h1, .f-sora .mark, .f-sora .clock { font-family: Sora, sans-serif; }
+  .f-sora p.body, .f-sora .btn { font-family: Manrope, sans-serif; }
+
+  .f-fraunces h1 { font-family: Fraunces, serif; font-weight: 600; letter-spacing: -0.01em; }
+  .f-fraunces .mark, .f-fraunces .clock { font-family: Outfit, sans-serif; }
+  .f-fraunces p.body, .f-fraunces .btn { font-family: Outfit, sans-serif; }
+
+  .f-playfair h1 { font-family: "Playfair Display", serif; font-weight: 500; letter-spacing: 0; }
+  .f-playfair h1 em { font-style: italic; }
+  .f-playfair .mark, .f-playfair .clock { font-family: "Source Sans 3", sans-serif; }
+  .f-playfair p.body, .f-playfair .btn { font-family: "Source Sans 3", sans-serif; }
+
+  .f-cormorant h1 { font-family: "Cormorant Garamond", serif; font-weight: 500; letter-spacing: 0.01em; }
+  .f-cormorant h1 em { font-style: italic; }
+  .f-cormorant .mark, .f-cormorant .clock { font-family: Manrope, sans-serif; }
+  .f-cormorant p.body, .f-cormorant .btn { font-family: Manrope, sans-serif; }
+
+  .f-dmserif h1 { font-family: "DM Serif Display", serif; font-weight: 400; letter-spacing: 0; }
+  .f-dmserif h1 em { font-style: italic; }
+  .f-dmserif .mark, .f-dmserif .clock { font-family: "DM Sans", sans-serif; }
+  .f-dmserif p.body, .f-dmserif .btn { font-family: "DM Sans", sans-serif; }
+
+  .f-spacegrotesk h1, .f-spacegrotesk .mark, .f-spacegrotesk .clock { font-family: "Space Grotesk", sans-serif; }
+  .f-spacegrotesk p.body, .f-spacegrotesk .btn { font-family: Inter, sans-serif; }
+
+  .f-syne h1, .f-syne .mark { font-family: Syne, sans-serif; font-weight: 600; letter-spacing: -0.01em; }
+  .f-syne .clock { font-family: Syne, sans-serif; }
+  .f-syne p.body, .f-syne .btn { font-family: Manrope, sans-serif; }
+</style>
+</head>
+<body>
+
+<header>
+  <b>Wolfhour font candidates</b> — same hero, five typefaces. Scroll and compare.
+  Judge: the wordmark, the big headline, body readability, and the clock digits.
+</header>
+
+<section class="card f-current">
+  <span class="tag">1 · Current — Hanken Grotesk + Inter</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <span class="grad">focus</span>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Baseline. Friendly geometric sans, safe and clean, but generic — hundreds of apps look like this.</p>
+</section>
+
+<section class="card f-bricolage">
+  <span class="tag">2 · Bricolage Grotesque + Inter</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <span class="grad">focus</span>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Characterful grotesque with slightly wild cuts — has "teeth", fits a wolf brand. Still very readable. The trendy 2025–26 display pick.</p>
+</section>
+
+<section class="card f-instrument">
+  <span class="tag">3 · Instrument Serif + Geist</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <em><span class="grad">focus</span></em>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Elegant editorial serif for headlines only, modern sans everywhere else. Calm, literary, night-time mood — matches "the wolf hour" story best. Very current look.</p>
+</section>
+
+<section class="card f-sora">
+  <span class="tag">4 · Sora + Manrope</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <span class="grad">focus</span>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Precise, techy, slightly futuristic. Gorgeous clock digits. Leans "productivity tool" more than "calm ambience".</p>
+</section>
+
+<section class="card f-fraunces">
+  <span class="tag">5 · Fraunces + Outfit</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <span class="grad">focus</span>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Warm "old-style" serif with soft curves — cozy, wellness-adjacent (Headspace territory). Warmer but less sharp than #3.</p>
+</section>
+
+<section class="card f-playfair">
+  <span class="tag">6 · Playfair Display + Source Sans 3</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <em><span class="grad">focus</span></em>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Classic high-contrast editorial serif — luxurious, magazine-cover energy. More formal/traditional than #3.</p>
+</section>
+
+<section class="card f-cormorant">
+  <span class="tag">7 · Cormorant Garamond + Manrope</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <em><span class="grad">focus</span></em>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Ethereal, thin, candle-lit — the most "quiet midnight" of all serifs here. Delicate; can feel faint at small sizes.</p>
+</section>
+
+<section class="card f-dmserif">
+  <span class="tag">8 · DM Serif Display + DM Sans</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <em><span class="grad">focus</span></em>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Matched serif+sans family — warm, rounded, friendly. Cohesive out of the box; softer personality than #3 or #6.</p>
+</section>
+
+<section class="card f-spacegrotesk">
+  <span class="tag">9 · Space Grotesk + Inter</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <span class="grad">focus</span>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Techy grotesque with quirky details — already ships inside the app as a clock font, so the brand would feel continuous. Superb clock digits.</p>
+</section>
+
+<section class="card f-syne">
+  <span class="tag">10 · Syne + Manrope</span>
+  <div class="mark">WOLFHOUR</div>
+  <h1>Your beautiful place<br>to <span class="grad">focus</span>.</h1>
+  <p class="body">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+  <span class="btn">Open Wolfhour</span>
+  <div class="clock">21:47</div>
+  <p class="note">Artsy, futuristic display sans — wide, distinctive, gallery-website energy. Boldest personality of the ten; least "calm".</p>
+</section>
+
+</body>
+</html>

@@ -1,0 +1,347 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Wolfhour — HYBRID Landing · LIGHT version</title>
+<link rel="preconnect" href="https://fonts.googleapis.com" />
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+<link href="https://fonts.googleapis.com/css2?family=Archivo:wght@400;500;600;700;800;900&family=Space+Grotesk:wght@400;500;600;700&family=JetBrains+Mono:wght@400;500;700&family=Bricolage+Grotesque:opsz,wght@12..96,400;12..96,600;12..96,800&family=Fraunces:ital,opsz,wght@0,9..144,400;0,9..144,600;1,9..144,400&display=swap" rel="stylesheet" />
+<style>
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  html { scroll-behavior: smooth; }
+  body { background: #f6f3ec; color: #1c1a17; font-family: "Archivo", system-ui, sans-serif; }
+  .cta { display: inline-flex; align-items: center; gap: 8px; border-radius: 999px; padding: 14px 30px; font-size: 15px; font-weight: 600; cursor: pointer; border: none; transition: transform 0.25s; }
+  .cta:hover { transform: scale(1.04); }
+  .ghostbtn { display: inline-flex; align-items: center; border-radius: 999px; padding: 14px 26px; font-size: 15px; color: #1c1a17; border: 1px solid rgba(28,26,23,0.25); background: rgba(28,26,23,0.04); cursor: pointer; }
+  .rise { display: inline-block; opacity: 0; transform: translateY(0.6em) rotate(2deg); animation: riseIn 0.8s cubic-bezier(0.2, 0.8, 0.2, 1) forwards; }
+  @keyframes riseIn { to { opacity: 1; transform: none; } }
+  @keyframes floaty { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+  @keyframes pulse { 0%, 100% { opacity: 0.6; } 50% { opacity: 1; } }
+  .liveclock { font-variant-numeric: tabular-nums; }
+  .sectag { position: absolute; top: 14px; left: 14px; z-index: 40; font-family: "JetBrains Mono"; font-size: 11px; color: #fff; background: #0d9488; border-radius: 6px; padding: 3px 9px; font-weight: 700; opacity: 0.9; }
+
+  nav.main { position: fixed; top: 0; left: 0; right: 0; z-index: 45; display: flex; align-items: center; justify-content: space-between; padding: 18px 44px; background: linear-gradient(180deg, rgba(246,243,236,0.85), transparent); backdrop-filter: blur(6px); }
+  .logo { font-weight: 800; letter-spacing: 0.16em; font-size: 13px; }
+  .navlinks { display: flex; gap: 26px; font-size: 13.5px; color: rgba(28,26,23,0.65); }
+
+  /* ═══ HERO — rain on glass, daylight version ═══ */
+  .hero17 { position: relative; min-height: 100vh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: center; text-align: center; padding: 90px 24px 120px; background: linear-gradient(180deg, #dfe9ef 0%, #eef0ea 55%, #f6f3ec 100%); }
+  .hero17 .bokeh { position: absolute; border-radius: 50%; filter: blur(30px); opacity: 0.45; animation: pulse 5s ease-in-out infinite; }
+  .hero17 .bk1 { width: 180px; height: 180px; left: 12%; top: 20%; background: #99f6e4; }
+  .hero17 .bk2 { width: 130px; height: 130px; right: 16%; top: 28%; background: #bfdbfe; animation-delay: -1.4s; }
+  .hero17 .bk3 { width: 100px; height: 100px; left: 26%; bottom: 24%; background: #fde68a; animation-delay: -2.8s; }
+  .hero17 .bk4 { width: 150px; height: 150px; right: 24%; bottom: 18%; background: #c7d2fe; animation-delay: -3.6s; }
+  .hero17 .drop { position: absolute; top: -6vh; width: 1.5px; height: 12vh; background: linear-gradient(180deg, transparent, rgba(100,140,180,0.4)); animation: fall linear infinite; }
+  @keyframes fall { to { transform: translateY(120vh); } }
+  .hero17 .streak { position: absolute; width: 2.5px; border-radius: 3px; background: linear-gradient(180deg, transparent, rgba(100,140,180,0.28) 30%, rgba(100,140,180,0.5)); animation: slideD 5s ease-in infinite; }
+  @keyframes slideD { 0% { transform: translateY(-10vh); opacity: 0; } 12% { opacity: 1; } 60% { transform: translateY(45vh); } 100% { transform: translateY(110vh); opacity: 0; } }
+  .hero17 .inner { position: relative; z-index: 5; display: flex; flex-direction: column; align-items: center; }
+  .hero17 h1 { font-family: "Bricolage Grotesque"; font-weight: 800; font-size: clamp(46px, 6.4vw, 88px); letter-spacing: -0.03em; line-height: 1.04; color: #17242e; }
+  .hero17 h1 .warm { color: #b45309; }
+  .hero17 .sub { margin-top: 18px; max-width: 520px; color: rgba(23,36,46,0.65); font-size: 17px; line-height: 1.65; }
+  .hero17 .cta { margin-top: 28px; background: #17242e; color: #f6f3ec; }
+  .hero17 .rainchip { margin-bottom: 20px; display: inline-flex; align-items: center; gap: 10px; font-family: "JetBrains Mono"; font-size: 12.5px; color: rgba(23,36,46,0.7); border: 1px solid rgba(23,36,46,0.18); background: rgba(255,255,255,0.55); border-radius: 999px; padding: 8px 18px; backdrop-filter: blur(6px); }
+  .eq { display: inline-flex; align-items: flex-end; gap: 2.5px; height: 14px; }
+  .eq i { width: 3px; background: #0d9488; border-radius: 2px; animation: eqb 1s ease-in-out infinite; }
+  .eq i:nth-child(1) { height: 60%; } .eq i:nth-child(2) { height: 100%; animation-delay: -0.2s; } .eq i:nth-child(3) { height: 45%; animation-delay: -0.4s; } .eq i:nth-child(4) { height: 80%; animation-delay: -0.6s; }
+  @keyframes eqb { 0%, 100% { transform: scaleY(0.5); } 50% { transform: scaleY(1); } }
+  .hero17 .trust { margin-top: 16px; font-size: 13px; color: rgba(23,36,46,0.45); }
+
+  /* ═══ SHOWCASE — split screen ═══ */
+  .show4 { position: relative; padding: 110px 5vw; background: #f6f3ec; }
+  .show4 .wrap { display: grid; grid-template-columns: 1fr 1.1fr; align-items: center; gap: 50px; max-width: 1200px; margin: 0 auto; }
+  .show4 h2 { font-family: "Bricolage Grotesque"; font-weight: 800; font-size: clamp(34px, 4vw, 54px); letter-spacing: -0.03em; line-height: 1.05; }
+  .show4 h2 .hl { color: #0d9488; }
+  .show4 .sub { margin-top: 16px; max-width: 440px; color: rgba(28,26,23,0.6); font-size: 16.5px; line-height: 1.65; }
+  .show4 .checks { margin-top: 24px; display: flex; flex-direction: column; gap: 10px; font-size: 14.5px; color: rgba(28,26,23,0.7); }
+  .show4 .checks span::before { content: "✓"; color: #0d9488; margin-right: 10px; font-weight: 700; }
+  .show4 .device { position: relative; border-radius: 24px; border: 1px solid rgba(28,26,23,0.1); overflow: hidden; aspect-ratio: 16/10.5; background: linear-gradient(160deg, #12303a, #0a1420 55%, #131029); box-shadow: 0 40px 90px rgba(28,26,23,0.25); }
+  .show4 .device .scene { position: absolute; inset: -8%; background: radial-gradient(70% 60% at 70% 25%, rgba(45,212,191,0.28), transparent 70%), radial-gradient(60% 60% at 25% 75%, rgba(59,130,246,0.24), transparent 70%); animation: scenedrift 12s ease-in-out infinite alternate; }
+  @keyframes scenedrift { to { transform: translate(4%, 3%) scale(1.08); } }
+  .show4 .device .clk { position: absolute; inset: 0; display: flex; flex-direction: column; align-items: center; justify-content: center; gap: 6px; color: #eef1f7; }
+  .show4 .device .clk .t { font-family: "Space Grotesk"; font-size: 64px; font-weight: 700; text-shadow: 0 2px 30px rgba(0,0,0,0.5); }
+  .show4 .device .clk .g { font-size: 13px; color: rgba(255,255,255,0.65); }
+  .show4 .device .dock { position: absolute; bottom: 14px; left: 50%; transform: translateX(-50%); display: flex; gap: 10px; padding: 8px 14px; border-radius: 999px; background: rgba(0,0,0,0.4); border: 1px solid rgba(255,255,255,0.12); backdrop-filter: blur(8px); }
+  .show4 .device .dock i { width: 22px; height: 22px; border-radius: 7px; background: rgba(255,255,255,0.16); display: block; transition: transform 0.2s; }
+  .show4 .device .dock i:hover { transform: scale(1.25); }
+  .show4 .floaty { position: absolute; border-radius: 14px; border: 1px solid rgba(28,26,23,0.1); background: #fff; padding: 12px 16px; font-size: 12.5px; box-shadow: 0 20px 50px rgba(28,26,23,0.15); animation: floaty 6s ease-in-out infinite; }
+  .show4 .f1 { top: 6%; right: -20px; } .show4 .f1 b { color: #0d9488; }
+  .show4 .f2 { bottom: 12%; left: -26px; animation-delay: -3s; } .show4 .f2 b { color: #2563eb; }
+
+  /* ═══ FEATURES — orbit rings, light ═══ */
+  .feat13 { position: relative; overflow: hidden; padding: 120px 5vw 130px; background: linear-gradient(180deg, #f6f3ec, #eef0f4); text-align: center; }
+  .feat13 .rings { position: absolute; left: 50%; top: 46%; transform: translate(-50%, -50%); }
+  .feat13 .ring { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); border: 1px solid rgba(13,148,136,0.18); border-radius: 50%; animation: ringP 6s ease-in-out infinite; }
+  @keyframes ringP { 0%, 100% { border-color: rgba(13,148,136,0.10); } 50% { border-color: rgba(13,148,136,0.3); } }
+  .feat13 .r1 { width: 60vmin; height: 60vmin; } .feat13 .r2 { width: 90vmin; height: 90vmin; animation-delay: 1.5s; } .feat13 .r3 { width: 125vmin; height: 125vmin; animation-delay: 3s; }
+  .feat13 .sat { position: absolute; left: 50%; top: 50%; width: 60vmin; height: 60vmin; margin: -30vmin; animation: spin 18s linear infinite; }
+  .feat13 .sat::after { content: ""; position: absolute; top: -5px; left: 50%; width: 9px; height: 9px; border-radius: 50%; background: #0d9488; box-shadow: 0 0 14px rgba(13,148,136,0.7); }
+  .feat13 .sat2 { width: 90vmin; height: 90vmin; margin: -45vmin; animation-duration: 32s; animation-direction: reverse; }
+  .feat13 .sat2::after { background: #2563eb; box-shadow: 0 0 14px rgba(37,99,235,0.6); }
+  @keyframes spin { to { transform: rotate(360deg); } }
+  .feat13 h2 { position: relative; z-index: 5; font-family: "Space Grotesk"; font-weight: 700; font-size: clamp(34px, 4.4vw, 58px); letter-spacing: -0.03em; }
+  .feat13 h2 .thin { color: rgba(28,26,23,0.45); font-weight: 400; }
+  .feat13 .sub { position: relative; z-index: 5; margin: 14px auto 0; max-width: 520px; color: rgba(28,26,23,0.55); font-size: 16.5px; }
+  .feat13 .grid { position: relative; z-index: 5; margin: 56px auto 0; max-width: 1060px; display: grid; grid-template-columns: repeat(3, 1fr); gap: 16px; text-align: left; }
+  .feat13 .card { border-radius: 20px; border: 1px solid rgba(28,26,23,0.09); background: rgba(255,255,255,0.75); backdrop-filter: blur(10px); padding: 26px; transition: transform 0.3s, box-shadow 0.3s; box-shadow: 0 6px 24px rgba(28,26,23,0.06); }
+  .feat13 .card:hover { transform: translateY(-6px); box-shadow: 0 20px 44px rgba(28,26,23,0.12); }
+  .feat13 .card .ico { display: inline-flex; width: 44px; height: 44px; align-items: center; justify-content: center; border-radius: 12px; font-size: 20px; margin-bottom: 14px; }
+  .feat13 .card h3 { font-family: "Space Grotesk"; font-size: 17px; font-weight: 600; }
+  .feat13 .card p { margin-top: 7px; font-size: 13.5px; color: rgba(28,26,23,0.55); line-height: 1.55; }
+
+  /* ═══ AMBIENCE — city at dusk (light sky) ═══ */
+  .band20 { position: relative; min-height: 88vh; overflow: hidden; display: flex; flex-direction: column; align-items: center; justify-content: flex-start; text-align: center; padding: 100px 24px 0; background: linear-gradient(180deg, #fbe8d8 0%, #f3d9c8 40%, #d9c4c0 75%, #b9a8b8 100%); }
+  .band20 .sun { position: absolute; left: 50%; top: 46%; transform: translateX(-50%); width: 110px; height: 110px; border-radius: 50%; background: #ffedd5; box-shadow: 0 0 80px 30px rgba(255,200,140,0.55); animation: pulse 6s ease-in-out infinite; }
+  .band20 .skyline { position: absolute; left: 0; right: 0; bottom: 0; height: 46vh; }
+  .band20 .bld { position: absolute; bottom: 0; background: #4a4058; }
+  .band20 .bld .win { position: absolute; width: 5px; height: 7px; background: #ffd98a; opacity: 0.85; animation: flick ease-in-out infinite; }
+  @keyframes flick { 0%, 92%, 100% { opacity: 0.85; } 96% { opacity: 0.15; } }
+  .band20 .plane { position: absolute; top: 14%; width: 5px; height: 5px; border-radius: 50%; background: #ef4444; box-shadow: 0 0 8px #ef4444; animation: plane 14s linear infinite; }
+  @keyframes plane { from { left: -3%; } to { left: 103%; } }
+  .band20 .chip { position: relative; z-index: 5; display: inline-flex; gap: 8px; align-items: center; font-family: "JetBrains Mono"; font-size: 12px; color: #7c4a12; border: 1px solid rgba(124,74,18,0.3); border-radius: 999px; padding: 8px 16px; background: rgba(255,255,255,0.45); }
+  .band20 .chip .dot { width: 6px; height: 6px; border-radius: 50%; background: #ea940b; animation: pulse 2s ease-in-out infinite; }
+  .band20 h2 { position: relative; z-index: 5; margin-top: 22px; font-family: "Bricolage Grotesque"; font-weight: 800; font-size: clamp(38px, 5.4vw, 74px); letter-spacing: -0.03em; line-height: 1.03; color: #3a2b20; }
+  .band20 h2 .lit { color: #b45309; }
+  .band20 .sub { position: relative; z-index: 5; margin-top: 16px; max-width: 520px; color: rgba(58,43,32,0.7); font-size: 16.5px; line-height: 1.6; }
+
+  /* ═══ QUOTE — ink & mist on paper ═══ */
+  .zen19 { position: relative; overflow: hidden; padding: 130px 8vw; background: #f2efe6; }
+  .zen19 .mist { position: absolute; border-radius: 50%; filter: blur(60px); background: rgba(120,140,130,0.12); animation: mistd ease-in-out infinite alternate; }
+  .zen19 .mi1 { width: 560px; height: 260px; left: -8%; top: 30%; animation-duration: 13s; }
+  .zen19 .mi2 { width: 640px; height: 300px; right: -12%; top: 45%; animation-duration: 17s; animation-delay: -5s; }
+  @keyframes mistd { from { transform: translateX(0); } to { transform: translateX(70px); } }
+  .zen19 .enso { position: absolute; right: 8%; top: 50%; transform: translateY(-50%); width: 280px; height: 280px; opacity: 0.9; }
+  .zen19 .enso circle { fill: none; stroke: rgba(50,60,55,0.35); stroke-width: 10; stroke-linecap: round; stroke-dasharray: 810 900; stroke-dashoffset: 900; }
+  .zen19.inview .enso circle { animation: draw 3s ease-out forwards; }
+  @keyframes draw { to { stroke-dashoffset: 90; } }
+  .zen19 .fall { position: absolute; font-size: 15px; opacity: 0.7; animation: leaf linear infinite; }
+  @keyframes leaf { 0% { transform: translateY(-8vh) rotate(0); opacity: 0; } 10% { opacity: 0.7; } 100% { transform: translateY(70vh) rotate(320deg); opacity: 0; } }
+  .zen19 .kanji { font-size: 14px; letter-spacing: 0.6em; color: rgba(50,60,55,0.5); }
+  .zen19 h2 { margin-top: 18px; font-family: "Fraunces", serif; font-weight: 400; font-size: clamp(38px, 5vw, 68px); line-height: 1.1; color: #2b2a26; max-width: 700px; }
+  .zen19 h2 em { font-style: italic; color: #4d7c68; }
+  .zen19 .sub { margin-top: 18px; max-width: 460px; color: rgba(43,42,38,0.6); font-size: 16px; line-height: 1.75; }
+
+  /* ═══ INSTALL — paper light (native here) ═══ */
+  .paper14 { position: relative; overflow: hidden; padding: 110px 5vw; background: #f6f3ec; }
+  .paper14 .blob { position: absolute; border-radius: 50%; filter: blur(60px); opacity: 0.5; }
+  .paper14 .b1 { width: 420px; height: 420px; background: #99f6e4; left: -100px; top: -60px; animation: blob 11s ease-in-out infinite alternate; }
+  .paper14 .b2 { width: 380px; height: 380px; background: #bfdbfe; right: -80px; bottom: -100px; animation: blob 13s ease-in-out infinite alternate-reverse; }
+  @keyframes blob { to { transform: translate(40px, 30px) scale(1.15); } }
+  .paper14 .wrap { position: relative; z-index: 5; max-width: 1100px; margin: 0 auto; display: grid; grid-template-columns: 1.1fr 1fr; gap: 60px; align-items: center; }
+  .paper14 h2 { font-family: "Bricolage Grotesque"; font-weight: 800; font-size: clamp(36px, 4.6vw, 60px); letter-spacing: -0.035em; line-height: 1.0; }
+  .paper14 h2 .circ { position: relative; white-space: nowrap; }
+  .paper14 h2 .circ svg { position: absolute; inset: -18% -6%; width: 112%; height: 136%; overflow: visible; }
+  .paper14 h2 .circ svg path { fill: none; stroke: #0d9488; stroke-width: 4; stroke-linecap: round; stroke-dasharray: 360; stroke-dashoffset: 360; }
+  .paper14.inview .circ svg path { animation: drawc 1.6s ease-out 0.4s forwards; }
+  @keyframes drawc { to { stroke-dashoffset: 0; } }
+  .paper14 .sub { margin-top: 20px; max-width: 460px; color: rgba(28,26,23,0.65); font-size: 16.5px; line-height: 1.65; }
+  .paper14 .cta { margin-top: 26px; background: #1c1a17; color: #f6f3ec; }
+  .paper14 .card { position: relative; border-radius: 24px; background: #fff; box-shadow: 0 30px 80px rgba(28,26,23,0.12); padding: 44px; text-align: center; animation: floaty 7s ease-in-out infinite; }
+  .paper14 .card .ph { width: 74px; height: 74px; margin: 0 auto 16px; border-radius: 20px; background: linear-gradient(140deg, #0d9488, #38bdf8); display: flex; align-items: center; justify-content: center; font-size: 32px; }
+  .paper14 .card h3 { font-family: "Bricolage Grotesque"; font-size: 21px; font-weight: 800; }
+  .paper14 .card p { margin-top: 8px; font-size: 14px; color: rgba(28,26,23,0.6); line-height: 1.6; }
+  .paper14 .scribble { position: absolute; font-family: "JetBrains Mono"; font-size: 12.5px; color: rgba(28,26,23,0.55); animation: wig 4s ease-in-out infinite; }
+  @keyframes wig { 0%, 100% { transform: rotate(-4deg); } 50% { transform: rotate(2deg); } }
+
+  /* ═══ FINAL CTA — gradient mesh on light ═══ */
+  .cta16 { position: relative; overflow: hidden; padding: 130px 5vw; background: #efece4; display: flex; justify-content: center; }
+  .cta16 .mesh { position: absolute; left: 50%; top: 50%; transform: translate(-50%, -50%); width: min(1100px, 96vw); height: 80%; border-radius: 40px; background: radial-gradient(60% 70% at 20% 30%, #7dd3fc 0%, transparent 55%), radial-gradient(55% 65% at 75% 25%, #c4b5fd 0%, transparent 55%), radial-gradient(60% 60% at 60% 80%, #5eead4 0%, transparent 55%); filter: blur(46px) saturate(1.15); opacity: 0.5; animation: breathe 7s ease-in-out infinite alternate; }
+  @keyframes breathe { to { transform: translate(-50%, -50%) scale(1.1) rotate(3deg); opacity: 0.68; } }
+  .cta16 .frame { position: relative; z-index: 6; width: min(900px, 92vw); border-radius: 32px; border: 1px solid rgba(28,26,23,0.1); background: rgba(255,255,255,0.6); backdrop-filter: blur(20px); padding: 70px 60px; text-align: center; box-shadow: 0 30px 90px rgba(28,26,23,0.1); }
+  .cta16 .eyebrow { display: inline-block; font-family: "JetBrains Mono"; font-size: 12px; letter-spacing: 0.26em; text-transform: uppercase; color: rgba(28,26,23,0.55); border: 1px solid rgba(28,26,23,0.15); border-radius: 999px; padding: 8px 18px; animation: pulse 4s ease-in-out infinite; }
+  .cta16 h2 { margin-top: 24px; font-family: "Archivo"; font-weight: 900; font-size: clamp(40px, 5.6vw, 76px); letter-spacing: -0.04em; line-height: 1.0; }
+  .cta16 h2 .g { background: linear-gradient(90deg, #0d9488 0%, #2563eb 40%, #7c3aed 70%, #0d9488 100%); background-size: 250% 100%; -webkit-background-clip: text; background-clip: text; color: transparent; animation: flow 5s linear infinite; }
+  @keyframes flow { to { background-position: 250% 0; } }
+  .cta16 .sub { margin-top: 18px; max-width: 520px; margin-inline: auto; color: rgba(28,26,23,0.6); font-size: 16.5px; line-height: 1.65; }
+  .cta16 .row { margin-top: 30px; display: flex; gap: 14px; justify-content: center; }
+  .cta16 .cta { background: #1c1a17; color: #f6f3ec; }
+  .cta16 .logos { margin-top: 36px; display: flex; gap: 30px; justify-content: center; font-family: "JetBrains Mono"; font-size: 11.5px; color: rgba(28,26,23,0.4); letter-spacing: 0.1em; }
+
+  footer { padding: 40px 5vw; background: #eae7de; border-top: 1px solid rgba(28,26,23,0.08); display: flex; justify-content: space-between; align-items: center; font-size: 13px; color: rgba(28,26,23,0.5); }
+</style>
+</head>
+<body>
+
+<nav class="main"><span class="logo">WOLFHOUR</span><span class="navlinks"><span>Features</span><span>FAQ</span><span>Open app</span></span></nav>
+
+<!-- HERO · rain on glass, daylight -->
+<section class="hero17">
+  <span class="sectag">LIGHT · HERO</span>
+  <div class="bokeh bk1"></div><div class="bokeh bk2"></div><div class="bokeh bk3"></div><div class="bokeh bk4"></div>
+  <div class="drop" style="left:8%; animation-duration:1.3s"></div>
+  <div class="drop" style="left:16%; animation-duration:1.7s; animation-delay:-0.6s"></div>
+  <div class="drop" style="left:27%; animation-duration:1.2s; animation-delay:-1s"></div>
+  <div class="drop" style="left:38%; animation-duration:1.9s; animation-delay:-0.2s"></div>
+  <div class="drop" style="left:52%; animation-duration:1.4s; animation-delay:-1.2s"></div>
+  <div class="drop" style="left:63%; animation-duration:1.6s; animation-delay:-0.8s"></div>
+  <div class="drop" style="left:74%; animation-duration:1.25s; animation-delay:-0.4s"></div>
+  <div class="drop" style="left:86%; animation-duration:1.8s; animation-delay:-1.5s"></div>
+  <div class="streak" style="left:22%; height:60px; animation-delay:-1s"></div>
+  <div class="streak" style="left:58%; height:80px; animation-delay:-3.2s"></div>
+  <div class="streak" style="left:81%; height:50px; animation-delay:-2s"></div>
+  <div class="inner">
+    <span class="rainchip"><span class="eq"><i></i><i></i><i></i><i></i></span> rain.mix — playing</span>
+    <h1>
+      <span class="rise" style="animation-delay:0.1s">Let</span>
+      <span class="rise" style="animation-delay:0.18s">it</span>
+      <span class="rise" style="animation-delay:0.26s">pour</span>
+      <span class="rise" style="animation-delay:0.34s">outside.</span><br />
+      <span class="warm rise" style="animation-delay:0.5s">Stay</span>
+      <span class="warm rise" style="animation-delay:0.6s">warm</span>
+      <span class="warm rise" style="animation-delay:0.7s">in</span>
+      <span class="warm rise" style="animation-delay:0.8s">here.</span>
+    </h1>
+    <p class="sub">Live cinematic backgrounds, calming soundscapes, and gentle timers — everything you need to slip into deep, distraction-free focus.</p>
+    <button class="cta">Open Wolfhour →</button>
+    <p class="trust">Free · Works offline · Syncs across devices</p>
+  </div>
+</section>
+
+<!-- SHOWCASE · split screen -->
+<section class="show4">
+  <span class="sectag">LIGHT · SHOWCASE</span>
+  <div class="wrap">
+    <div>
+      <h2>Your calmest,<br />most <span class="hl">productive</span> hour.</h2>
+      <p class="sub">One dashboard: a living scene, your clock, your sounds, your timers. Nothing else. That's the point.</p>
+      <div class="checks">
+        <span>Free forever — no ads, no paywalls</span>
+        <span>Works offline as a PWA</span>
+        <span>Syncs across all your devices</span>
+      </div>
+    </div>
+    <div style="position:relative;">
+      <div class="device">
+        <div class="scene"></div>
+        <div class="clk"><span class="g">Good evening, wanderer</span><span class="t liveclock ck"></span></div>
+        <div class="dock"><i></i><i></i><i></i><i></i><i></i></div>
+      </div>
+      <div class="floaty f1"><b>▲ 2h 40m</b> studied today</div>
+      <div class="floaty f2"><b>🌊 Ocean + rain</b> mix playing</div>
+    </div>
+  </div>
+</section>
+
+<!-- FEATURES · orbit rings -->
+<section class="feat13">
+  <span class="sectag">LIGHT · FEATURES</span>
+  <div class="rings">
+    <div class="ring r1"></div><div class="ring r2"></div><div class="ring r3"></div>
+    <div class="sat"></div><div class="sat sat2"></div>
+  </div>
+  <h2>Everything orbits<br /><span class="thin">around your focus.</span></h2>
+  <p class="sub">Six quiet tools, one calm dashboard.</p>
+  <div class="grid">
+    <div class="card"><span class="ico" style="background:rgba(13,148,136,0.1); color:#0d9488">🎬</span><h3>Live cinematic scenes</h3><p>Hand-picked loops that cross-dissolve like film — shrines, golden hours, still water.</p></div>
+    <div class="card"><span class="ico" style="background:rgba(37,99,235,0.08); color:#2563eb">⏱</span><h3>Focus & study timers</h3><p>Pomodoro, deep-work sessions, and a fullscreen timer that melts the world away.</p></div>
+    <div class="card"><span class="ico" style="background:rgba(124,58,237,0.08); color:#7c3aed">🎓</span><h3>Aspirant study mode</h3><p>Per-subject timers, streaks, badges, and a live study-trend chart.</p></div>
+    <div class="card"><span class="ico" style="background:rgba(5,150,105,0.08); color:#059669">🎧</span><h3>Calming soundscapes</h3><p>Layer rain, waves, and ambience into your own perfect mix.</p></div>
+    <div class="card"><span class="ico" style="background:rgba(8,145,178,0.08); color:#0891b2">🕐</span><h3>Clock & font styles</h3><p>Beautiful, switchable clock faces — flip, LED, LCD, glitch, ember.</p></div>
+    <div class="card"><span class="ico" style="background:rgba(147,51,234,0.08); color:#9333ea">✨</span><h3>Tasks, quotes & rewards</h3><p>A quiet to-do list, a daily word, and badges you actually earn.</p></div>
+  </div>
+</section>
+
+<!-- AMBIENCE · city at golden hour -->
+<section class="band20">
+  <span class="sectag">LIGHT · AMBIENCE</span>
+  <div class="sun"></div>
+  <div class="plane"></div>
+  <div class="skyline" id="sky"></div>
+  <span class="chip"><span class="dot"></span> <span class="liveclock ck"></span> — golden hour. your hour.</span>
+  <h2>For everyone whose<br /><span class="lit">light is still on.</span></h2>
+  <p class="sub">Evening scenes, low-key soundscapes, and timers that keep you company while the rest of the city winds down.</p>
+</section>
+
+<!-- QUOTE · ink & mist on paper -->
+<section class="zen19" id="zen">
+  <span class="sectag">LIGHT · QUOTE</span>
+  <div class="mist mi1"></div><div class="mist mi2"></div>
+  <svg class="enso" viewBox="0 0 300 300"><circle cx="150" cy="150" r="120" transform="rotate(-80 150 150)" /></svg>
+  <span class="fall" style="left:30%; animation-duration:12s">🍂</span>
+  <span class="fall" style="left:60%; animation-duration:15s; animation-delay:-7s">🍁</span>
+  <span class="kanji">静 · STILLNESS · 集中</span>
+  <h2>Empty the cup.<br />Fill <em>the hour.</em></h2>
+  <p class="sub">Every animation is tuned to be buttery-smooth and quiet. No clutter, no noise — just you, a calm scene, and the work in front of you.</p>
+</section>
+
+<!-- INSTALL · paper light -->
+<section class="paper14" id="paper">
+  <span class="sectag">LIGHT · INSTALL</span>
+  <div class="blob b1"></div><div class="blob b2"></div>
+  <span class="scribble" style="right:12%; top:14%">works offline!</span>
+  <span class="scribble" style="left:10%; bottom:12%; animation-delay:-2s">no ads, ever</span>
+  <div class="wrap">
+    <div>
+      <h2>Installs like an app.<br />Feels like a <span class="circ">ritual<svg viewBox="0 0 120 60"><path d="M8,32 C10,12 96,4 112,22 C122,36 84,54 40,52 C18,50 6,44 10,30" /></svg></span>.</h2>
+      <p class="sub">Add Wolfhour to your home screen and it runs fullscreen and offline — a distraction-free window that's always one tap away.</p>
+      <button class="cta">Launch the app →</button>
+    </div>
+    <div class="card">
+      <div class="ph">📲</div>
+      <h3>Add to Home Screen</h3>
+      <p>Open the app, then choose "Add to Home Screen" from your browser menu. Done — it's yours, even offline.</p>
+    </div>
+  </div>
+</section>
+
+<!-- FINAL CTA · gradient mesh -->
+<section class="cta16">
+  <span class="sectag">LIGHT · FINAL CTA</span>
+  <div class="mesh"></div>
+  <div class="frame">
+    <span class="eyebrow">Focus · Ambience · Free forever</span>
+    <h2>Ready to <span class="g">lock in?</span></h2>
+    <p class="sub">Open Wolfhour and slip into your calmest, most productive hour.</p>
+    <div class="row">
+      <button class="cta">Start focusing →</button>
+      <button class="ghostbtn">See FAQ</button>
+    </div>
+    <div class="logos">PWA · OFFLINE-FIRST · NO ADS · CROSS-DEVICE SYNC</div>
+  </div>
+</section>
+
+<footer>
+  <span>© 2026 Wolfhour</span>
+  <span>Privacy · Terms · Share</span>
+</footer>
+
+<script>
+  function tick() {
+    const d = new Date();
+    const p = n => String(n).padStart(2, "0");
+    document.querySelectorAll(".ck").forEach(e => e.textContent = p(d.getHours()) + ":" + p(d.getMinutes()));
+  }
+  tick(); setInterval(tick, 1000);
+
+  // skyline (dusk palette)
+  (function () {
+    const sky = document.getElementById("sky");
+    let x = 0;
+    while (x < 100) {
+      const w = 4 + Math.random() * 7;
+      const h = 18 + Math.random() * 68;
+      const b = document.createElement("div");
+      b.className = "bld";
+      b.style.cssText = `left:${x}%;width:${w}%;height:${h}%;`;
+      const cols = Math.max(1, Math.floor(w * 1.4));
+      const rows = Math.max(2, Math.floor(h / 9));
+      for (let c = 0; c < cols; c++) for (let r = 0; r < rows; r++) {
+        if (Math.random() < 0.42) {
+          const win = document.createElement("i");
+          win.className = "win";
+          win.style.cssText = `left:${8 + c * (86 / cols)}%;top:${6 + r * (88 / rows)}%;animation-duration:${3 + Math.random() * 9}s;animation-delay:${-Math.random() * 8}s;opacity:${0.4 + Math.random() * 0.5}`;
+          b.appendChild(win);
+        }
+      }
+      sky.appendChild(b);
+      x += w + 0.8;
+    }
+  })();
+
+  const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting) e.target.classList.add("inview"); }), { threshold: 0.35 });
+  io.observe(document.getElementById("zen"));
+  io.observe(document.getElementById("paper"));
+</script>
+</body>
+</html>

@@ -1,0 +1,195 @@
+/* ============================================================================
+ * Polaris — Canonical Design Tokens (v1)
+ * Consolidates: Fora landing tokens + Flocus app palette + neutral scale +
+ * semantic colors + liquid-glass primitive + ASMR/Apple motion tokens +
+ * clock/font style sets.
+ *
+ * STATUS: ready-to-apply deliverable. At BUILD time this drops into
+ * src/app/globals.css (Tailwind v4 uses @theme; :root block for runtime vars).
+ * Dark-first: dark is the primary and only required theme for v1.
+ * ========================================================================== */
+
+:root {
+  /* ---- Core palette (Fora-derived, dark) ------------------------------- */
+  --color-void-black: #000000;   /* page canvas / void */
+  --color-snow: #fff3f0;         /* primary warm off-white text */
+  --color-pure-white: #ffffff;   /* high-emphasis text */
+  --color-ash: #5e5e5e;          /* muted metadata */
+
+  /* ---- Neutral scale (dark UI, cool-warm balanced) --------------------- */
+  --neutral-950: #000000;
+  --neutral-900: #0b0b0d;
+  --neutral-850: #141416;
+  --neutral-800: #1c1c1f;
+  --neutral-700: #242424;   /* panel */
+  --neutral-600: #2a2a2a;   /* lifted panel / border */
+  --neutral-500: #3a3a3d;
+  --neutral-400: #5e5e5e;   /* ash */
+  --neutral-300: #8a8a90;
+  --neutral-200: #b6b6bc;
+  --neutral-100: #dedee2;
+  --neutral-050: #f4f4f2;
+
+  /* ---- Brand accent (Polaris purple, from Flocus app) ------------------ */
+  --accent-050: #f2ecff;
+  --accent-100: #e3d6ff;
+  --accent-200: #c7adff;
+  --accent-300: #a883ff;
+  --accent-400: #8b5cff;   /* hover */
+  --accent-500: #7432ff;   /* PRIMARY action / active */
+  --accent-600: #5f24db;
+  --accent-700: #4a1aad;
+  --accent-glow: rgba(116, 50, 255, 0.45);  /* focus ring / glow */
+
+  /* ---- Semantic -------------------------------------------------------- */
+  --success: #2fbf71;   /* "NEW" green */
+  --warning: #e5a83c;
+  --danger:  #c0392b;   /* destructive (remove image) */
+  --info:    #4aa8ff;
+
+  /* ---- Surfaces (elevation via layering, not shadow) ------------------- */
+  --surface-canvas: var(--color-void-black);
+  --surface-1: var(--neutral-700);   /* cards, frames */
+  --surface-2: var(--neutral-600);   /* hover, borders */
+  --border-hairline: rgba(255, 255, 255, 0.10);
+  --border-glass:    rgba(255, 255, 255, 0.18);
+  --text-primary:  var(--color-snow);
+  --text-strong:   var(--color-pure-white);
+  --text-muted:    rgba(255, 243, 240, 0.60);
+  --text-faint:    var(--color-ash);
+
+  /* ---- Atmosphere / per-mode background palettes ----------------------- */
+  /* Home: dusk aurora (indigo -> magenta -> coral) */
+  --home-indigo:  #3a2a6b;
+  --home-violet:  #4b2e8a;
+  --home-magenta: #c13b8f;
+  --home-rose:    #d8477e;
+  --home-coral:   #ff6b7a;
+  --home-blush:   #fbb8b0;
+  --gradient-home: radial-gradient(120% 120% at 50% 40%, #4b2e8a 0%, #c13b8f 45%, #ff6b7a 80%, #fbb8b0 100%);
+  /* Fora dusk (landing hero) */
+  --dusk-mauve: #c9a9b8;
+  --dusk-rose:  #a97f86;
+  --dusk-char:  #2a2320;
+  --gradient-dusk:    linear-gradient(180deg, #c9a9b8 0%, #a97f86 35%, #2a2320 75%, #000000 100%);
+  --gradient-closing: linear-gradient(180deg, #000000 0%, #1b2228 100%);
+  /* Ambient: forest greens */
+  --forest-deep: #1e3320;
+  --forest-mid:  #3f5b34;
+  --forest-moss: #6f8a4a;
+  --forest-fern: #93b36b;
+
+  /* ---- Typography ------------------------------------------------------ */
+  --font-body:    'Inter', ui-sans-serif, system-ui, -apple-system, 'Segoe UI', Roboto, sans-serif;
+  --font-display: 'Hanken Grotesk Variable', var(--font-body);   /* default clock/display */
+  --font-mono:    'Fragment Mono', 'Geist Mono', 'JetBrains Mono', ui-monospace, monospace;
+
+  /* Clock/font PICKER families (user-switchable) */
+  --font-pick-hanken:  'Hanken Grotesk Variable', sans-serif;
+  --font-pick-onest:   'Onest Variable', sans-serif;
+  --font-pick-general: 'General Sans', sans-serif;   /* add at build */
+  --font-pick-satoshi: 'Satoshi', sans-serif;        /* add at build */
+  --font-pick-space:   'Space Grotesk', sans-serif;  /* add at build */
+  --font-pick-serif:   'Lora', serif;
+  --font-pick-script:  'Caveat', cursive;
+  --font-pick-cond:    'Archivo', sans-serif;
+
+  /* Type scale (size / line-height / tracking) — tight, Fora-style */
+  --text-kicker: 0.75rem;   --lh-kicker: 1.3;  --ls-kicker: 0.02em;   /* mono eyebrow */
+  --text-caption: 0.875rem; --lh-caption: 1.5; --ls-caption: -0.02em;
+  --text-body: 1rem;        --lh-body: 1.5;    --ls-body: -0.02em;
+  --text-body-lg: 1.125rem; --lh-body-lg: 1.5; --ls-body-lg: -0.02em;
+  --text-sub: 1.375rem;     --lh-sub: 1.4;     --ls-sub: -0.03em;
+  --text-heading: 2rem;     --lh-heading: 1.35;--ls-heading: -0.04em;
+  --text-display: 2.75rem;  --lh-display: 1.2; --ls-display: -0.04em;
+  --text-clock: clamp(5rem, 16vw, 11rem); --lh-clock: 1; --ls-clock: -0.03em;  /* the giant clock */
+
+  --fw-regular: 400;
+  --fw-medium: 500;
+  --fw-semibold: 600;
+  --fw-bold: 700;
+
+  /* ---- Spacing (4px base) --------------------------------------------- */
+  --space-1: 4px;   --space-2: 8px;   --space-3: 12px;  --space-4: 16px;
+  --space-5: 20px;  --space-6: 24px;  --space-8: 32px;  --space-10: 40px;
+  --space-12: 48px; --space-16: 64px; --space-24: 96px; --gutter: 24px;
+
+  /* ---- Radius --------------------------------------------------------- */
+  --radius-xs: 3px;
+  --radius-sm: 8px;
+  --radius-control: 10px;
+  --radius-media: 15px;
+  --radius-card: 16px;
+  --radius-lg: 24px;
+  --radius-pill: 9999px;
+
+  /* ---- Elevation (soft, wide, low-opacity — Apple depth-aware) --------- */
+  --shadow-sm: 0 1px 2px rgba(0,0,0,0.30);
+  --shadow-md: 0 6px 20px rgba(0,0,0,0.35);
+  --shadow-lg: 0 16px 48px rgba(0,0,0,0.45);
+  --shadow-glow: 0 0 0 1px var(--accent-glow), 0 8px 32px var(--accent-glow);
+  --shadow-dock: 0 12px 40px rgba(0,0,0,0.50);   /* lifts glass off vivid bg */
+
+  /* ---- LIQUID GLASS primitive (clean & subtle, Apple-vibrancy) --------- */
+  --glass-blur: 20px;                 /* backdrop blur radius */
+  --glass-saturate: 140%;             /* vibrancy — samples color behind */
+  --glass-fill: rgba(20, 20, 24, 0.42);          /* dark translucent tint */
+  --glass-fill-strong: rgba(20, 20, 24, 0.60);   /* drawers / dense panels */
+  --glass-border: rgba(255, 255, 255, 0.16);     /* hairline edge */
+  --glass-highlight: rgba(255, 255, 255, 0.22);  /* specular top-edge */
+  --glass-noise-opacity: 0.035;       /* faint grain over glass */
+  --glass-radius: var(--radius-card);
+
+  /* ---- MOTION tokens (ASMR-grade, Apple-caliber) ---------------------- */
+  /* Springs are consumed by Motion (framer-motion) as {type:'spring', ...}.
+     One consistent curve family across the whole app. */
+  --spring-stiffness: 260;
+  --spring-damping: 26;
+  --spring-mass: 1;
+  --spring-soft-stiffness: 180;   /* larger/slower surfaces (drawers, morph) */
+  --spring-soft-damping: 24;
+  /* Easing (for the few non-spring, keyframe cases) */
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);      /* gentle decel */
+  --ease-in-out-soft: cubic-bezier(0.65, 0, 0.35, 1);
+  /* Durations (keep short; springs handle most timing) */
+  --dur-fast: 140ms;
+  --dur-base: 260ms;
+  --dur-slow: 420ms;
+  --dur-morph: 800ms;    /* mode shared-element + palette cross-dissolve */
+  --press-scale: 0.96;   /* tactile button press */
+  --magnetic-max: 6px;   /* dock/button magnetic pull cap */
+  --parallax-max: 4px;   /* ambient depth pointer offset cap */
+}
+
+/* Reduced-motion / low-power tier: simplify, never stutter.
+   Toggled by <html data-motion="reduced"> (kill-switch) or OS preference. */
+:root[data-motion="reduced"],
+:root[data-motion="reduced"] * {
+  --glass-blur: 0px;
+  --glass-fill: rgba(20, 20, 24, 0.72);   /* solid-ish fallback for glass */
+  --dur-morph: 0ms;
+}
+@media (prefers-reduced-motion: reduce) {
+  :root { --dur-fast: 0ms; --dur-base: 0ms; --dur-slow: 0ms; --dur-morph: 0ms; }
+}
+
+/* ---- .glass primitive (drop into globals.css) ------------------------- */
+/* Usage: <div class="glass"> … </div>  (add .glass-strong for drawers) */
+.glass {
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate));
+  border: 1px solid var(--glass-border);
+  border-radius: var(--glass-radius);
+  box-shadow: inset 0 1px 0 var(--glass-highlight), var(--shadow-md);
+  position: relative;
+}
+.glass-strong { background: var(--glass-fill-strong); }
+/* faint grain overlay for glass (needs a noise texture or CSS mask at build) */
+.glass::after {
+  content: "";
+  position: absolute; inset: 0; border-radius: inherit; pointer-events: none;
+  opacity: var(--glass-noise-opacity);
+  /* background-image: url('/noise.png'); (add asset at build) */
+  mix-blend-mode: overlay;
+}

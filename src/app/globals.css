@@ -1,0 +1,584 @@
+@import "tailwindcss";
+@import "tw-animate-css";
+@import "shadcn/tailwind.css";
+
+@custom-variant dark (&:is(.dark *));
+
+/* ============================================================================
+ * Polaris — global tokens + liquid-glass primitive (from docs/design-tokens.css)
+ * Dark-first. Tailwind v4 @theme exposes tokens as utilities.
+ * ========================================================================== */
+
+@theme {
+  /* Core palette */
+  --color-void: #000000;
+  --color-snow: #fff3f0;
+  --color-pure: #ffffff;
+  --color-ash: #5e5e5e;
+
+  /* Neutrals */
+  --color-panel: #242424;
+  --color-panel-2: #2a2a2a;
+
+  /* Accent ramp */
+  --color-accent-400: #8b5cff;
+  --color-accent-500: #7432ff;
+  --color-accent-600: #5f24db;
+
+  /* Semantic */
+  --color-success: #2fbf71;
+  --color-danger: #c0392b;
+
+  /* Fonts */
+  --font-display: var(--font-hanken), ui-sans-serif, system-ui, sans-serif;
+  --font-body: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+  --font-mono: var(--font-mono-geist), ui-monospace, monospace;
+
+  /* Radius */
+  --radius-card: 16px;
+  --radius-pill: 9999px;
+}
+
+:root {
+  /* Text roles */
+  --text-primary: var(--color-snow);
+  --text-muted: rgba(255, 243, 240, 0.6);
+  --text-faint: #5e5e5e;
+
+  /* Liquid glass (Apple-visible: strong blur + light frost + bright rim) */
+  --glass-blur: 28px;
+  --glass-saturate: 180%;
+  --glass-brightness: 1.12;
+  --glass-fill: rgba(255, 255, 255, 0.10);
+  --glass-fill-strong: rgba(18, 16, 26, 0.55);
+  --glass-border: rgba(255, 255, 255, 0.28);
+  --glass-highlight: rgba(255, 255, 255, 0.4);
+
+  /* Elevation */
+  --shadow-md: 0 6px 20px rgba(0, 0, 0, 0.35);
+  --shadow-dock: 0 12px 40px rgba(0, 0, 0, 0.5);
+  --accent-glow: rgba(116, 50, 255, 0.45);
+
+  /* Motion */
+  --dur-base: 260ms;
+  --ease-out-soft: cubic-bezier(0.22, 1, 0.36, 1);
+  --background: oklch(1 0 0);
+  --foreground: oklch(0.145 0 0);
+  --card: oklch(1 0 0);
+  --card-foreground: oklch(0.145 0 0);
+  --popover: oklch(1 0 0);
+  --popover-foreground: oklch(0.145 0 0);
+  --primary: oklch(0.205 0 0);
+  --primary-foreground: oklch(0.985 0 0);
+  --secondary: oklch(0.97 0 0);
+  --secondary-foreground: oklch(0.205 0 0);
+  --muted: oklch(0.97 0 0);
+  --muted-foreground: oklch(0.556 0 0);
+  --accent: oklch(0.97 0 0);
+  --accent-foreground: oklch(0.205 0 0);
+  --destructive: oklch(0.577 0.245 27.325);
+  --border: oklch(0.922 0 0);
+  --input: oklch(0.922 0 0);
+  --ring: oklch(0.708 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --radius: 0.625rem;
+  --sidebar: oklch(0.985 0 0);
+  --sidebar-foreground: oklch(0.145 0 0);
+  --sidebar-primary: oklch(0.205 0 0);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.97 0 0);
+  --sidebar-accent-foreground: oklch(0.205 0 0);
+  --sidebar-border: oklch(0.922 0 0);
+  --sidebar-ring: oklch(0.708 0 0);
+}
+
+/* Reduced-motion tier: glass degrades to near-solid, never stutters */
+:root[data-motion="reduced"] {
+  --glass-blur: 0px;
+  --glass-fill: rgba(20, 20, 24, 0.72);
+}
+
+html,
+body {
+  height: 100%;
+}
+
+body {
+  margin: 0;
+  background: var(--color-void);
+  color: var(--text-primary);
+  font-family: var(--font-body);
+  letter-spacing: -0.02em;
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+  overflow: hidden; /* full-bleed immersive canvas */
+}
+
+/* ---- Liquid glass primitive (masked gradient-rim, Apple specular edge) -- */
+.glass {
+  position: relative;
+  background: var(--glass-fill);
+  backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate))
+    brightness(var(--glass-brightness));
+  -webkit-backdrop-filter: blur(var(--glass-blur)) saturate(var(--glass-saturate))
+    brightness(var(--glass-brightness));
+  border-radius: var(--radius-card);
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.35),
+    inset 0 -1px 1px rgba(0, 0, 0, 0.12),
+    var(--shadow-md);
+}
+/* refractive rim: a masked gradient border = the "liquid glass" specular edge */
+.glass::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  border-radius: inherit;
+  padding: 1.4px;
+  background: linear-gradient(
+    180deg,
+    rgba(255, 255, 255, 0.4) 0%,
+    rgba(255, 255, 255, 0.12) 22%,
+    rgba(255, 255, 255, 0) 42%,
+    rgba(255, 255, 255, 0) 60%,
+    rgba(255, 255, 255, 0.12) 80%,
+    rgba(255, 255, 255, 0.45) 100%
+  );
+  -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
+  -webkit-mask-composite: xor;
+  mask-composite: exclude;
+  pointer-events: none;
+}
+.glass-strong {
+  background: var(--glass-fill-strong);
+}
+
+/* Active dock item — clean liquid glass (not a solid fill), faint accent glow */
+.dock-active {
+  background: linear-gradient(
+    to bottom,
+    rgba(255, 255, 255, 0.16),
+    rgba(255, 255, 255, 0.05)
+  );
+  backdrop-filter: blur(6px) saturate(140%);
+  -webkit-backdrop-filter: blur(6px) saturate(140%);
+  border: 1px solid rgba(255, 255, 255, 0.22);
+  box-shadow:
+    inset 0 1px 0 rgba(255, 255, 255, 0.35),
+    0 2px 12px rgba(116, 50, 255, 0.25);
+}
+
+/* Tabular numerals for the clock */
+.tabular {
+  font-variant-numeric: tabular-nums;
+  font-feature-settings: "tnum";
+}
+
+@theme inline {
+  --font-heading: var(--font-sans);
+  --font-sans: var(--font-sans);
+  --color-sidebar-ring: var(--sidebar-ring);
+  --color-sidebar-border: var(--sidebar-border);
+  --color-sidebar-accent-foreground: var(--sidebar-accent-foreground);
+  --color-sidebar-accent: var(--sidebar-accent);
+  --color-sidebar-primary-foreground: var(--sidebar-primary-foreground);
+  --color-sidebar-primary: var(--sidebar-primary);
+  --color-sidebar-foreground: var(--sidebar-foreground);
+  --color-sidebar: var(--sidebar);
+  --color-chart-5: var(--chart-5);
+  --color-chart-4: var(--chart-4);
+  --color-chart-3: var(--chart-3);
+  --color-chart-2: var(--chart-2);
+  --color-chart-1: var(--chart-1);
+  --color-ring: var(--ring);
+  --color-input: var(--input);
+  --color-border: var(--border);
+  --color-destructive: var(--destructive);
+  --color-accent-foreground: var(--accent-foreground);
+  --color-accent: var(--accent);
+  --color-muted-foreground: var(--muted-foreground);
+  --color-muted: var(--muted);
+  --color-secondary-foreground: var(--secondary-foreground);
+  --color-secondary: var(--secondary);
+  --color-primary-foreground: var(--primary-foreground);
+  --color-primary: var(--primary);
+  --color-popover-foreground: var(--popover-foreground);
+  --color-popover: var(--popover);
+  --color-card-foreground: var(--card-foreground);
+  --color-card: var(--card);
+  --color-foreground: var(--foreground);
+  --color-background: var(--background);
+  --radius-sm: calc(var(--radius) * 0.6);
+  --radius-md: calc(var(--radius) * 0.8);
+  --radius-lg: var(--radius);
+  --radius-xl: calc(var(--radius) * 1.4);
+  --radius-2xl: calc(var(--radius) * 1.8);
+  --radius-3xl: calc(var(--radius) * 2.2);
+  --radius-4xl: calc(var(--radius) * 2.6);
+  --animate-shine: shine var(--duration) infinite linear;
+  @keyframes shine {
+  0% {
+    background-position: 0% 0%;
+    }
+  50% {
+    background-position: 100% 100%;
+    }
+  to {
+    background-position: 0% 0%;
+    }
+  }
+  --animate-aurora: aurora 8s ease-in-out infinite alternate
+;
+  @keyframes aurora {
+  0% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+    }
+  25% {
+    background-position: 50% 100%;
+    transform: rotate(5deg) scale(1.1);
+    }
+  50% {
+    background-position: 100% 50%;
+    transform: rotate(-3deg) scale(0.95);
+    }
+  75% {
+    background-position: 50% 0%;
+    transform: rotate(3deg) scale(1.05);
+    }
+  100% {
+    background-position: 0% 50%;
+    transform: rotate(-5deg) scale(0.9);
+    }
+  }}
+
+.dark {
+  --background: oklch(0.145 0 0);
+  --foreground: oklch(0.985 0 0);
+  --card: oklch(0.205 0 0);
+  --card-foreground: oklch(0.985 0 0);
+  --popover: oklch(0.205 0 0);
+  --popover-foreground: oklch(0.985 0 0);
+  --primary: oklch(0.922 0 0);
+  --primary-foreground: oklch(0.205 0 0);
+  --secondary: oklch(0.269 0 0);
+  --secondary-foreground: oklch(0.985 0 0);
+  --muted: oklch(0.269 0 0);
+  --muted-foreground: oklch(0.708 0 0);
+  --accent: oklch(0.269 0 0);
+  --accent-foreground: oklch(0.985 0 0);
+  --destructive: oklch(0.704 0.191 22.216);
+  --border: oklch(1 0 0 / 10%);
+  --input: oklch(1 0 0 / 15%);
+  --ring: oklch(0.556 0 0);
+  --chart-1: oklch(0.87 0 0);
+  --chart-2: oklch(0.556 0 0);
+  --chart-3: oklch(0.439 0 0);
+  --chart-4: oklch(0.371 0 0);
+  --chart-5: oklch(0.269 0 0);
+  --sidebar: oklch(0.205 0 0);
+  --sidebar-foreground: oklch(0.985 0 0);
+  --sidebar-primary: oklch(0.488 0.243 264.376);
+  --sidebar-primary-foreground: oklch(0.985 0 0);
+  --sidebar-accent: oklch(0.269 0 0);
+  --sidebar-accent-foreground: oklch(0.985 0 0);
+  --sidebar-border: oklch(1 0 0 / 10%);
+  --sidebar-ring: oklch(0.556 0 0);
+}
+
+@layer base {
+  * {
+    @apply border-border outline-ring/50;
+  }
+  html {
+    @apply font-sans;
+  }
+  /* NOTE: body background intentionally NOT set to bg-background here —
+     the app is an immersive full-bleed canvas whose body stays --color-void
+     (set above) so the video/glass surfaces read correctly in any theme.
+     shadcn semantic tokens (bg-background/text-foreground) remain available
+     on individual components (cards, popovers, landing surfaces). */
+}
+/* ---- Flip clock (split-flap), sized in em so it scales with font-size ---- */
+.flip {
+  position: relative;
+  display: inline-block;
+  width: 0.68em;
+  height: 1.14em;
+  margin: 0 0.035em;
+  line-height: 1;
+  border-radius: 0.1em;
+  box-shadow: 0 4px 14px rgba(0, 0, 0, 0.45);
+  perspective: 300px;
+}
+.flip .half {
+  position: absolute;
+  left: 0;
+  right: 0;
+  height: 50%;
+  overflow: hidden;
+  backface-visibility: hidden;
+  box-shadow: inset 0 0 0 1px rgba(255, 255, 255, 0.05);
+}
+.flip .half.top {
+  top: 0;
+  border-radius: 0.1em 0.1em 0 0;
+  background: linear-gradient(180deg, #2b3140, #232837);
+}
+.flip .half.top::after {
+  content: "";
+  position: absolute;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  height: 1.5px;
+  background: rgba(0, 0, 0, 0.55);
+}
+.flip .half.bottom {
+  bottom: 0;
+  border-radius: 0 0 0.1em 0.1em;
+  background: linear-gradient(180deg, #1b202a, #161a22);
+}
+.flip .glyph {
+  display: block;
+  height: 1.14em;
+  line-height: 1.14em;
+  text-align: center;
+  color: #eef1f7;
+}
+.flip .half.bottom .glyph {
+  margin-top: -0.57em;
+}
+.flip .flap {
+  z-index: 2;
+}
+.flip .flap.top {
+  transform-origin: bottom center;
+  animation: flipTop 0.28s cubic-bezier(0.37, 0.01, 0.94, 0.35) forwards;
+}
+.flip .flap.top .glyph {
+  text-shadow: 0 2px 6px rgba(0, 0, 0, 0.4);
+}
+.flip .flap.bottom {
+  transform-origin: top center;
+  transform: rotateX(90deg);
+  animation: flipBottom 0.3s cubic-bezier(0.15, 0.45, 0.28, 1) 0.26s forwards;
+}
+@keyframes flipTop {
+  to { transform: rotateX(-90deg); }
+}
+@keyframes flipBottom {
+  to { transform: rotateX(0deg); }
+}
+:root[data-motion="reduced"] .flip .flap { animation: none; }
+
+/* ---- Swap-mode clock faces (per-digit change animation) ------------------ */
+/* Base digit cell: old glyph animates out on top of the new one. Timings kept
+   short (≤.35s) so the every-second cadence reads crisp, not mushy. */
+.swapd {
+  position: relative;
+  display: inline-block;
+  width: 0.68em;
+  height: 1.1em;
+  line-height: 1.1em;
+  text-align: center;
+}
+.swapd .old,
+.swapd .new {
+  position: absolute;
+  inset: 0;
+}
+
+/* LED Matrix — quick crossfade dissolve */
+.swap-led { text-shadow: 0 0 8px rgba(60, 255, 140, 0.8), 0 0 30px rgba(40, 220, 110, 0.35); }
+.swap-led .swapd .old { animation: swapFadeOut 0.28s ease forwards; }
+.swap-led .swapd .new { animation: swapFadeIn 0.28s ease 0.08s both; }
+
+/* LCD — unlit ghost segments beneath, lit digits snap in fast */
+.swap-lcd { text-shadow: 0 0 8px rgba(90, 200, 255, 0.75), 0 0 26px rgba(60, 160, 255, 0.3); }
+.swap-lcd .lcd-ghost {
+  color: rgba(120, 220, 255, 0.07);
+  text-shadow: none;
+}
+.swap-lcd .swapd .old { animation: swapFadeOut 0.12s ease forwards; }
+.swap-lcd .swapd .new { animation: lcdIn 0.25s ease both; }
+@keyframes lcdIn {
+  0% { opacity: 0.2; }
+  100% { opacity: 1; }
+}
+
+/* Glitch — RGB split jitter, settles with cyan glow */
+.swap-glitch { text-shadow: 0 0 12px rgba(120, 220, 255, 0.4); }
+.swap-glitch .swapd .old { animation: glOut 0.24s steps(3) forwards; }
+.swap-glitch .swapd .new { animation: glIn 0.3s steps(4) both; }
+@keyframes glOut {
+  0% { transform: none; opacity: 1; }
+  40% { transform: translateX(0.04em); text-shadow: -0.06em 0 #f0f, 0.06em 0 #0ff; }
+  100% { transform: translateX(-0.06em); opacity: 0; text-shadow: 0.06em 0 #f0f, -0.06em 0 #0ff; }
+}
+@keyframes glIn {
+  0% { opacity: 0; transform: translateX(0.05em); text-shadow: -0.06em 0 #f0f, 0.06em 0 #0ff; }
+  55% { opacity: 1; transform: translateX(-0.03em); text-shadow: 0.04em 0 #f0f, -0.04em 0 #0ff; }
+  100% { opacity: 1; transform: none; text-shadow: 0 0 12px rgba(120, 220, 255, 0.4); }
+}
+
+/* Ember — fire gradient digits; old burns upward, new rises in */
+.swap-ember .swapd { overflow: visible; }
+.swap-ember .swapd .old,
+.swap-ember .swapd .new,
+.swap-ember .swapd > span {
+  background: linear-gradient(180deg, #fff7e0, #ffc26e 45%, #ff7a3c 80%, #e8481f);
+  -webkit-background-clip: text;
+  background-clip: text;
+  color: transparent;
+  filter: drop-shadow(0 0 10px rgba(255, 120, 40, 0.55));
+}
+.swap-ember .swapd .old { animation: emOut 0.32s ease forwards; }
+.swap-ember .swapd .new { animation: emIn 0.32s ease both; }
+@keyframes emOut {
+  to {
+    transform: translateY(-0.18em);
+    opacity: 0;
+    filter: drop-shadow(0 0 14px rgba(255, 140, 40, 0.9)) blur(4px);
+  }
+}
+@keyframes emIn {
+  from {
+    transform: translateY(0.12em);
+    opacity: 0;
+    filter: drop-shadow(0 0 2px rgba(255, 120, 40, 0.2)) blur(3px);
+  }
+  to { transform: none; opacity: 1; }
+}
+
+/* shared quick fades */
+@keyframes swapFadeOut {
+  to { opacity: 0; }
+}
+@keyframes swapFadeIn {
+  from { opacity: 0; }
+  to { opacity: 1; }
+}
+:root[data-motion="reduced"] .swapd .old { display: none; }
+:root[data-motion="reduced"] .swapd .new { animation: none; }
+
+/* ---- iOS-style liquid-glass pointer -------------------------------------- */
+.liquid-cursor {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: var(--lens-size, 34px);
+  height: var(--lens-size, 34px);
+  border-radius: 9999px;
+  pointer-events: none;
+  z-index: 9999;
+  backdrop-filter: blur(var(--lens-blur, 5px)) saturate(150%) brightness(1.18);
+  -webkit-backdrop-filter: blur(var(--lens-blur, 5px)) saturate(150%) brightness(1.18);
+  background: radial-gradient(
+    circle at 38% 32%,
+    rgba(255, 255, 255, 0.28),
+    rgba(255, 255, 255, 0.05) 60%,
+    rgba(255, 255, 255, 0) 72%
+  );
+  box-shadow:
+    inset 0 1px 1px rgba(255, 255, 255, 0.55),
+    inset 0 -1px 2px rgba(0, 0, 0, 0.18),
+    0 4px 14px rgba(0, 0, 0, 0.22);
+  transition:
+    width 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    height 0.28s cubic-bezier(0.22, 1, 0.36, 1),
+    backdrop-filter 0.28s ease;
+  will-change: transform;
+}
+.liquid-cursor__dot {
+  position: absolute;
+  left: 50%;
+  top: 50%;
+  width: 4px;
+  height: 4px;
+  border-radius: 9999px;
+  background: var(--color-snow);
+  transform: translate(-50%, -50%);
+  transition: opacity 0.2s ease;
+}
+@media (pointer: coarse) {
+  .liquid-cursor { display: none; }
+}
+
+/* Living gradient shimmer for the Aurora clock skin (background-clip: text). */
+@keyframes clock-shimmer {
+  to { background-position: 220% center; }
+}
+.clock-shimmer {
+  animation: clock-shimmer 7s linear infinite;
+}
+@media (prefers-reduced-motion: reduce) {
+  .clock-shimmer { animation: none; }
+}
+
+/* ── Custom-cursor + non-selectable app shell ─────────────────────────────
+   While the liquid cursor is active, hide the native cursor on EVERY element
+   (buttons/inputs would otherwise re-show pointer/text cursors). Scoped to the
+   data flag so touch / reduced-motion users keep their real cursor. */
+html[data-liquid-cursor="on"],
+html[data-liquid-cursor="on"] *,
+html[data-liquid-cursor="on"] *::before,
+html[data-liquid-cursor="on"] *::after {
+  cursor: none !important;
+}
+
+/* Make the whole app unselectable (mouse drag + Ctrl/Cmd+A) — but keep real
+   text fields fully editable & selectable. */
+body {
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+  -webkit-touch-callout: none;
+}
+input,
+textarea,
+[contenteditable="true"],
+[contenteditable=""] {
+  -webkit-user-select: text;
+  -ms-user-select: text;
+  user-select: text;
+}
+/* Don't let images ghost-drag. */
+img {
+  -webkit-user-drag: none;
+  user-select: none;
+}
+
+/* Cross-device smoothness: no rubber-band, no tap flash, stable text size, no
+   accidental sideways scroll. */
+html { -webkit-text-size-adjust: 100%; overflow-x: hidden; }
+body {
+  overscroll-behavior: none;
+  -webkit-tap-highlight-color: transparent;
+}
+
+/* Landing (video-free): transform-only motion so it runs on the compositor.
+   ponytail: ceiling — no animated filters/blurs, no JS-driven animation here. */
+@keyframes aurora-drift {
+  0%, 100% { transform: translate3d(-3%, -2%, 0) scale(1); }
+  50% { transform: translate3d(3%, 2%, 0) scale(1.08); }
+}
+@keyframes kenburns {
+  from { transform: scale(1.02); }
+  to { transform: scale(1.12); }
+}
+/* Hero entrance — pure CSS so the SSR HTML paints without waiting for JS
+   hydration (LCP). `both` keeps the pre-delay state hidden, then settles. */
+@keyframes fade-up {
+  from { opacity: 0; transform: translateY(14px); }
+  to { opacity: 1; transform: none; }
+}
+.fade-up { animation: fade-up 0.8s cubic-bezier(0.22, 1, 0.36, 1) both; }
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-motion, .fade-up { animation: none !important; }
+}

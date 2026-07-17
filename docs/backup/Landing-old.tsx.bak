@@ -1,0 +1,433 @@
+// BACKUP — previous landing page (aurora hero + VideoText), replaced by the
+// hybrid redesign on 2026-07-17. Kept as .bak so tsc/Next ignore it.
+// To restore: copy over src/components/landing/Landing.tsx and remove the
+// import of ./landing.css usages introduced by the redesign.
+"use client";
+
+import { useState } from "react";
+import Image from "next/image";
+import Link from "next/link";
+import { useRouter } from "next/navigation";
+import { useAuthStore } from "@/lib/auth-store";
+import { AuthModal } from "./AuthModal";
+import {
+  ArrowRight,
+  Film,
+  Timer,
+  GraduationCap,
+  AudioLines,
+  Clock3,
+  Sparkles,
+  Check,
+  Download,
+  Share2,
+} from "lucide-react";
+import { AuroraText } from "@/components/ui/aurora-text";
+import { VideoText } from "@/components/landing/VideoText";
+import { SmoothCursor } from "@/components/landing/SmoothCursor";
+import { Reveal } from "./Reveal";
+
+/** Premium cool palette — teal → cyan → sky → blue (no purple). Drives the
+ *  aurora headlines and CTA. */
+const AURORA = ["#2dd4bf", "#22d3ee", "#38bdf8", "#3b82f6"];
+/** Per-feature icon hues, same cool jewel family. */
+const MAGIC = ["#2dd4bf", "#22d3ee", "#38bdf8", "#3b82f6", "#10b981", "#06b6d4"];
+
+const FEATURES = [
+  {
+    icon: Film,
+    color: MAGIC[0],
+    title: "Live cinematic backgrounds",
+    body: "Hand-picked scenes that loop seamlessly and cross-dissolve like film — misty shrines, golden hours, still water.",
+  },
+  {
+    icon: Timer,
+    color: MAGIC[1],
+    title: "Focus & study timers",
+    body: "Pomodoro, deep-work sessions, and a fullscreen timer that quietly melts the rest of the world away.",
+  },
+  {
+    icon: GraduationCap,
+    color: MAGIC[2],
+    title: "Aspirant study mode",
+    body: "Per-subject timers, streaks, badges, and a live study-trend chart that turns effort into momentum.",
+  },
+  {
+    icon: AudioLines,
+    color: MAGIC[3],
+    title: "Calming soundscapes",
+    body: "Layer rain, waves, and gentle ambience into your own perfect mix — no accounts, no ads.",
+  },
+  {
+    icon: Clock3,
+    color: MAGIC[4],
+    title: "Clock & font styles",
+    body: "Make the moment yours with beautiful, switchable clock faces and typefaces.",
+  },
+  {
+    icon: Sparkles,
+    color: MAGIC[5],
+    title: "Tasks, quotes & rewards",
+    body: "Gentle structure — a quiet to-do list, a daily word to steady you, and badges you actually earn.",
+  },
+];
+
+const FAQS = [
+  {
+    q: "Is Wolfhour free?",
+    a: "Yes. Every scene, sound, and timer is free — no ads, no paywalls.",
+  },
+  {
+    q: "Do I need an account?",
+    a: "Yes — a free account signs you in and keeps your setup (scenes, sounds, timers, tasks, study stats) synced across your devices.",
+  },
+  {
+    q: "Where is my data stored?",
+    a: "On your device first. Your settings also sync to a private cloud row that only your account can read. See the Privacy Policy for details.",
+  },
+  {
+    q: "Does it work offline?",
+    a: "Yes. Install it as a PWA and everything keeps working; sync resumes when you're back online.",
+  },
+  {
+    q: "I forgot my password — what now?",
+    a: "Use “Forgot password?” on the sign-in screen and we’ll email you a reset link to set a new one.",
+  },
+  {
+    q: "Are the scenes and sounds licensed?",
+    a: "Yes — all backgrounds and sounds are royalty-free.",
+  },
+];
+
+/** Primary call-to-action — accent pill. Signed in → opens app; else → sign-in. */
+function PrimaryCTA({ children, onClick }: { children: React.ReactNode; onClick: () => void }) {
+  return (
+    <button
+      onClick={onClick}
+      className="group inline-flex items-center gap-2 rounded-full bg-gradient-to-b from-[#22d3ee] to-[#2563eb] px-7 py-3.5 text-[15px] font-semibold text-white shadow-[0_10px_34px_rgba(56,189,248,0.45)] transition-transform duration-300 hover:scale-[1.03] active:scale-[0.98]"
+    >
+      {children}
+      <ArrowRight className="size-4 transition-transform duration-300 group-hover:translate-x-0.5" />
+    </button>
+  );
+}
+
+export function Landing() {
+  const router = useRouter();
+  const user = useAuthStore((s) => s.user);
+  const [authOpen, setAuthOpen] = useState(false);
+  const [shared, setShared] = useState(false);
+
+  // CTA behaviour: already signed in → straight into the app; else → sign-in.
+  const enter = () => (user ? router.push("/app") : setAuthOpen(true));
+
+  // Share the site link — native share sheet where available (mobile),
+  // clipboard fallback elsewhere. Uses the live origin, so it's correct on
+  // localhost today and the real domain after deploy.
+  const share = async () => {
+    const url = window.location.origin;
+    if (navigator.share) {
+      try {
+        await navigator.share({
+          title: "Wolfhour",
+          text: "A beautiful place to focus — scenes, sounds & gentle timers.",
+          url,
+        });
+      } catch {} // user closed the sheet — not an error
+      return;
+    }
+    await navigator.clipboard.writeText(url);
+    setShared(true);
+    setTimeout(() => setShared(false), 2000);
+  };
+
+  return (
+    <div className="relative w-full overflow-x-clip font-body text-snow">
+      <SmoothCursor />
+      {/* ─── HERO ─────────────────────────────────────────────────────── */}
+      <section className="relative flex min-h-dvh flex-col items-center justify-center overflow-hidden px-6 text-center">
+        {/* living background — pure-CSS aurora. Zero download, zero decode:
+            teal→cyan→blue gradients on one slowly drifting layer
+            (transform-only, compositor-cheap). Real scenes live in the app;
+            the landing no longer pays for video. */}
+        <div aria-hidden className="absolute inset-0 bg-[#020409]" />
+        <div
+          aria-hidden
+          className="landing-motion absolute -inset-[22%]"
+          style={{
+            background:
+              "radial-gradient(38% 45% at 22% 34%, rgba(45,212,191,0.30), transparent 70%), radial-gradient(42% 50% at 78% 30%, rgba(59,130,246,0.30), transparent 70%), radial-gradient(52% 55% at 50% 80%, rgba(34,211,238,0.20), transparent 70%)",
+            animation: "aurora-drift 24s ease-in-out infinite",
+          }}
+        />
+        <div
+          aria-hidden
+          className="absolute inset-x-0 bottom-0 h-48"
+          style={{ background: "linear-gradient(to top, #000 5%, transparent)" }}
+        />
+
+        {/* CSS-only entrance (fade-up) — hero paints from SSR HTML without
+            waiting for hydration, so the h1 stays a fast LCP. */}
+        <div
+          className="relative z-10 flex max-w-3xl flex-col items-center gap-6"
+          style={{ textShadow: "0 2px 30px rgba(0,0,0,0.5)" }}
+        >
+          <p
+            className="fade-up rounded-full border border-white/15 bg-white/5 px-4 py-1.5 text-[12px] font-medium uppercase tracking-[0.22em] text-white/70 backdrop-blur-md"
+            style={{ animationDelay: "0.05s" }}
+          >
+            Focus &nbsp;·&nbsp; Ambience
+          </p>
+
+          <h1
+            className="fade-up font-display text-5xl font-semibold leading-[1.05] tracking-tight sm:text-6xl md:text-7xl"
+            style={{ animationDelay: "0.15s" }}
+          >
+            Your beautiful place
+            <br />
+            to{" "}
+            <VideoText src="/media/ocean-small.webm" className="font-display">
+              focus
+            </VideoText>
+            .
+          </h1>
+
+          <p
+            className="fade-up max-w-xl text-balance text-lg leading-relaxed text-white/75"
+            style={{ animationDelay: "0.3s" }}
+          >
+            Live cinematic backgrounds, calming soundscapes, and gentle timers —
+            everything you need to slip into deep, distraction-free focus.
+          </p>
+
+          <div
+            className="fade-up mt-2 flex flex-wrap items-center justify-center gap-3"
+            style={{ animationDelay: "0.45s" }}
+          >
+            <PrimaryCTA onClick={enter}>Open Wolfhour</PrimaryCTA>
+            <a
+              href="#features"
+              className="inline-flex items-center gap-2 rounded-full border border-white/20 bg-white/5 px-6 py-3.5 text-[15px] font-medium text-snow backdrop-blur-md transition-colors duration-300 hover:bg-white/10"
+            >
+              See what&rsquo;s inside
+            </a>
+          </div>
+
+          <p className="fade-up mt-1 text-[13px] text-white/50" style={{ animationDelay: "0.6s" }}>
+            Free · Works offline · Syncs across devices
+          </p>
+        </div>
+      </section>
+
+      {/* ─── SHOWCASE ─── product-first: the app itself right under the fold */}
+      <section className="relative z-10 -mt-16 overflow-hidden px-6 pb-28 sm:-mt-24 sm:pb-36">
+        <div className="mx-auto max-w-5xl">
+          <Reveal>
+            <div className="relative rounded-3xl border border-white/10 bg-white/[0.03] p-2 shadow-[0_30px_120px_rgba(34,211,238,0.18)] sm:p-3">
+              <div
+                aria-hidden
+                className="pointer-events-none absolute -inset-x-10 -top-20 -z-10 h-64 opacity-70 blur-3xl"
+                style={{ background: "radial-gradient(40% 60% at 26% 50%, rgba(45,212,191,0.28), transparent), radial-gradient(40% 60% at 74% 50%, rgba(59,130,246,0.32), transparent)" }}
+              />
+              <Image
+                src="/showcase/dashboard.png"
+                alt="The Wolfhour dashboard — a live scene with a clock, greeting, and dock."
+                width={1440}
+                height={900}
+                loading="lazy"
+                sizes="(max-width: 1100px) 100vw, 1024px"
+                className="w-full rounded-2xl"
+              />
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ─── FEATURES ─────────────────────────────────────────────────── */}
+      <section id="features" className="relative bg-void px-6 py-28 sm:py-36">
+        <div className="mx-auto max-w-6xl">
+          {/* Plain crawlable copy (never animation-hidden): brand + category
+              keywords in indexable body text. */}
+          <p className="mx-auto mb-14 max-w-3xl text-center text-[15px] leading-relaxed text-white/50">
+            Wolfhour is a free online focus app — a study timer, pomodoro
+            timer, and ambient soundscape dashboard that works offline and
+            syncs across your devices.
+          </p>
+          <Reveal className="mx-auto max-w-2xl text-center">
+            <h2 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+              Everything for deep focus
+            </h2>
+            <p className="mt-4 text-lg text-white/60">
+              A calm, premium dashboard that does the quiet things well.
+            </p>
+          </Reveal>
+
+          <div className="mt-16 grid gap-5 sm:grid-cols-2 lg:grid-cols-3">
+            {FEATURES.map((f, i) => (
+              <Reveal key={f.title} delay={(i % 3) * 0.08}>
+                <div className="glass glass-strong group h-full rounded-2xl p-7 transition-transform duration-300 hover:-translate-y-1">
+                  <div
+                    className="mb-5 inline-flex size-12 items-center justify-center rounded-xl border"
+                    style={{
+                      color: f.color,
+                      borderColor: `${f.color}55`,
+                      background: `${f.color}1f`,
+                      boxShadow: `0 6px 22px ${f.color}26`,
+                    }}
+                  >
+                    <f.icon className="size-6" />
+                  </div>
+                  <h3 className="font-display text-xl font-semibold text-snow">{f.title}</h3>
+                  <p className="mt-2 text-[15px] leading-relaxed text-white/60">{f.body}</p>
+                </div>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── AMBIENCE BAND ─── real scene still + slow Ken Burns (transform-
+           only) — cinematic feel at jpg cost, no video decode. */}
+      <section className="relative flex min-h-[70vh] items-center justify-center overflow-hidden px-6 text-center">
+        <div aria-hidden className="absolute inset-0 overflow-hidden">
+          <img
+            src="/scenes/posters/still-water.jpg"
+            alt=""
+            loading="lazy"
+            className="landing-motion h-full w-full object-cover"
+            style={{ animation: "kenburns 28s ease-in-out infinite alternate" }}
+          />
+        </div>
+        <div aria-hidden className="absolute inset-0 bg-black/55" />
+        <Reveal className="relative z-10 max-w-2xl" >
+          <h2 className="font-display text-4xl font-semibold leading-tight tracking-tight sm:text-5xl" style={{ textShadow: "0 2px 30px rgba(0,0,0,0.5)" }}>
+            Made to feel good
+          </h2>
+          <p className="mx-auto mt-5 max-w-xl text-lg leading-relaxed text-white/80" style={{ textShadow: "0 2px 20px rgba(0,0,0,0.5)" }}>
+            Every animation is tuned to be buttery-smooth and quiet. No clutter,
+            no noise — just you, a calm scene, and the work in front of you.
+          </p>
+        </Reveal>
+      </section>
+
+      {/* ─── PWA / INSTALL ────────────────────────────────────────────── */}
+      <section className="relative bg-void px-6 py-28 sm:py-36">
+        <div className="mx-auto grid max-w-5xl items-center gap-12 lg:grid-cols-2">
+          <Reveal>
+            <h2 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+              Installs like an app
+            </h2>
+            <p className="mt-4 text-lg leading-relaxed text-white/65">
+              Add Wolfhour to your home screen and it runs fullscreen and
+              offline — a distraction-free window that&rsquo;s always one tap away.
+            </p>
+            <ul className="mt-7 space-y-3">
+              {["Works offline as a PWA", "Fullscreen & distraction-free", "Free — nothing to install from a store"].map((t) => (
+                <li key={t} className="flex items-center gap-3 text-[15px] text-white/75">
+                  <span className="inline-flex size-6 items-center justify-center rounded-full bg-success/20 text-success">
+                    <Check className="size-4" />
+                  </span>
+                  {t}
+                </li>
+              ))}
+            </ul>
+            <div className="mt-8">
+              <PrimaryCTA onClick={enter}>Launch the app</PrimaryCTA>
+            </div>
+          </Reveal>
+          <Reveal delay={0.1}>
+            <div className="glass glass-strong flex flex-col items-center gap-4 rounded-3xl p-10 text-center">
+              <div
+                className="inline-flex size-16 items-center justify-center rounded-2xl border"
+                style={{ color: "#22d3ee", borderColor: "#22d3ee55", background: "#22d3ee1f" }}
+              >
+                <Download className="size-8" />
+              </div>
+              <p className="font-display text-xl font-semibold">Add to Home Screen</p>
+              <p className="text-[15px] text-white/60">
+                Open the app, then choose &ldquo;Add to Home Screen&rdquo; from your
+                browser menu.
+              </p>
+            </div>
+          </Reveal>
+        </div>
+      </section>
+
+      {/* ─── FINAL CTA ────────────────────────────────────────────────── */}
+      <section className="relative overflow-hidden bg-void px-6 py-32 text-center">
+        <div
+          aria-hidden
+          className="pointer-events-none absolute left-1/2 top-1/2 -z-0 h-[420px] w-[720px] max-w-[90vw] -translate-x-1/2 -translate-y-1/2 opacity-60 blur-3xl"
+          style={{ background: "radial-gradient(45% 55% at 30% 45%, rgba(45,212,191,0.26), transparent), radial-gradient(45% 55% at 70% 45%, rgba(59,130,246,0.30), transparent), radial-gradient(60% 60% at 50% 62%, rgba(6,182,212,0.28), transparent)" }}
+        />
+        <Reveal className="relative z-10 mx-auto max-w-2xl">
+          <h2 className="font-display text-5xl font-semibold tracking-tight sm:text-6xl">
+            Ready to <AuroraText colors={AURORA}>lock in</AuroraText>?
+          </h2>
+          <p className="mx-auto mt-5 max-w-lg text-lg text-white/65">
+            Open Wolfhour and slip into your calmest, most productive hour.
+          </p>
+          <div className="mt-9 flex justify-center">
+            <PrimaryCTA onClick={enter}>Start focusing</PrimaryCTA>
+          </div>
+        </Reveal>
+      </section>
+
+      {/* ─── FAQ ──────────────────────────────────────────────────────── */}
+      <section id="faq" className="relative bg-void px-6 pb-28 sm:pb-36">
+        <div className="mx-auto max-w-3xl">
+          <Reveal className="text-center">
+            <h2 className="font-display text-4xl font-semibold tracking-tight sm:text-5xl">
+              Questions, answered
+            </h2>
+          </Reveal>
+          <div className="mt-12 space-y-3">
+            {FAQS.map((f) => (
+              <Reveal key={f.q}>
+                {/* native <details> — accessible, zero JS */}
+                <details className="glass group rounded-2xl px-6 py-4">
+                  <summary className="flex cursor-pointer list-none items-center justify-between gap-4 font-display text-[16px] font-medium text-snow [&::-webkit-details-marker]:hidden">
+                    {f.q}
+                    <span aria-hidden className="text-white/40 transition-transform duration-200 group-open:rotate-45">
+                      +
+                    </span>
+                  </summary>
+                  <p className="mt-3 text-[14.5px] leading-relaxed text-white/60">{f.a}</p>
+                </details>
+              </Reveal>
+            ))}
+          </div>
+        </div>
+      </section>
+
+      {/* ─── FOOTER ───────────────────────────────────────────────────── */}
+      <footer className="relative border-t border-white/10 bg-void px-6 py-12">
+        <div className="mx-auto flex max-w-6xl flex-col items-center justify-between gap-6 sm:flex-row">
+          <div className="flex items-center gap-2.5">
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src="/brand/logo-white.png" alt="Wolfhour" width={388} height={420} loading="lazy" className="h-6 w-auto opacity-85" />
+            <span className="text-[13px] font-semibold tracking-[0.14em] text-white/70">
+              WOLFHOUR
+            </span>
+          </div>
+          <nav className="flex flex-wrap items-center justify-center gap-x-6 gap-y-2 text-[14px] text-white/55">
+            <a href="#features" className="transition-colors hover:text-white/90">Features</a>
+            <a href="#faq" className="transition-colors hover:text-white/90">FAQ</a>
+            <Link href="/privacy" className="transition-colors hover:text-white/90">Privacy</Link>
+            <Link href="/terms" className="transition-colors hover:text-white/90">Terms</Link>
+            <button onClick={share} className="inline-flex items-center gap-1.5 transition-colors hover:text-white/90">
+              <Share2 className="size-3.5" />
+              {shared ? "Link copied!" : "Share"}
+            </button>
+            <button onClick={enter} className="transition-colors hover:text-white/90">Open app</button>
+          </nav>
+        </div>
+        <div className="mx-auto mt-8 max-w-6xl border-t border-white/5 pt-6 text-center text-[12.5px] text-white/40">
+          © 2026 Wolfhour · All backgrounds &amp; sounds are royalty-free.
+        </div>
+      </footer>
+
+      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onSignedIn={() => router.push("/app")} />
+    </div>
+  );
+}
