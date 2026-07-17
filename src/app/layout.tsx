@@ -1,18 +1,5 @@
 import type { Metadata, Viewport } from "next";
-import {
-  Inter,
-  Geist_Mono,
-  Hanken_Grotesk,
-  Geist,
-  Onest,
-  Lora,
-  Caveat,
-  Archivo,
-  Space_Grotesk,
-  Doto,
-  Orbitron,
-  Share_Tech_Mono,
-} from "next/font/google";
+import { Inter, Geist_Mono, Hanken_Grotesk, Geist, Lora } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
 import { LiquidCursor } from "@/components/cursor/LiquidCursor";
@@ -45,22 +32,9 @@ const geistMono = Geist_Mono({
   preload: false,
 });
 
-// Clock & Font Style picker faces — only used inside /app, so don't preload
-// them on the landing critical path (they still self-host, load on demand).
-const onest = Onest({ variable: "--font-onest", subsets: ["latin"], display: "swap", preload: false });
+// Lora renders on the landing zen section (and the Serif clock face), so it
+// stays global; the app-only clock faces live in src/app/app/layout.tsx.
 const lora = Lora({ variable: "--font-lora", subsets: ["latin"], display: "swap", preload: false });
-const caveat = Caveat({ variable: "--font-caveat", subsets: ["latin"], display: "swap", preload: false });
-const archivo = Archivo({ variable: "--font-archivo", subsets: ["latin"], display: "swap", preload: false });
-const spaceGrotesk = Space_Grotesk({
-  variable: "--font-space",
-  subsets: ["latin"],
-  display: "swap",
-  preload: false,
-});
-// New clock faces (LED Matrix / Glitch / LCD) — app-only, no preload.
-const doto = Doto({ variable: "--font-doto", subsets: ["latin"], weight: ["700"], display: "swap", preload: false });
-const orbitron = Orbitron({ variable: "--font-orbitron", subsets: ["latin"], display: "swap", preload: false });
-const shareTechMono = Share_Tech_Mono({ variable: "--font-lcd", subsets: ["latin"], weight: "400", display: "swap", preload: false });
 
 export const metadata: Metadata = {
   // Absolute base for OG/twitter/canonical URLs. Swap when a custom domain lands.
@@ -97,14 +71,7 @@ export default function RootLayout({
         hanken.variable,
         geistMono.variable,
         geist.variable,
-        onest.variable,
-        lora.variable,
-        caveat.variable,
-        archivo.variable,
-        spaceGrotesk.variable,
-        doto.variable,
-        orbitron.variable,
-        shareTechMono.variable
+        lora.variable
       )}
     >
       <body className="min-h-full antialiased">
