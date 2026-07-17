@@ -1,0 +1,9 @@
+# Wolfhour
+
+> Wolfhour is a calm, free-to-use focus and ambience dashboard for studying and deep work: live cinematic backgrounds, layered soundscapes, study/pomodoro timers, and an Aspirant study mode with per-subject analytics. It runs as an offline-capable PWA and syncs across devices.
+
+## Pages
+
+- [Wolfhour — A beautiful place to focus & study](https://wolfhour.vercel.app/): marketing landing page with features and FAQ
+- [Privacy Policy](https://wolfhour.vercel.app/privacy): what Wolfhour stores, local-first data model
+- [Terms of Service](https://wolfhour.vercel.app/terms): usage terms
