@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from "react";
 import NumberFlow from "@number-flow/react";
 import { motion } from "motion/react";
 import { Play, Pause, RotateCcw } from "lucide-react";
+import { playChime } from "@/lib/audio-engine";
 import { spring } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 
@@ -39,7 +40,10 @@ export function FocusTimer() {
   }, [running, isStopwatch]);
 
   useEffect(() => {
-    if (!isStopwatch && left === 0) setRunning(false);
+    if (!isStopwatch && left === 0) {
+      setRunning(false);
+      playChime();
+    }
   }, [left, isStopwatch]);
 
   const pick = (m: TMode) => {

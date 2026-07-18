@@ -23,8 +23,9 @@ export default function PomodoroTimerPage() {
       <p>
         Wolfhour&rsquo;s timer is built around that contract. Pick Focus,
         Short Break, Long Break, or a count-up Stopwatch; the scene keeps
-        breathing behind the clock, and when time is up there&rsquo;s no
-        jarring buzzer, no red flashing zero — the room stays calm.
+        breathing behind the clock, and when time is up you get a soft
+        two-note chime — no jarring buzzer, no red flashing zero. The room
+        stays calm.
       </p>
       <Image
         src="/showcase/pomodoro-timer-ui.jpg"
