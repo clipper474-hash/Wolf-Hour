@@ -21,15 +21,17 @@ const SEED = {
   ],
   sessions: (() => {
     const rows = [];
-    const weights = { "sub-polity": 3200, "sub-geo": 2400, "sub-hist": 1800, "sub-csat": 600 };
+    // Base seconds/day per subject (polity-heavy, CSAT neglected — the story
+    // the analytics view is meant to tell).
+    const weights = { "sub-polity": 11520, "sub-geo": 8640, "sub-hist": 6480, "sub-csat": 2160 };
     const today = new Date();
     for (let back = 20; back >= 0; back--) {
       if (back % 7 === 3) continue;
       const d = new Date(today); d.setDate(d.getDate() - back);
       const day = d.toISOString().slice(0, 10);
       for (const [id, base] of Object.entries(weights)) {
-        const secs = Math.round(base * (0.7 + ((back * 7 + id.length) % 10) / 15) * 0.35);
-        if (secs < 900) continue;
+        const secs = Math.round(base * (0.7 + ((back * 7 + id.length) % 10) / 15));
+        if (secs < 600) continue;
         rows.push({ id: `sess-${id}-${back}`, subjectId: id, date: day, seconds: secs });
       }
     }
@@ -61,7 +63,16 @@ await page.evaluate((state) => {
 await page.reload({ waitUntil: "networkidle" });
 await page.waitForTimeout(1500);
 
-// ── TIMER screenshot (normal dock: label = "Focus") ──────────────────────────
+// ── SOUNDS MIXER screenshot ──────────────────────────────────────────────────
+await page.locator('[aria-label="Home"]').click({ timeout: 5000 });
+await page.waitForTimeout(800);
+await page.locator('[aria-label="Sounds"]').click({ timeout: 5000 });
+await page.waitForTimeout(1500);
+await page.screenshot({ path: join(OUT, "study-sounds-mixer.jpg"), type: "jpeg", quality: 82, fullPage: false });
+console.log("✓ study-sounds-mixer.jpg");
+// Fresh load beats fighting the overlay's close choreography
+await page.goto("http://localhost:3000/app", { waitUntil: "networkidle" });
+await page.waitForTimeout(1200);
 await page.locator('[aria-label="Focus"]').click({ timeout: 5000 });
 await page.waitForTimeout(1200);
 await page.screenshot({ path: join(OUT, "pomodoro-timer-ui.jpg"), type: "jpeg", quality: 82, fullPage: false });
