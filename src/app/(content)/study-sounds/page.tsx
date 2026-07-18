@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -20,6 +21,26 @@ export default function StudySoundsPage() {
         why rain works and your favourite playlist often doesn&rsquo;t: lyrics
         and hooks ask for attention; weather never does.
       </p>
+
+      <h2>What&rsquo;s in the mixer</h2>
+      <p>
+        Wolfhour ships 22 sounds across five groups — Nature (rain, ocean,
+        wind, stream, thunder, forest, birds, night), Places (fireplace,
+        café, keyboard, train), Instrumental (warm pad, deep drone, chimes,
+        dream piano), Lo-Fi (vinyl, tape hiss, lo-fi keys) and Noise (white,
+        pink, brown). Nearly all are synthesised live in your browser rather
+        than played from a looped file — so there&rsquo;s no loop seam to
+        catch your ear at minute nine, and no audio files to download before
+        focus starts.
+      </p>
+      <Image
+        src="/showcase/study-sounds-mixer.jpg"
+        alt="The Wolfhour soundscape mixer — layered sounds with independent volume sliders over a live scene"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+        priority
+      />
 
       <h2>What actually works, and when</h2>
       <ul>

@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Inter, Geist_Mono, Hanken_Grotesk, Geist, Lora } from "next/font/google";
 import "./globals.css";
 import { cn } from "@/lib/utils";
+import { SITE_URL } from "@/lib/site";
 import { LiquidCursor } from "@/components/cursor/LiquidCursor";
 import { BrandMark } from "@/components/brand/BrandMark";
 import { ThemeApplier } from "@/components/theme/ThemeApplier";
@@ -37,8 +38,8 @@ const geistMono = Geist_Mono({
 const lora = Lora({ variable: "--font-lora", subsets: ["latin"], display: "swap", preload: false });
 
 export const metadata: Metadata = {
-  // Absolute base for OG/twitter/canonical URLs. Swap when a custom domain lands.
-  metadataBase: new URL("https://wolfhour.vercel.app"),
+  // Absolute base for OG/twitter/canonical URLs — driven by NEXT_PUBLIC_SITE_URL.
+  metadataBase: new URL(SITE_URL),
   title: {
     default: "Wolfhour — Focus & Ambience",
     template: "%s · Wolfhour",

@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -20,10 +21,20 @@ export default function PomodoroTimerPage() {
         the work in front of you is the only thing that exists.
       </p>
       <p>
-        Wolfhour&rsquo;s timers are built around that contract. You set the
-        block, the scene keeps breathing behind your clock, and when time is
-        up you&rsquo;re eased out — no jarring buzzer, no red flashing zero.
+        Wolfhour&rsquo;s timer is built around that contract. Pick Focus,
+        Short Break, Long Break, or a count-up Stopwatch; the scene keeps
+        breathing behind the clock, and when time is up you get a soft
+        two-note chime — no jarring buzzer, no red flashing zero. The room
+        stays calm.
       </p>
+      <Image
+        src="/showcase/pomodoro-timer-ui.jpg"
+        alt="The Wolfhour pomodoro timer in Focus mode — 25-minute countdown over a cinematic scene"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+        priority
+      />
 
       <h2>Why pomodoro works for studying</h2>
       <ul>
@@ -44,14 +55,15 @@ export default function PomodoroTimerPage() {
         </li>
       </ul>
 
-      <h2>Tuning the intervals</h2>
+      <h2>How Wolfhour runs it</h2>
       <p>
-        25/5 is a default, not a rule. Deep math problem sets often want
-        50/10 — long enough to load the whole problem into your head. Language
-        flashcards work in 15-minute bursts. Reading-heavy subjects sit
-        nicely at 30/5. Adjust until the block ends slightly before you want
-        it to; stopping while it&rsquo;s still going well makes the next start
-        easier.
+        Wolfhour keeps the classic shape: a 25-minute focus block, a 5-minute
+        short break, and a 15-minute long break, one tap apart. No settings
+        maze — the timer&rsquo;s job is to disappear behind the work. For
+        open-ended deep work, the per-subject stopwatches in{" "}
+        <Link href="/aspirant-mode">Aspirant mode</Link> run as long as you
+        do. And unlike a bare timer tab, the block runs inside your scene —
+        the backdrop and your sound mix keep going while you work.
       </p>
 
       <h2>The environment half of the technique</h2>

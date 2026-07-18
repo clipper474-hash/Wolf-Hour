@@ -9,9 +9,14 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
     // scroll inside their own dvh container, same as the landing.
     <main className="h-dvh overflow-y-auto bg-void px-6 py-16 font-body text-snow">
       <div className="mx-auto max-w-2xl">
-        <Link href="/" className="text-[13px] text-white/50 transition-colors hover:text-white/85">
-          ← Wolfhour
-        </Link>
+        <nav className="flex items-center gap-4 text-[13px] text-white/50">
+          <Link href="/" className="transition-colors hover:text-white/85">
+            ← Wolfhour
+          </Link>
+          <Link href="/#features" className="transition-colors hover:text-white/85">
+            All features
+          </Link>
+        </nav>
         <article
           className="mt-8 space-y-4 text-[15px] leading-relaxed text-white/70
             [&_h1]:font-display [&_h1]:text-3xl [&_h1]:font-semibold [&_h1]:tracking-tight [&_h1]:text-white

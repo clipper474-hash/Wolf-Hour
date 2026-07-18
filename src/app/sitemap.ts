@@ -2,7 +2,7 @@ import type { MetadataRoute } from "next";
 import { statSync } from "node:fs";
 import { join } from "node:path";
 
-const BASE = "https://wolfhour.vercel.app";
+import { SITE_URL as BASE } from "@/lib/site";
 
 /** Newest mtime of the source files that make up a page — runs at build time,
  *  so lastmod tracks real content changes instead of a hardcoded date. */

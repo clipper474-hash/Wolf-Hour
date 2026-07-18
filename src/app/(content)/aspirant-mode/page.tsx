@@ -1,4 +1,5 @@
 import type { Metadata } from "next";
+import Image from "next/image";
 import Link from "next/link";
 
 export const metadata: Metadata = {
@@ -27,22 +28,41 @@ export default function AspirantModePage() {
         two of geography, one of the optional you&rsquo;ve been quietly
         avoiding for two weeks.
       </p>
+      <Image
+        src="/showcase/aspirant-mode-analytics.jpg"
+        alt="Aspirant Mode analytics in Wolfhour — per-subject breakdown with a daily trend chart"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+        priority
+      />
 
       <h2>What it tracks</h2>
       <ul>
         <li>
-          <strong>Per-subject timers.</strong> Start a session against a
-          subject, not just a clock. Every minute lands in that
-          subject&rsquo;s total.
+          <strong>Per-subject stopwatches.</strong> Add a subject, hit play,
+          and every minute lands in that subject&rsquo;s total — with a live
+          combined total for the day.
         </li>
         <li>
-          <strong>A live study-trend chart.</strong> Your week at a glance —
-          which subjects are growing, which are flatlining, and whether your
-          overall hours are trending up or drifting down.
+          <strong>Analytics with a trend chart.</strong> Total time, daily
+          average, and active days over today, the week, the month, or all
+          time — plotted day by day so a flatlining subject is visible, not
+          hidden in a total.
         </li>
         <li>
-          <strong>Streaks and badges.</strong> Not gimmicks — a visible cost
-          to skipping a day, and a quiet reward for showing up again.
+          <strong>Subject goals.</strong> Set daily, weekly, and monthly
+          targets per subject and tick them off as you hit them.
+        </li>
+        <li>
+          <strong>An exam countdown.</strong> Name your exam, set the date,
+          and the days remaining sit above your stats — a quiet deadline,
+          always in view.
+        </li>
+        <li>
+          <strong>A study calendar and streak.</strong> A month grid you mark
+          day by day; the streak makes skipping visible and coming back
+          rewarding.
         </li>
       </ul>
 

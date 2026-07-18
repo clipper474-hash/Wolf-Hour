@@ -45,6 +45,29 @@ export function isUnavailable(id: string): boolean {
   return errored.has(id);
 }
 
+/**
+ * Soft two-note chime for timer completion. Quiet by design and scaled by the
+ * master volume so it never startles over (or under) a running soundscape.
+ */
+export function playChime() {
+  const audio = getCtx();
+  if (!audio) return;
+  const t = audio.currentTime;
+  [880, 1174.66].forEach((freq, i) => {
+    const osc = audio.createOscillator();
+    const gain = audio.createGain();
+    osc.type = "sine";
+    osc.frequency.value = freq;
+    const start = t + i * 0.18;
+    gain.gain.setValueAtTime(0, start);
+    gain.gain.linearRampToValueAtTime(0.12 * masterVol, start + 0.02);
+    gain.gain.exponentialRampToValueAtTime(0.0001, start + 0.9);
+    osc.connect(gain).connect(audio.destination);
+    osc.start(start);
+    osc.stop(start + 1);
+  });
+}
+
 function getCtx(): AudioContext | null {
   if (typeof window === "undefined") return null;
   if (!ctx) {

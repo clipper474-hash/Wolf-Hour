@@ -1,5 +1,6 @@
 import type { Metadata } from "next";
 import { Landing } from "@/components/landing/Landing";
+import { SITE_URL } from "@/lib/site";
 
 // Compressed JPG (116 KB vs the 1.3 MB source PNG) — scrapers pull this on
 // every share, so weight matters more than fidelity here.
@@ -39,14 +40,14 @@ const JSON_LD = {
   "@context": "https://schema.org",
   "@type": "WebApplication",
   name: "Wolfhour",
-  url: "https://wolfhour.vercel.app/",
+  url: `${SITE_URL}/`,
   applicationCategory: "ProductivityApplication",
   operatingSystem: "Any",
   description:
     "A calm, premium focus & ambience dashboard. Live cinematic backgrounds, calming soundscapes, and gentle timers for deep, distraction-free focus.",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
-  screenshot: "https://wolfhour.vercel.app/showcase/dashboard-og.jpg",
-  image: "https://wolfhour.vercel.app/brand/icon-512-maskable.png",
+  screenshot: `${SITE_URL}/showcase/dashboard-og.jpg`,
+  image: `${SITE_URL}/brand/icon-512-maskable.png`,
   featureList: [
     "Live cinematic backgrounds",
     "Focus & study timers",
