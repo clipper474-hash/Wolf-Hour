@@ -243,16 +243,13 @@ export function Landing() {
             rain.mix — playing
           </span>
           <h1 className="font-display">
-            <span className="lp-rise" style={{ animationDelay: "0.1s" }}>Let</span>{" "}
-            <span className="lp-rise" style={{ animationDelay: "0.18s" }}>it</span>{" "}
-            <span className="lp-rise" style={{ animationDelay: "0.26s" }}>pour</span>{" "}
-            <span className="lp-rise" style={{ animationDelay: "0.34s" }}>outside.</span>
+            <span className="lp-rise" style={{ animationDelay: "0.1s" }}>A</span>{" "}
+            <span className="lp-warm lp-rise" style={{ animationDelay: "0.18s" }}>beautiful</span>{" "}
+            <span className="lp-warm lp-rise" style={{ animationDelay: "0.26s" }}>place</span>{" "}
+            <span className="lp-rise" style={{ animationDelay: "0.34s" }}>to</span>{" "}
+            <span className="lp-rise" style={{ animationDelay: "0.42s" }}>study.</span>
             <br />
-            <span className="lp-warm lp-rise" style={{ animationDelay: "0.5s" }}>Stay</span>{" "}
-            <span className="lp-warm lp-rise" style={{ animationDelay: "0.6s" }}>focused</span>{" "}
-            <span className="lp-warm lp-rise" style={{ animationDelay: "0.7s" }}>in</span>{" "}
-            <span className="lp-warm lp-rise" style={{ animationDelay: "0.8s" }}>here</span>{" "}
-            <span className="lp-rise" style={{ animationDelay: "0.9s" }}>— your study timer with ambient sounds.</span>
+            <span className="lp-rise" style={{ animationDelay: "0.6s" }}>Free study timer with ambient sounds &amp; living scenes.</span>
           </h1>
           <p className="lp-sub">
             Live cinematic backgrounds, calming soundscapes, and gentle timers —
