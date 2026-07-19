@@ -3,8 +3,6 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useAuthStore } from "@/lib/auth-store";
-import { AuthModal } from "./AuthModal";
 import {
   ArrowRight,
   Film,
@@ -182,13 +180,13 @@ function PrimaryCTA({ children, onClick }: { children: React.ReactNode; onClick:
 
 export function Landing() {
   const router = useRouter();
-  const user = useAuthStore((s) => s.user);
-  const [authOpen, setAuthOpen] = useState(false);
   const [shared, setShared] = useState(false);
   const zenRef = useInView<HTMLElement>();
   const instRef = useInView<HTMLElement>();
 
-  const enter = () => (user ? router.push("/app") : setAuthOpen(true));
+  // Try-first: the app is fully usable without an account (local-first stores);
+  // sign-in lives in Settings and gates only sync + Aspirant mode.
+  const enter = () => router.push("/app");
 
   const share = async () => {
     const url = window.location.origin;
@@ -490,8 +488,6 @@ export function Landing() {
           © 2026 Wolfhour · All backgrounds &amp; sounds are royalty-free.
         </div>
       </footer>
-
-      <AuthModal open={authOpen} onClose={() => setAuthOpen(false)} onSignedIn={() => router.push("/app")} />
     </div>
   );
 }

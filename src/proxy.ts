@@ -25,16 +25,11 @@ export async function proxy(request: NextRequest) {
     },
   });
 
-  // Refresh the token and read the user (needed for the gate below).
-  const { data: { user } } = await supabase.auth.getUser();
+  // Try-first: /app is open to everyone (local-first stores). This call still
+  // matters — it refreshes the auth token cookie for signed-in users; without
+  // it you get random logouts.
+  await supabase.auth.getUser();
 
-  // Login required: unauthenticated /app requests bounce to the landing page,
-  // where sign-in lives. Server-side gate → no protected-content flash.
-  if (!user && request.nextUrl.pathname.startsWith("/app")) {
-    const url = request.nextUrl.clone();
-    url.pathname = "/";
-    return NextResponse.redirect(url);
-  }
   return response;
 }
 
