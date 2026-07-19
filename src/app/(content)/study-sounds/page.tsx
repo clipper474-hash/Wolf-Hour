@@ -89,7 +89,7 @@ export default function StudySoundsPage() {
       <h2>Practical notes</h2>
       <ul>
         <li>Keep volume just above room noise — masking, not blasting.</li>
-        <li>Wolfhour works offline as a PWA, so your mix survives a dead connection.</li>
+        <li>Wolfhour works offline once installed as an app, so your mix survives a dead connection.</li>
         <li>All sounds are royalty-free and included in the free experience.</li>
       </ul>
     </>

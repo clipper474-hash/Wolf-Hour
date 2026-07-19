@@ -2,7 +2,7 @@
 
 **Wolfhour is a free focus timer with live cinematic scenes and layered ambient sounds — a study environment, not just a countdown.**
 
-**Try it live: [wolfhour.vercel.app](https://wolfhour.vercel.app)**
+**Try it live: [wolfhour.vercel.app](https://wolfhour.vercel.app)** — no signup required to start.
 
 ![The Wolfhour pomodoro timer in Focus mode over a cinematic scene](public/showcase/pomodoro-timer-ui.jpg)
 

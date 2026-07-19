@@ -6,7 +6,7 @@ export const dynamic = "force-static";
 
 const BODY = `# Wolfhour
 
-> Wolfhour is a calm, free-to-use focus and ambience dashboard for studying and deep work: live cinematic backgrounds, layered soundscapes, study/pomodoro timers, and an Aspirant study mode with per-subject analytics. It runs as an offline-capable PWA and syncs across devices.
+> Wolfhour is a calm, free study timer and focus app for studying and deep work: live cinematic backgrounds, layered ambient sounds, study/pomodoro timers, and an Aspirant study mode with per-subject analytics. No signup is needed to start; it works offline as an installable web app and syncs across devices with a free account.
 
 ## Pages
 

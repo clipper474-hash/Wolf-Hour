@@ -6,7 +6,7 @@ export default function manifest(): MetadataRoute.Manifest {
     name: "Wolfhour — Focus & Ambience",
     short_name: "Wolfhour",
     description:
-      "A calm, premium focus & ambience dashboard. Live animated backgrounds, soundscapes, and timers.",
+      "A calm, free focus app — study timer, ambient sounds, and live animated backgrounds.",
     // The immersive app lives at /app; the marketing landing owns "/".
     // Installed PWA / TWA launches straight into the app.
     start_url: "/app",

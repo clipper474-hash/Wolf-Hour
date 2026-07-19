@@ -14,7 +14,7 @@ const OG_IMAGE = {
 export const metadata: Metadata = {
   title: "Wolfhour — A beautiful place to focus & study",
   description:
-    "A calm focus & ambience dashboard — cinematic backgrounds, soundscapes, and gentle study timers for deep work. Free, works offline, syncs everywhere.",
+    "A calm, free study timer with ambient sounds and cinematic backgrounds — pomodoro blocks, per-subject study tracking, and gentle focus tools. No signup to start; works offline.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
@@ -44,7 +44,7 @@ const JSON_LD = {
   applicationCategory: "ProductivityApplication",
   operatingSystem: "Any",
   description:
-    "A calm, premium focus & ambience dashboard. Live cinematic backgrounds, calming soundscapes, and gentle timers for deep, distraction-free focus.",
+    "A calm, free focus app — study timer, pomodoro blocks, ambient sounds, and live cinematic backgrounds for deep, distraction-free work.",
   offers: { "@type": "Offer", price: "0", priceCurrency: "USD" },
   screenshot: `${SITE_URL}/showcase/dashboard-og.jpg`,
   image: `${SITE_URL}/brand/icon-512-maskable.png`,
@@ -54,7 +54,7 @@ const JSON_LD = {
     "Aspirant study mode with per-subject analytics",
     "Calming soundscapes",
     "Tasks, streaks & badges",
-    "Offline PWA with cross-device sync",
+    "Works offline with cross-device sync",
   ],
 };
 

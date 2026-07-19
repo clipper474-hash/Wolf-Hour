@@ -73,7 +73,7 @@ const FAQS = [
   { q: "Is Wolfhour free?", a: "Yes — the core experience is free to use. Every scene, sound, and timer is included; start focusing in seconds." },
   {
     q: "Do I need an account?",
-    a: "Yes — a free account signs you in and keeps your setup (scenes, sounds, timers, tasks, study stats) synced across your devices.",
+    a: "No — jump straight in, no signup. Create a free account whenever you want your setup and study stats synced across your devices.",
   },
   {
     q: "Where is my data stored?",
@@ -81,7 +81,7 @@ const FAQS = [
   },
   {
     q: "Does it work offline?",
-    a: "Yes. Install it as a PWA and everything keeps working; sync resumes when you're back online.",
+    a: "Yes. Add it to your home screen like an app and everything keeps working; sync resumes when you're back online.",
   },
   {
     q: "I forgot my password — what now?",
@@ -252,7 +252,7 @@ export function Landing() {
             <span className="lp-warm lp-rise" style={{ animationDelay: "0.6s" }}>focused</span>{" "}
             <span className="lp-warm lp-rise" style={{ animationDelay: "0.7s" }}>in</span>{" "}
             <span className="lp-warm lp-rise" style={{ animationDelay: "0.8s" }}>here</span>{" "}
-            <span className="lp-rise" style={{ animationDelay: "0.9s" }}>— your study timer &amp; ambience dashboard.</span>
+            <span className="lp-rise" style={{ animationDelay: "0.9s" }}>— your study timer with ambient sounds.</span>
           </h1>
           <p className="lp-sub">
             Live cinematic backgrounds, calming soundscapes, and gentle timers —
@@ -261,7 +261,7 @@ export function Landing() {
           <div className="mt-7">
             <PrimaryCTA onClick={enter}>Open Wolfhour</PrimaryCTA>
           </div>
-          <p className="lp-trust">Free · Works offline · Syncs across devices</p>
+          <p className="lp-trust">Free · No signup to start · Works offline</p>
         </div>
       </section>
 
@@ -277,8 +277,8 @@ export function Landing() {
               Nothing else. That&rsquo;s the point.
             </p>
             <div className="lp-checks">
-              <span>Free core experience — start focusing in seconds</span>
-              <span>Works offline as a PWA</span>
+              <span>Free — start focusing in seconds, no signup</span>
+              <span>Works like an app, even offline</span>
               <span>Syncs across all your devices</span>
             </div>
           </Reveal>
@@ -300,8 +300,9 @@ export function Landing() {
         {/* Plain crawlable copy (never animation-hidden): brand + category keywords. */}
         <p className="mx-auto mt-16 max-w-3xl text-center text-[15px] leading-relaxed" style={{ color: "var(--ink-3)" }}>
           Wolfhour is a free online focus app — a study timer, pomodoro timer,
-          and ambient soundscape dashboard that works offline and syncs across
-          your devices.
+          and ambient sound mixer that tracks your study hours per subject,
+          works offline, and syncs across your devices. No signup needed to
+          start.
         </p>
       </section>
 
@@ -349,7 +350,7 @@ export function Landing() {
         <Skyline />
         <Reveal>
           <span className="lp-band-chip">
-            <span className="dot" /> <LiveClock /> — the city sleeps. you build.
+            <span className="dot" /> <LiveClock /> — the city sleeps. you study.
           </span>
           <h2 className="font-display">
             For everyone whose<br /><span className="lp-lit">light is still on.</span>
@@ -373,8 +374,8 @@ export function Landing() {
             Empty the cup.<br />Fill <em>the hour.</em>
           </h2>
           <p className="lp-sub">
-            Every animation is tuned to be buttery-smooth and quiet. No clutter,
-            no noise — just you, a calm scene, and the work in front of you.
+            No clutter, no noise — just you, a calm scene, and the work in
+            front of you.
           </p>
         </Reveal>
       </section>
@@ -431,7 +432,7 @@ export function Landing() {
             <a href="#faq" className="lp-ghost">See FAQ</a>
           </div>
           <div className="lp-logos">
-            <span>PWA</span><span>OFFLINE-FIRST</span><span>FREE TO USE</span><span>CROSS-DEVICE SYNC</span>
+            <span>FREE TO USE</span><span>NO SIGNUP TO START</span><span>WORKS OFFLINE</span><span>SYNCS ACROSS DEVICES</span>
           </div>
         </Reveal>
       </section>

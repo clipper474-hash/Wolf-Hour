@@ -91,8 +91,8 @@ export default function AspirantModePage() {
       <p>
         Exam preparation is a months-long campaign, not a productivity
         sprint. Wolfhour keeps your stats synced across devices and works
-        offline as a PWA, so a library with bad Wi-Fi doesn&rsquo;t cost you a
-        session. The scenes and soundscapes are there to make the desk a
+        offline once installed as an app, so a library with bad Wi-Fi
+        doesn&rsquo;t cost you a session. The scenes and soundscapes are there to make the desk a
         place you don&rsquo;t dread returning to — because the aspirants who
         clear these exams aren&rsquo;t the ones who studied hardest on their
         best day. They&rsquo;re the ones who came back every day.

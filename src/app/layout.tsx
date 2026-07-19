@@ -45,7 +45,7 @@ export const metadata: Metadata = {
     template: "%s · Wolfhour",
   },
   description:
-    "A calm, premium focus & ambience dashboard. Live animated backgrounds, soundscapes, and timers.",
+    "A calm, free focus app — study timer, ambient sounds, and live animated backgrounds.",
   applicationName: "Wolfhour",
   appleWebApp: { capable: true, title: "Wolfhour", statusBarStyle: "black-translucent" },
 };
