@@ -1,21 +1,11 @@
 "use client";
 
-import { motion, type Variants } from "motion/react";
+import { useEffect, useRef } from "react";
 import type { ReactNode } from "react";
 
 /** Scroll-triggered reveal: fades + lifts + un-blurs as it enters the viewport.
- *  Honors reduced-motion (motion respects the OS setting; the blur/offset are
- *  small enough to be calm regardless). Animates once. */
-const variants: Variants = {
-  hidden: { opacity: 0, y: 22, filter: "blur(8px)" },
-  show: {
-    opacity: 1,
-    y: 0,
-    filter: "blur(0px)",
-    transition: { duration: 0.7, ease: [0.22, 1, 0.36, 1] },
-  },
-};
-
+ *  CSS-driven (no motion library — keeps framer out of the landing bundle).
+ *  Honors reduced-motion via the media query in landing.css. Animates once. */
 export function Reveal({
   children,
   delay = 0,
@@ -25,16 +15,31 @@ export function Reveal({
   delay?: number;
   className?: string;
 }) {
+  const ref = useRef<HTMLDivElement>(null);
+
+  useEffect(() => {
+    const el = ref.current;
+    if (!el) return;
+    const io = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          el.classList.add("lp-reveal-show");
+          io.disconnect();
+        }
+      },
+      { threshold: 0.35 }
+    );
+    io.observe(el);
+    return () => io.disconnect();
+  }, []);
+
   return (
-    <motion.div
-      className={className}
-      variants={variants}
-      initial="hidden"
-      whileInView="show"
-      viewport={{ once: true, amount: 0.35 }}
-      transition={{ delay }}
+    <div
+      ref={ref}
+      className={className ? `lp-reveal ${className}` : "lp-reveal"}
+      style={delay ? { transitionDelay: `${delay}s` } : undefined}
     >
       {children}
-    </motion.div>
+    </div>
   );
 }

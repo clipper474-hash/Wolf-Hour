@@ -46,3 +46,6 @@ next-env.d.ts
 # local media, not deployed
 /gift
 /vids
+
+lh-*.json
+start.log
