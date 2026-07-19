@@ -19,6 +19,7 @@ const ABOUT_LD = {
     name: "Wolfhour",
     url: `${SITE_URL}/`,
     logo: `${SITE_URL}/brand/icon-512-maskable.png`,
+    email: "wolfhourapp@gmail.com",
     sameAs: ["https://github.com/clipper474-hash/Wolf-Hour"],
   },
 };
@@ -75,8 +76,10 @@ export default function AboutPage() {
 
       <h2>Contact</h2>
       <p>
-        The fastest way to reach me is GitHub — for bugs, feature requests,
-        account-deletion requests, or anything else:{" "}
+        For bugs, feature requests, account-deletion requests, or anything
+        else, email{" "}
+        <a href="mailto:wolfhourapp@gmail.com">wolfhourapp@gmail.com</a> — or,
+        if you prefer GitHub,{" "}
         <a
           href="https://github.com/clipper474-hash/Wolf-Hour/issues"
           target="_blank"
