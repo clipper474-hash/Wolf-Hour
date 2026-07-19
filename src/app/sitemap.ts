@@ -40,6 +40,12 @@ export default function sitemap(): MetadataRoute.Sitemap {
       priority: 0.8,
     },
     {
+      url: `${BASE}/about`,
+      lastModified: lastmod("app/(content)/about/page.tsx"),
+      changeFrequency: "yearly",
+      priority: 0.5,
+    },
+    {
       url: `${BASE}/privacy`,
       lastModified: lastmod("app/(legal)/privacy/page.tsx"),
       changeFrequency: "yearly",

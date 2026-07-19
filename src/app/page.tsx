@@ -1,6 +1,7 @@
 import type { Metadata } from "next";
 import { Landing } from "@/components/landing/Landing";
 import { SITE_URL } from "@/lib/site";
+import { FAQS } from "@/lib/faqs";
 
 // Compressed JPG (116 KB vs the 1.3 MB source PNG) — scrapers pull this on
 // every share, so weight matters more than fidelity here.
@@ -12,14 +13,14 @@ const OG_IMAGE = {
 };
 
 export const metadata: Metadata = {
-  title: "Wolfhour — A beautiful place to focus & study",
+  title: "Free Study Timer with Ambient Sounds & Live Scenes — Wolfhour",
   description:
-    "A calm, free study timer with ambient sounds and cinematic backgrounds — pomodoro blocks, per-subject study tracking, and gentle focus tools. No signup to start; works offline.",
+    "Free study timer with ambient sounds and cinematic backgrounds — pomodoro blocks, per-subject study tracking, and gentle focus tools. No signup to start; works offline.",
   alternates: { canonical: "/" },
   openGraph: {
     type: "website",
     url: "/",
-    title: "Wolfhour — A beautiful place to focus & study",
+    title: "Free Study Timer with Ambient Sounds & Live Scenes — Wolfhour",
     description:
       "Live cinematic backgrounds, calming soundscapes, and gentle timers for deep, distraction-free focus.",
     siteName: "Wolfhour",
@@ -58,6 +59,18 @@ const JSON_LD = {
   ],
 };
 
+/** Mirrors the visible "Questions, answered" section — rich-result and
+ *  AI-answer eligibility for those exact Q&As. */
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQS.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
 /** Public marketing landing page (root). The immersive app lives at /app.
  *  The global `body { overflow: hidden }` keeps the app full-bleed, so the
  *  landing scrolls inside its own dvh container. */
@@ -67,6 +80,10 @@ export default function LandingPage() {
       <script
         type="application/ld+json"
         dangerouslySetInnerHTML={{ __html: JSON.stringify(JSON_LD) }}
+      />
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_LD) }}
       />
       <Landing />
     </main>

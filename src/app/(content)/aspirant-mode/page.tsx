@@ -1,17 +1,61 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { articleLd } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Aspirant Mode — Per-Subject Study Tracking",
+  title: "Study Tracker for Exam Aspirants — Aspirant Mode",
   description:
-    "Wolfhour's Aspirant mode gives serious exam candidates per-subject timers, streaks, and a live study-trend chart — so you know where your hours really go.",
+    "Free per-subject study tracker for UPSC, NEET, JEE and other exams: subject timers, goals, streaks, and a live trend chart showing where hours really go.",
   alternates: { canonical: "/aspirant-mode" },
 };
+
+const FAQ = [
+  {
+    q: "Which exams is Aspirant mode useful for?",
+    a: "Any long, multi-subject preparation: UPSC and state PSCs, NEET, JEE, GATE, CA/CS, boards, bar and licensing exams, or a months-long certification. If your prep has more than one subject and a date attached, per-subject tracking applies.",
+  },
+  {
+    q: "How many hours a day should an aspirant study?",
+    a: "There's no magic number — toppers report anywhere from 5 to 10 focused hours, and a sustainable 6 beats an occasional 12. The more useful question, which a per-subject tracker answers, is where those hours actually went and which subject is being starved.",
+  },
+  {
+    q: "Is Aspirant mode free?",
+    a: "Yes. It ships with the free experience — subject timers, goals, streaks, calendar, and analytics. A free account adds cross-device sync so your stats follow you between phone and laptop.",
+  },
+  {
+    q: "Does it work offline in a library with bad Wi-Fi?",
+    a: "Yes. Install Wolfhour as an app and everything — timers, stats, goals — keeps working offline. Sync catches up when you're back online.",
+  },
+];
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+const ARTICLE_LD = articleLd({
+  headline: "Aspirant mode: study tracking for people with an exam date",
+  description:
+    "Per-subject timers, streaks, and a live study-trend chart for serious exam candidates — so you know where your hours really go.",
+  path: "/aspirant-mode",
+  image: "/showcase/aspirant-mode-analytics.jpg",
+  datePublished: "2026-07-11",
+  dateModified: "2026-07-20",
+});
 
 export default function AspirantModePage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ARTICLE_LD) }}
+      />
       <h1>Aspirant mode: study tracking for people with an exam date</h1>
       <p>
         Most focus apps measure one thing: how long you sat there. That&rsquo;s
@@ -111,7 +155,7 @@ export default function AspirantModePage() {
         className="my-4 rounded-xl border border-white/10 shadow-xl"
       />
 
-      <h2>Why per-subject beats a single total</h2>
+      <h2>Why does per-subject tracking beat a single total?</h2>
       <p>
         Every serious aspirant knows the trap: you drift toward the subjects
         you like. The hours feel productive because they <em>are</em> hours —
@@ -142,6 +186,20 @@ export default function AspirantModePage() {
         clear these exams aren&rsquo;t the ones who studied hardest on their
         best day. They&rsquo;re the ones who came back every day.
       </p>
+
+      <h2>Aspirant questions, answered</h2>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_LD) }}
+      />
+      {FAQ.map((f) => (
+        <div key={f.q}>
+          <h3>
+            <strong>{f.q}</strong>
+          </h3>
+          <p>{f.a}</p>
+        </div>
+      ))}
     </>
   );
 }

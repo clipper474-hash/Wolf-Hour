@@ -65,8 +65,9 @@ export default function PrivacyPage() {
       <p>
         Signing out leaves your local data on your device; clearing your
         browser storage removes it. To delete your account and all synced
-        data, contact us through the app&rsquo;s store listing — deleting the
-        account removes every synced row automatically.
+        data, reach us via the <Link href="/about">contact channels on the
+        About page</Link> — deleting the account removes every synced row
+        automatically.
       </p>
 
       <h2>Changes</h2>

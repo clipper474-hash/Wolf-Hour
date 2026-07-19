@@ -1,17 +1,61 @@
 import type { Metadata } from "next";
 import Image from "next/image";
 import Link from "next/link";
+import { articleLd } from "@/lib/schema";
 
 export const metadata: Metadata = {
-  title: "Study Sounds & Ambience for Deep Focus",
+  title: "Study Sounds & Ambience for Deep Focus — Free Mixer",
   description:
-    "Rain, waves, café hum and layered ambience: how to pick and mix study sounds that hold your attention instead of stealing it.",
+    "Free study sounds for focus: rain, waves, café hum and 22 layerable ambient sounds with a live mixer. How to pick a mix that holds your attention.",
   alternates: { canonical: "/study-sounds" },
 };
+
+const FAQ = [
+  {
+    q: "Is ambient sound better than music for studying?",
+    a: "For most reading and writing, yes. Lyrics and melodies compete for the language and pattern circuits you're trying to study with; steady ambience masks distractions without asking for attention. Save the playlist for mechanical tasks like copying notes.",
+  },
+  {
+    q: "How loud should study sounds be?",
+    a: "Just above the noise you're trying to mask, and no louder. If you notice the sound itself, turn it down — the goal is for your brain to stop listening entirely.",
+  },
+  {
+    q: "Do I need headphones?",
+    a: "No, speakers work fine in a quiet room. Headphones help in shared spaces — a library, a hostel, a family living room — where the noise you're masking is close by.",
+  },
+  {
+    q: "Are Wolfhour's sounds free?",
+    a: "Yes — all 22 sounds, the mixer, and every scene are free, with no signup needed to start. Nearly all sounds are synthesised live in your browser, so nothing downloads and nothing loops.",
+  },
+];
+
+const FAQ_LD = {
+  "@context": "https://schema.org",
+  "@type": "FAQPage",
+  mainEntity: FAQ.map((f) => ({
+    "@type": "Question",
+    name: f.q,
+    acceptedAnswer: { "@type": "Answer", text: f.a },
+  })),
+};
+
+const ARTICLE_LD = articleLd({
+  headline: "Study sounds that hold your attention instead of stealing it",
+  description:
+    "Rain, waves, café hum and layered ambience: how to pick and mix study sounds that hold your attention instead of stealing it.",
+  path: "/study-sounds",
+  image: "/showcase/study-sounds-mixer.jpg",
+  datePublished: "2026-07-11",
+  dateModified: "2026-07-20",
+});
 
 export default function StudySoundsPage() {
   return (
     <>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(ARTICLE_LD) }}
+      />
       <h1>Study sounds that hold your attention instead of stealing it</h1>
       <p>
         The right study sound isn&rsquo;t entertainment — it&rsquo;s
@@ -42,7 +86,7 @@ export default function StudySoundsPage() {
         priority
       />
 
-      <h2>What actually works, and when</h2>
+      <h2>Which study sounds actually work, and when?</h2>
       <ul>
         <li>
           <strong>Rain &amp; storms</strong> — broad-spectrum, irregular but
@@ -63,6 +107,21 @@ export default function StudySoundsPage() {
           pressure.
         </li>
       </ul>
+
+      <h2>White, pink, or brown noise — which one?</h2>
+      <p>
+        The noise colours differ in where their energy sits. <strong>White
+        noise</strong> spreads evenly across all frequencies — bright,
+        hissy, the strongest masker for sharp interruptions like clattering
+        keyboards or voices through a wall. <strong>Pink noise</strong> tilts
+        toward the low end — softer, closer to steady rainfall, the easiest
+        to leave on for hours. <strong>Brown noise</strong> goes lower still —
+        a deep rumble like distant surf or a plane cabin, which many people
+        find the most physically calming. There&rsquo;s no winner; there&rsquo;s
+        a match for your room and your ears. Wolfhour ships all three, so the
+        cheap experiment is to try each for one study block and keep whichever
+        one you stopped noticing first — disappearing is the job.
+      </p>
 
       <h2>Layering: the difference between a sound and a place</h2>
       <p>
@@ -108,6 +167,20 @@ export default function StudySoundsPage() {
         <li>Wolfhour works offline once installed as an app, so your mix survives a dead connection.</li>
         <li>All sounds are royalty-free and included in the free experience.</li>
       </ul>
+
+      <h2>Study sound questions, answered</h2>
+      <script
+        type="application/ld+json"
+        dangerouslySetInnerHTML={{ __html: JSON.stringify(FAQ_LD) }}
+      />
+      {FAQ.map((f) => (
+        <div key={f.q}>
+          <h3>
+            <strong>{f.q}</strong>
+          </h3>
+          <p>{f.a}</p>
+        </div>
+      ))}
     </>
   );
 }

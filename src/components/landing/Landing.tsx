@@ -1,12 +1,14 @@
 "use client";
 
 import { useEffect, useRef, useState } from "react";
+import Image from "next/image";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { ArrowRight, Download, Share2 } from "lucide-react";
 import { SmoothCursor } from "@/components/landing/SmoothCursor";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Reveal } from "./Reveal";
+import { FAQS } from "@/lib/faqs";
 import "./landing.css";
 
 /** Alternate filmstrip rows left/right. `lp-flip`, not `flip` — globals.css
@@ -75,27 +77,6 @@ const FRAMES: {
     img: "/showcase/home-dashboard.jpg",
     alt: "The Wolfhour home dashboard — a large clock and greeting over a misty forest scene",
   },
-];
-
-const FAQS = [
-  { q: "Is Wolfhour free?", a: "Yes — the core experience is free to use. Every scene, sound, and timer is included; start focusing in seconds." },
-  {
-    q: "Do I need an account?",
-    a: "No — jump straight in, no signup. Create a free account whenever you want your setup and study stats synced across your devices.",
-  },
-  {
-    q: "Where is my data stored?",
-    a: "On your device first. Your settings also sync to a private cloud row that only your account can read. See the Privacy Policy for details.",
-  },
-  {
-    q: "Does it work offline?",
-    a: "Yes. Add it to your home screen like an app and everything keeps working; sync resumes when you're back online.",
-  },
-  {
-    q: "I forgot my password — what now?",
-    a: "Use “Forgot password?” on the sign-in screen and we’ll email you a reset link to set a new one.",
-  },
-  { q: "Are the scenes and sounds licensed?", a: "Yes — all backgrounds and sounds are royalty-free." },
 ];
 
 /* Fixed rain layout — deterministic so SSR and client HTML match. */
@@ -328,8 +309,14 @@ export function Landing() {
             <Reveal key={f.num}>
               <div className={cnRow(i)}>
                 <div className="lp-strip-shot">
-                  {/* eslint-disable-next-line @next/next/no-img-element */}
-                  <img src={f.img} alt={f.alt} width={1440} height={900} loading={i === 0 ? "eager" : "lazy"} />
+                  <Image
+                    src={f.img}
+                    alt={f.alt}
+                    width={1440}
+                    height={900}
+                    sizes="(min-width: 820px) 620px, 100vw"
+                    loading={i === 0 ? "eager" : "lazy"}
+                  />
                 </div>
                 <div>
                   <span className="lp-strip-num">{f.num}</span>
@@ -485,6 +472,7 @@ export function Landing() {
             <Link href="/pomodoro-timer">Pomodoro Timer</Link>
             <Link href="/study-sounds">Study Sounds</Link>
             <Link href="/aspirant-mode">Aspirant Mode</Link>
+            <Link href="/about">About</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
             <a href="https://github.com/clipper474-hash/Wolf-Hour" target="_blank" rel="noopener">GitHub</a>

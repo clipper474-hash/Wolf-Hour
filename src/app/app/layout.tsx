@@ -1,5 +1,11 @@
+import type { Metadata } from "next";
 import { Onest, Caveat, Archivo, Space_Grotesk, Doto, Orbitron, Share_Tech_Mono } from "next/font/google";
 import { cn } from "@/lib/utils";
+
+// App UI — the marketing pages are the indexable surface, not this.
+export const metadata: Metadata = {
+  robots: { index: false, follow: true },
+};
 
 // Clock & Font Style picker faces — rendered only inside /app, so their
 // @font-face CSS stays out of the marketing page bundle. All load on demand

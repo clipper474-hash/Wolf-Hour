@@ -21,6 +21,7 @@ export default function ContentLayout({ children }: { children: React.ReactNode 
           className="mt-8 space-y-4 text-[15px] leading-relaxed text-white/70
             [&_h1]:font-display [&_h1]:text-3xl [&_h1]:font-semibold [&_h1]:tracking-tight [&_h1]:text-white
             [&_h2]:mt-8 [&_h2]:font-display [&_h2]:text-xl [&_h2]:font-semibold [&_h2]:text-white
+            [&_h3]:mt-5 [&_h3]:text-[15px] [&_h3]:font-semibold [&_h3]:text-white/90
             [&_li]:ml-5 [&_li]:list-disc [&_a]:text-cyan-300 [&_a]:underline-offset-2 hover:[&_a]:underline"
         >
           {children}
