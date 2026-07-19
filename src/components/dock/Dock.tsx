@@ -23,6 +23,9 @@ import { motion, useMotionValue, useSpring } from "motion/react";
 import { spring } from "@/lib/motion";
 import { cn } from "@/lib/utils";
 import { useUIStore } from "@/lib/ui-store";
+import { useAuthStore } from "@/lib/auth-store";
+import { isSupabaseConfigured } from "@/lib/supabase/client";
+import { AuthModal } from "@/components/landing/AuthModal";
 import { SceneSwitcher } from "@/components/scenes/SceneSwitcher";
 import { ClockStylePicker } from "@/components/clock/ClockStylePicker";
 import { SoundsMixer } from "@/components/sounds/SoundsMixer";
@@ -107,6 +110,8 @@ export function Dock() {
   const [quotesOpen, setQuotesOpen] = useState(false);
   const [rewardsOpen, setRewardsOpen] = useState(false);
   const [isFs, setIsFs] = useState(false);
+  const [authOpen, setAuthOpen] = useState(false);
+  const user = useAuthStore((s) => s.user);
   const scenesRef = useRef<HTMLButtonElement>(null);
 
   // Only one popover open at a time.
@@ -145,6 +150,13 @@ export function Dock() {
               : mode;
   const goMode = (m: "home" | "focus" | "aspirant") => {
     closePopovers();
+    // Aspirant tracking history is the one thing worth an account (it syncs
+    // and survives the device) — everything else stays open. No-op gate when
+    // auth isn't configured so local dev keeps working.
+    if (m === "aspirant" && !user && isSupabaseConfigured) {
+      setAuthOpen(true);
+      return;
+    }
     setMode(m);
   };
   const aspirant = mode === "aspirant";
@@ -166,6 +178,14 @@ export function Dock() {
       <SoundsMixer open={soundsOpen} onClose={() => setSoundsOpen(false)} />
       <TasksPanel open={notesOpen} onClose={() => setNotesOpen(false)} />
       <SettingsPanel open={settingsOpen} onClose={() => setSettingsOpen(false)} />
+      <AuthModal
+        open={authOpen}
+        onClose={() => setAuthOpen(false)}
+        onSignedIn={() => {
+          setAuthOpen(false);
+          setMode("aspirant");
+        }}
+      />
       <QuotesPanel open={quotesOpen} onClose={() => setQuotesOpen(false)} />
       <RewardsPanel open={rewardsOpen} onClose={() => setRewardsOpen(false)} />
 
