@@ -37,6 +37,21 @@ export default function AspirantModePage() {
         priority
       />
 
+      <h2>Press play, minutes land where they should</h2>
+      <p>
+        The heart of Aspirant mode is a stack of per-subject stopwatches under
+        a running exam countdown. Start Polity&rsquo;s timer when you open the
+        book, stop it when you stop — the day&rsquo;s total and every
+        subject&rsquo;s share build themselves while you work.
+      </p>
+      <Image
+        src="/showcase/aspirant-subject-timers.jpg"
+        alt="Aspirant Mode subject timers in Wolfhour — exam countdown, total studied, and per-subject stopwatches"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+      />
+
       <h2>What it tracks</h2>
       <ul>
         <li>
@@ -66,6 +81,36 @@ export default function AspirantModePage() {
         </li>
       </ul>
 
+      <h2>Goals you can actually tick off</h2>
+      <p>
+        Each subject carries its own daily, weekly, and monthly target —
+        written in your words (&ldquo;3h + 1 PYQ set&rdquo;, &ldquo;45 min
+        practice&rdquo;), ticked off when done. Small enough to finish, visible
+        enough to sting when skipped.
+      </p>
+      <Image
+        src="/showcase/aspirant-goals.jpg"
+        alt="Aspirant Mode goals in Wolfhour — daily, weekly and monthly targets per subject"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+      />
+
+      <h2>A calendar that makes streaks visible</h2>
+      <p>
+        Tap a day to mark it studied. The month grid fills in, the streak
+        counter climbs, and a missed day shows as exactly what it is — a hole
+        in the row. Nothing motivates a Tuesday like an unbroken line of
+        Mondays.
+      </p>
+      <Image
+        src="/showcase/aspirant-calendar.jpg"
+        alt="Aspirant Mode study calendar in Wolfhour — studied days marked with a running streak"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+      />
+
       <h2>Why per-subject beats a single total</h2>
       <p>
         Every serious aspirant knows the trap: you drift toward the subjects
@@ -80,8 +125,8 @@ export default function AspirantModePage() {
       <p>
         Pick the subject, pick a{" "}
         <Link href="/pomodoro-timer">pomodoro block</Link> that fits the work
-        — 50/10 for problem sets, 25/5 for revision — and put your usual{" "}
-        <Link href="/study-sounds">study mix</Link> behind it. When the block
+        — 25/5 for revision, the stopwatch for long problem sets — and put
+        your usual <Link href="/study-sounds">study mix</Link> behind it. When the block
         ends, the session is already filed under the right subject. At night,
         the trend chart tells you tomorrow&rsquo;s first subject better than
         any timetable: it&rsquo;s whichever bar looks embarrassed.

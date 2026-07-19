@@ -74,6 +74,22 @@ export default function StudySoundsPage() {
         agrees about where you are.
       </p>
 
+      <h2>Match the sound to a scene</h2>
+      <p>
+        Sound is half the room; the picture is the other half. Wolfhour pairs
+        your mix with eleven live cinematic scenes — a misty shrine for rain,
+        a lake cabin for waves, neon rain for late-night lo-fi. Pick once and
+        both halves persist together, so opening the app drops you straight
+        back into your place.
+      </p>
+      <Image
+        src="/showcase/scene-switcher.jpg"
+        alt="The Wolfhour scene switcher — pairing a live cinematic scene with your study sound mix"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+      />
+
       <h2>Using sound as a start cue</h2>
       <p>
         Keep one mix for work and only for work. Press play, and after a week

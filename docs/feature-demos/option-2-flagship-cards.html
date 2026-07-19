@@ -1,0 +1,75 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1" />
+<title>Option 2 — Flagship Cards + Extras Strip</title>
+<style>
+  :root { --bg:#0d0b12; --card:rgba(255,255,255,.05); --line:rgba(255,255,255,.1); --ink:#f5f2fa; --ink2:rgba(245,242,250,.62); --ink3:rgba(245,242,250,.4); --accent:#67e8f9; }
+  * { box-sizing:border-box; margin:0; }
+  body { background:var(--bg); color:var(--ink); font:15px/1.6 system-ui,Segoe UI,sans-serif; padding:56px 24px 96px; }
+  .tag { position:fixed; top:0; left:0; right:0; background:#1b1526; color:#c4b5fd; font-size:12px; letter-spacing:.12em; text-align:center; padding:6px; z-index:9; }
+  .wrap { max-width:1080px; margin:0 auto; }
+  h2 { font-size:clamp(28px,4.5vw,42px); font-weight:600; letter-spacing:-.02em; text-align:center; }
+  h2 .thin { color:var(--ink2); font-weight:400; }
+  .sub { text-align:center; color:var(--ink2); margin:10px auto 40px; max-width:520px; }
+  .cards { display:grid; grid-template-columns:repeat(3,1fr); gap:18px; }
+  .card { border:1px solid var(--line); background:var(--card); border-radius:20px; overflow:hidden; transition:.25s; display:flex; flex-direction:column; }
+  .card:hover { transform:translateY(-3px); border-color:rgba(103,232,249,.35); }
+  .card img { width:100%; aspect-ratio:16/10; object-fit:cover; display:block; border-bottom:1px solid var(--line); }
+  .card .body { padding:18px 20px 20px; display:flex; flex-direction:column; flex:1; }
+  .card h3 { font-size:17.5px; margin-bottom:6px; }
+  .card p { color:var(--ink2); font-size:13.8px; flex:1; }
+  .card a { margin-top:12px; color:var(--accent); text-decoration:none; font-size:13.5px; }
+  .card a:hover { text-decoration:underline; }
+  .extras { margin-top:30px; display:flex; flex-wrap:wrap; justify-content:center; gap:10px; }
+  .chip { border:1px solid var(--line); background:var(--card); color:var(--ink2); border-radius:999px; padding:8px 16px; font-size:13px; display:flex; align-items:center; gap:7px; }
+  .chip span { font-size:15px; }
+  .extras-label { text-align:center; color:var(--ink3); font-size:12.5px; letter-spacing:.14em; margin:34px 0 0; text-transform:uppercase; }
+  @media (max-width:820px){ .cards{grid-template-columns:1fr} }
+</style>
+</head>
+<body>
+<div class="tag">OPTION 2 · FLAGSHIP CARDS + EXTRAS STRIP — 3 big screenshot cards, minor features as chips</div>
+<div class="wrap">
+  <h2>Everything orbits<br /><span class="thin">around your focus.</span></h2>
+  <p class="sub">Three tools carry the hour — the rest stays quietly within reach.</p>
+
+  <div class="cards">
+    <div class="card">
+      <img src="../../public/showcase/pomodoro-timer-ui.jpg" alt="Pomodoro timer" />
+      <div class="body">
+        <h3>Pomodoro timer</h3>
+        <p>25 on, 5 off, world muted — focus blocks and breaks one tap apart, with a soft chime when time's up.</p>
+        <a href="#">Learn more →</a>
+      </div>
+    </div>
+    <div class="card">
+      <img src="../../public/showcase/aspirant-mode-analytics.jpg" alt="Aspirant mode" />
+      <div class="body">
+        <h3>Aspirant study mode</h3>
+        <p>Per-subject tracking, goals, streaks and an exam countdown. See where your hours really go.</p>
+        <a href="#">Learn more →</a>
+      </div>
+    </div>
+    <div class="card">
+      <img src="../../public/showcase/study-sounds-mixer.jpg" alt="Study sounds" />
+      <div class="body">
+        <h3>Study sounds</h3>
+        <p>Rain, waves, café hum — 22 sounds you layer with independent volumes, no loop seams.</p>
+        <a href="#">Learn more →</a>
+      </div>
+    </div>
+  </div>
+
+  <p class="extras-label">Also inside</p>
+  <div class="extras">
+    <span class="chip"><span>🎬</span> Live cinematic scenes</span>
+    <span class="chip"><span>🕰️</span> Clock &amp; font styles</span>
+    <span class="chip"><span>✅</span> Quiet task list</span>
+    <span class="chip"><span>❝</span> Daily quotes</span>
+    <span class="chip"><span>🏅</span> Badges you actually earn</span>
+  </div>
+</div>
+</body>
+</html>

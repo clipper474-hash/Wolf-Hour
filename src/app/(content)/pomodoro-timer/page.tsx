@@ -75,6 +75,28 @@ export default function PomodoroTimerPage() {
         <Link href="/study-sounds">study sounds</Link>, keep it identical
         across sessions, and starting a block begins to feel automatic.
       </p>
+      <Image
+        src="/showcase/scene-switcher.jpg"
+        alt="Choosing a live cinematic scene in Wolfhour — the backdrop your pomodoro blocks run inside"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+      />
+
+      <h2>Between blocks, the room rests with you</h2>
+      <p>
+        When a break starts, you&rsquo;re not staring at a dead settings
+        screen. The dashboard returns to a greeting, a quote, and a big calm
+        clock — in whichever face you&rsquo;ve picked, from flip clock to LED
+        to ember. Five minutes later, one tap puts the next block on.
+      </p>
+      <Image
+        src="/showcase/home-dashboard.jpg"
+        alt="The Wolfhour home dashboard between pomodoro sessions — a large clock and greeting over a live scene"
+        width={1440}
+        height={900}
+        className="my-4 rounded-xl border border-white/10 shadow-xl"
+      />
       <p>
         If you&rsquo;re preparing for a competitive exam and want your blocks
         tracked per subject — with trends, streaks, and honest totals — that&rsquo;s

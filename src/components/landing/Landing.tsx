@@ -3,69 +3,76 @@
 import { useEffect, useRef, useState } from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import {
-  ArrowRight,
-  Film,
-  Timer,
-  GraduationCap,
-  AudioLines,
-  Clock3,
-  Sparkles,
-  Download,
-  Share2,
-} from "lucide-react";
+import { ArrowRight, Download, Share2 } from "lucide-react";
 import { SmoothCursor } from "@/components/landing/SmoothCursor";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Reveal } from "./Reveal";
 import "./landing.css";
 
-// Teasers, not essays: one hook per feature. Features with a dedicated page
-// link out via a real crawlable <a href> — depth lives on the feature page.
-const FEATURES: {
-  icon: React.ComponentType<{ className?: string }>;
-  color: string;
+/** Alternate filmstrip rows left/right. */
+const cnRow = (i: number) => (i % 2 ? "lp-strip-row flip" : "lp-strip-row");
+
+// Filmstrip frames: real screenshots, one hook + two proof bullets each.
+// Flagship frames link out via a crawlable <a href> — depth lives on the page.
+const FRAMES: {
+  num: string;
   title: string;
   body: string;
+  bullets: [string, string];
+  img: string;
+  alt: string;
   href?: string;
 }[] = [
   {
-    icon: Film,
-    color: "#2dd4bf",
-    title: "Live cinematic scenes",
-    body: "Misty shrines, golden hours, still water — scenes that dissolve like film.",
+    num: "01 · SCENES",
+    title: "Pick your world",
+    body: "Eleven live cinematic scenes — misty torii, lake cabins, golden hours, neon rain. Each one breathes behind your clock instead of sitting frozen.",
+    bullets: ["Real video, not a wallpaper", "Your scene follows you across every mode"],
+    img: "/showcase/scene-switcher.jpg",
+    alt: "The Wolfhour scene switcher — a row of live cinematic scenes over a misty forest shrine",
   },
   {
-    icon: Timer,
-    color: "#38bdf8",
-    title: "Pomodoro timer",
-    body: "25 on, 5 off, world muted. A pomodoro timer that feels like a ritual.",
+    num: "02 · TIMER",
+    title: "A timer that feels like a ritual",
+    body: "25 on, 5 off, world muted. Focus blocks, short and long breaks, and a count-up stopwatch — one tap apart, ending in a soft two-note chime instead of an alarm.",
+    bullets: ["Classic 25/5/15 pomodoro rhythm", "Stopwatch for open-ended sessions"],
+    img: "/showcase/pomodoro-timer-ui.jpg",
+    alt: "The Wolfhour pomodoro timer in Focus mode over a cinematic scene",
     href: "/pomodoro-timer",
   },
   {
-    icon: GraduationCap,
-    color: "#818cf8",
-    title: "Aspirant study mode",
-    body: "Per-subject study tracking. See where your hours really go.",
+    num: "03 · ASPIRANT MODE",
+    title: "See where your hours really go",
+    body: "Study tracking for people with an exam date. Per-subject stopwatches feed daily trend charts, so a flatlining subject is visible — not hidden inside one reassuring total.",
+    bullets: ["Goals, streaks & exam countdown", "Today / week / month analytics per subject"],
+    img: "/showcase/aspirant-mode-analytics.jpg",
+    alt: "Aspirant Mode analytics in Wolfhour — per-subject breakdown with a daily trend chart",
     href: "/aspirant-mode",
   },
   {
-    icon: AudioLines,
-    color: "#10b981",
-    title: "Study sounds",
-    body: "Rain, waves, café hum — layer your own study sounds mix.",
+    num: "04 · SOUNDS",
+    title: "Mix your own quiet",
+    body: "Rain, ocean, café hum, fireplace — 22 sounds across five groups, layered with independent volumes. Generated live in your browser, so there's no loop seam to catch your ear.",
+    bullets: ["Nature · Places · Instrumental · Lo-Fi · Noise", "Your blend keeps playing in every mode"],
+    img: "/showcase/study-sounds-mixer.jpg",
+    alt: "The Wolfhour soundscape mixer — layered study sounds with independent volume sliders",
     href: "/study-sounds",
   },
   {
-    icon: Clock3,
-    color: "#22d3ee",
-    title: "Clock & font styles",
-    body: "Flip, LED, LCD, glitch, ember — clock faces with typefaces to match.",
+    num: "05 · TASKS",
+    title: "A quiet list, not a second job",
+    body: "Jot the day's three things, check them off, clear the done pile in one tap. No projects, no labels, no productivity homework.",
+    bullets: ["Lives one tap away in the dock", "Daily quotes & badges ride along"],
+    img: "/showcase/tasks-panel.jpg",
+    alt: "The Wolfhour tasks panel — a short study to-do list over a live scene",
   },
   {
-    icon: Sparkles,
-    color: "#a78bfa",
-    title: "Tasks, quotes & rewards",
-    body: "A quiet to-do list, a daily word, badges you actually earn.",
+    num: "06 · HOME",
+    title: "A clock worth staring at",
+    body: "Between sessions the dashboard rests: a greeting, a quote, and a big beautiful clock in your pick of faces — flip, LED, LCD, glitch, ember.",
+    bullets: ["Clock & font styles to match your scene", "Fullscreen one tap away"],
+    img: "/showcase/home-dashboard.jpg",
+    alt: "The Wolfhour home dashboard — a large clock and greeting over a misty forest scene",
   },
 ];
 
@@ -313,27 +320,31 @@ export function Landing() {
           <h2 className="font-display">
             Everything orbits<br /><span className="lp-thin">around your focus.</span>
           </h2>
-          <p className="lp-sub">Six quiet tools, one calm dashboard.</p>
+          <p className="lp-sub">Scroll through the hour, frame by frame.</p>
         </Reveal>
-        <div className="lp-cards">
-          {FEATURES.map((f, i) => (
-            <Reveal key={f.title} delay={(i % 3) * 0.08}>
-              <div className="lp-card">
-                <span
-                  className="lp-ico"
-                  style={{ color: f.color, borderColor: `${f.color}55`, background: `${f.color}1f` }}
-                >
-                  <f.icon className="size-5" />
-                </span>
-                <h3 className="font-display">{f.title}</h3>
-                <p>{f.body}</p>
-                {f.href && (
-                  <p className="mt-2 text-[13.5px]">
-                    <Link href={f.href} className="text-cyan-300 underline-offset-2 hover:underline">
-                      Learn more →
-                    </Link>
-                  </p>
-                )}
+        <div className="lp-strip">
+          {FRAMES.map((f, i) => (
+            <Reveal key={f.num}>
+              <div className={cnRow(i)}>
+                <div className="lp-strip-shot">
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img src={f.img} alt={f.alt} width={1440} height={900} loading={i === 0 ? "eager" : "lazy"} />
+                </div>
+                <div>
+                  <span className="lp-strip-num">{f.num}</span>
+                  <h3 className="font-display">{f.title}</h3>
+                  <p>{f.body}</p>
+                  <ul>
+                    {f.bullets.map((b) => <li key={b}>{b}</li>)}
+                  </ul>
+                  {f.href && (
+                    <p className="mt-3 text-[14px]">
+                      <Link href={f.href} className="text-cyan-300 underline-offset-2 hover:underline">
+                        Learn more →
+                      </Link>
+                    </p>
+                  )}
+                </div>
               </div>
             </Reveal>
           ))}
