@@ -260,8 +260,8 @@ html[data-theme="light"] .lp-card { box-shadow: 0 6px 24px rgba(28, 26, 23, 0.06
 .lp-strip > div:last-child .lp-strip-row { border-bottom: 1px solid var(--line); }
 @media (min-width: 820px) {
   .lp-strip-row { grid-template-columns: 1.35fr 1fr; gap: 36px; }
-  .lp-strip-row.flip { grid-template-columns: 1fr 1.35fr; }
-  .lp-strip-row.flip .lp-strip-shot { order: 2; }
+  .lp-strip-row.lp-flip { grid-template-columns: 1fr 1.35fr; }
+  .lp-strip-row.lp-flip .lp-strip-shot { order: 2; }
 }
 .lp-strip-shot {
   border-radius: 16px; overflow: hidden; border: 1px solid var(--line);

@@ -9,8 +9,9 @@ import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { Reveal } from "./Reveal";
 import "./landing.css";
 
-/** Alternate filmstrip rows left/right. */
-const cnRow = (i: number) => (i % 2 ? "lp-strip-row flip" : "lp-strip-row");
+/** Alternate filmstrip rows left/right. `lp-flip`, not `flip` — globals.css
+ *  owns `.flip` for the split-flap clock (inline-block, em-sized). */
+const cnRow = (i: number) => (i % 2 ? "lp-strip-row lp-flip" : "lp-strip-row");
 
 // Filmstrip frames: real screenshots, one hook + two proof bullets each.
 // Flagship frames link out via a crawlable <a href> — depth lives on the page.
