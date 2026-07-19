@@ -487,6 +487,7 @@ export function Landing() {
             <Link href="/aspirant-mode">Aspirant Mode</Link>
             <Link href="/privacy">Privacy</Link>
             <Link href="/terms">Terms</Link>
+            <a href="https://github.com/clipper474-hash/Wolf-Hour" target="_blank" rel="noopener">GitHub</a>
             <button onClick={share} className="inline-flex items-center gap-1.5">
               <Share2 className="size-3.5" />
               {shared ? "Link copied!" : "Share"}
