@@ -161,18 +161,29 @@ function buildSynth(audio: AudioContext, def: SoundDef & { kind: "synth" }): Syn
     srcs.push(src);
     base = 0.5;
   } else if (k === "rain") {
+    // Soft steady fall: gentler band than raw hiss…
     const src = noiseSource(audio, "white", 3);
     const hp = audio.createBiquadFilter();
     hp.type = "highpass";
-    hp.frequency.value = 1100;
+    hp.frequency.value = 700;
     hp.Q.value = 0.5;
     const bp = audio.createBiquadFilter();
     bp.type = "lowpass";
-    bp.frequency.value = 6500;
+    bp.frequency.value = 4200;
     src.connect(hp).connect(bp).connect(output);
-    oscs.push(lfo(audio, 0.15, 900, bp.frequency)); // gentle shimmer
+    oscs.push(lfo(audio, 0.15, 700, bp.frequency)); // gentle shimmer
     srcs.push(src);
     base = 0.5;
+    // …plus individual droplets pattering on the window
+    extraStart = () =>
+      startCrackle(audio, output, {
+        minGap: 70,
+        rndGap: 240,
+        peakLo: 0.04,
+        peakHi: 0.12,
+        hpLo: 2800,
+        hpHi: 5200,
+      });
   } else if (k === "ocean") {
     const src = noiseSource(audio, "brown", 5);
     const lp = audio.createBiquadFilter();
@@ -406,7 +417,7 @@ function buildSynth(audio: AudioContext, def: SoundDef & { kind: "synth" }): Syn
     base = 0.8;
     extraStart = () => startBirds(audio, output, { minGap: 700, rndGap: 2600 });
   } else if (k === "forest") {
-    // Wind bed + gentle birdsong.
+    // The whole clearing: trees (wind bed) + a brook + birdsong.
     const src = noiseSource(audio, "brown", 5);
     const lp = audio.createBiquadFilter();
     lp.type = "lowpass";
@@ -418,8 +429,20 @@ function buildSynth(audio: AudioContext, def: SoundDef & { kind: "synth" }): Syn
     oscs.push(lfo(audio, 0.09, 0.28, windG.gain));
     oscs.push(lfo(audio, 0.06, 260, lp.frequency));
     srcs.push(src);
+    // brook: quiet bubbling water off to one side
+    const water = noiseSource(audio, "white", 4);
+    const wbp = audio.createBiquadFilter();
+    wbp.type = "bandpass";
+    wbp.frequency.value = 1500;
+    wbp.Q.value = 0.8;
+    const brook = audio.createGain();
+    brook.gain.value = 0.16;
+    water.connect(wbp).connect(brook).connect(output);
+    oscs.push(lfo(audio, 5.2, 0.04, brook.gain)); // bubbling
+    oscs.push(lfo(audio, 0.7, 380, wbp.frequency));
+    srcs.push(water);
     base = 0.6;
-    extraStart = () => startBirds(audio, output, { minGap: 1400, rndGap: 4200, gain: 0.5 });
+    extraStart = () => startBirds(audio, output, { minGap: 900, rndGap: 2800, gain: 0.6 });
   } else if (k === "night") {
     // Low night pad + a shimmering cricket chorus.
     const pad = noiseSource(audio, "brown", 4);
@@ -703,22 +726,48 @@ function startWaves(audio: AudioContext, out: GainNode) {
   };
 }
 
-// Thunder: slow-building low-frequency rumbles at long random intervals.
+// Thunder: real strikes. Big ones open with a bright crack, then a long
+// rumble whose filter sweeps down as it dies — the "rolling away" sound.
+// Distant ones are rumble only.
 function startThunder(audio: AudioContext, out: GainNode) {
   let alive = true;
-  const rumble = (t: number) => {
-    const dur = 1.5 + Math.random() * 2.5;
+  const strike = (t: number) => {
+    const big = Math.random() < 0.45;
+    if (big) {
+      // the crack: short bright noise rip
+      const cd = 0.25 + Math.random() * 0.2;
+      const cb = audio.createBuffer(1, Math.ceil(audio.sampleRate * cd), audio.sampleRate);
+      fillNoise(cb.getChannelData(0), "white");
+      const crack = audio.createBufferSource();
+      crack.buffer = cb;
+      const cbp = audio.createBiquadFilter();
+      cbp.type = "bandpass";
+      cbp.frequency.value = 1400 + Math.random() * 1400;
+      cbp.Q.value = 0.6;
+      const ce = audio.createGain();
+      ce.gain.setValueAtTime(0.0001, t);
+      ce.gain.exponentialRampToValueAtTime(0.55 + Math.random() * 0.25, t + 0.012);
+      ce.gain.exponentialRampToValueAtTime(0.0001, t + cd);
+      crack.connect(cbp).connect(ce).connect(out);
+      crack.start(t);
+      crack.stop(t + cd + 0.05);
+    }
+    // the rumble: long brown-noise roll, filter sweeping dark as it fades
+    const dur = big ? 3.5 + Math.random() * 3 : 1.8 + Math.random() * 2;
     const b = audio.createBuffer(1, Math.ceil(audio.sampleRate * dur), audio.sampleRate);
     fillNoise(b.getChannelData(0), "brown");
     const src = audio.createBufferSource();
     src.buffer = b;
     const lp = audio.createBiquadFilter();
     lp.type = "lowpass";
-    lp.frequency.value = 180 + Math.random() * 180;
+    const f0 = big ? 420 : 240;
+    lp.frequency.setValueAtTime(f0, t);
+    lp.frequency.exponentialRampToValueAtTime(70, t + dur); // rolls away
     const env = audio.createGain();
-    const peak = 0.5 + Math.random() * 0.5;
+    const peak = big ? 0.95 + Math.random() * 0.3 : 0.4 + Math.random() * 0.3;
+    const attack = big ? 0.04 : 0.25 + Math.random() * 0.3;
     env.gain.setValueAtTime(0.0001, t);
-    env.gain.exponentialRampToValueAtTime(peak, t + 0.2 + Math.random() * 0.4);
+    env.gain.exponentialRampToValueAtTime(peak, t + attack);
     env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     src.connect(lp).connect(env).connect(out);
     src.start(t);
@@ -726,8 +775,8 @@ function startThunder(audio: AudioContext, out: GainNode) {
   };
   const step = () => {
     if (!alive) return;
-    if (out.gain.value > 0.002) rumble(audio.currentTime);
-    window.setTimeout(step, 5000 + Math.random() * 9000);
+    if (out.gain.value > 0.002) strike(audio.currentTime);
+    window.setTimeout(step, 6000 + Math.random() * 10000);
   };
   step();
   return () => {
