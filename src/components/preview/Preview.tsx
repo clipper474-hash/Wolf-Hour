@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DeskClock } from "./DeskClock";
+import { ScenePolaroid } from "./ScenePolaroid";
 import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { FAQS } from "@/lib/faqs";
 import "./preview.css";
@@ -76,8 +77,7 @@ export function Preview() {
 
           <div className="pvp-stack" aria-label="Screenshots of the Wolfhour app">
             <figure className="pvp-photo pvp-ph1">
-              <Image src="/showcase/home-dashboard.jpg" alt="The Wolfhour home dashboard — a large clock and greeting over a misty forest scene" width={1440} height={900} sizes="(min-width: 960px) 420px, 90vw" priority />
-              <figcaption className="cap">the desk, at night</figcaption>
+              <ScenePolaroid />
             </figure>
             <figure className="pvp-photo pvp-ph2">
               <Image src="/showcase/pomodoro-timer-ui.jpg" alt="The Wolfhour pomodoro timer in Focus mode" width={1440} height={900} sizes="(min-width: 960px) 340px, 90vw" />
