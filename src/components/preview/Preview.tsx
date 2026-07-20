@@ -1,6 +1,7 @@
 import Image from "next/image";
 import Link from "next/link";
 import { DeskClock } from "./DeskClock";
+import { ThemeToggle } from "@/components/theme/ThemeToggle";
 import { FAQS } from "@/lib/faqs";
 import "./preview.css";
 
@@ -48,6 +49,7 @@ export function Preview() {
           <a href="#features">Features</a>
           <a href="#faq">FAQ</a>
           <Link href="/app" className="pvp-open">Open app →</Link>
+          <ThemeToggle />
         </span>
       </nav>
 
@@ -196,7 +198,7 @@ export function Preview() {
         <div className="pvp-foot-inner">
           <span className="pvp-brand">
             {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img src="/brand/logo-white.png" alt="Wolfhour" width={388} height={420} loading="lazy" className="h-6 w-auto" style={{ filter: "invert(1) opacity(0.8)" }} />
+            <img src="/brand/logo-white.png" alt="Wolfhour" width={388} height={420} loading="lazy" className="h-6 w-auto" />
             WOLFHOUR
           </span>
           <nav>
