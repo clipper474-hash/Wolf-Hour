@@ -186,6 +186,8 @@ function buildSynth(audio: AudioContext, def: SoundDef & { kind: "synth" }): Syn
     oscs.push(lfo(audio, 0.1, 190, lp.frequency));
     srcs.push(src);
     base = 0.82;
+    // periodic wave breaks — a hissy wash rolling over the low swell
+    extraStart = () => startWaves(audio, output);
   } else if (k === "wind") {
     const src = noiseSource(audio, "brown", 5);
     const lp = audio.createBiquadFilter();
@@ -247,6 +249,16 @@ function buildSynth(audio: AudioContext, def: SoundDef & { kind: "synth" }): Syn
     oscs.push(lfo(audio, 0.22, 180, bp.frequency));
     srcs.push(src, src2);
     base = 0.62;
+    // sparse cup/saucer clinks — the "things" that make a room a café
+    extraStart = () =>
+      startCrackle(audio, output, {
+        minGap: 2600,
+        rndGap: 9000,
+        peakLo: 0.05,
+        peakHi: 0.14,
+        hpLo: 2400,
+        hpHi: 4200,
+      });
   } else if (k === "keyboard") {
     base = 0.85;
     extraStart = () => startTyping(audio, output);
@@ -649,6 +661,41 @@ function startBirds(
     if (!alive) return;
     if (out.gain.value > 0.002) chirp(audio.currentTime);
     window.setTimeout(step, o.minGap + Math.random() * o.rndGap);
+  };
+  step();
+  return () => {
+    alive = false;
+  };
+}
+
+// Waves: a breaking wave every 7–15s — white-noise wash that swells in,
+// crests bright, and rolls off darker (filter sweeps down as it fades).
+function startWaves(audio: AudioContext, out: GainNode) {
+  let alive = true;
+  const wave = (t: number) => {
+    const dur = 3.5 + Math.random() * 2.5;
+    const b = audio.createBuffer(1, Math.ceil(audio.sampleRate * dur), audio.sampleRate);
+    fillNoise(b.getChannelData(0), "white");
+    const src = audio.createBufferSource();
+    src.buffer = b;
+    const lp = audio.createBiquadFilter();
+    lp.type = "lowpass";
+    lp.frequency.setValueAtTime(900, t);
+    lp.frequency.linearRampToValueAtTime(2600, t + dur * 0.35); // crest brightens
+    lp.frequency.linearRampToValueAtTime(500, t + dur); // rolls off dark
+    const env = audio.createGain();
+    const peak = 0.16 + Math.random() * 0.1;
+    env.gain.setValueAtTime(0.0001, t);
+    env.gain.exponentialRampToValueAtTime(peak, t + dur * 0.35);
+    env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    src.connect(lp).connect(env).connect(out);
+    src.start(t);
+    src.stop(t + dur + 0.1);
+  };
+  const step = () => {
+    if (!alive) return;
+    if (out.gain.value > 0.002) wave(audio.currentTime);
+    window.setTimeout(step, 7000 + Math.random() * 8000);
   };
   step();
   return () => {

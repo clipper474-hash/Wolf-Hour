@@ -78,15 +78,15 @@ export const SOUNDS: SoundDef[] = [
   { id: "wind", label: "Wind", category: "Nature", icon: Wind, kind: "synth", synth: "wind" },
   { id: "stream", label: "Stream", category: "Nature", icon: Droplets, kind: "synth", synth: "stream" },
   // Nature — synthesised
-  { id: "thunder", label: "Thunder", category: "Nature", icon: CloudLightning, kind: "synth", synth: "thunder" },
-  { id: "forest", label: "Forest", category: "Nature", icon: Trees, kind: "synth", synth: "forest" },
-  { id: "birds", label: "Birds", category: "Nature", icon: Bird, kind: "synth", synth: "birds" },
-  { id: "night", label: "Night", category: "Nature", icon: Moon, kind: "synth", synth: "night" },
+  { id: "thunder", label: "Distant Thunder", category: "Nature", icon: CloudLightning, kind: "synth", synth: "thunder" },
+  { id: "forest", label: "Forest Wind", category: "Nature", icon: Trees, kind: "synth", synth: "forest" },
+  { id: "birds", label: "Dawn Chirps", category: "Nature", icon: Bird, kind: "synth", synth: "birds" },
+  { id: "night", label: "Crickets", category: "Nature", icon: Moon, kind: "synth", synth: "night" },
 
   // Places
   { id: "fireplace", label: "Fireplace", category: "Places", icon: Flame, kind: "synth", synth: "fireplace" },
   { id: "cafe", label: "Café", category: "Places", icon: Coffee, kind: "synth", synth: "cafe" },
-  { id: "keyboard", label: "Keyboard", category: "Places", icon: Keyboard, kind: "synth", synth: "keyboard" },
+  { id: "keyboard", label: "Typing", category: "Places", icon: Keyboard, kind: "synth", synth: "keyboard" },
   { id: "train", label: "Train", category: "Places", icon: TrainFront, kind: "file", src: "/sounds/train.mp3" },
 
   // Instrumental — synthesised ambient voices
@@ -101,9 +101,9 @@ export const SOUNDS: SoundDef[] = [
   { id: "lofikeys", label: "Lo-Fi Keys", category: "Lo-Fi", icon: Headphones, kind: "synth", synth: "lofikeys" },
 
   // Noise — synthesised, always available
-  { id: "white", label: "White", category: "Noise", icon: Radio, kind: "synth", synth: "white" },
-  { id: "pink", label: "Pink", category: "Noise", icon: AudioLines, kind: "synth", synth: "pink" },
-  { id: "brown", label: "Brown", category: "Noise", icon: Fan, kind: "synth", synth: "brown" },
+  { id: "white", label: "White Noise", category: "Noise", icon: Radio, kind: "synth", synth: "white" },
+  { id: "pink", label: "Pink Noise", category: "Noise", icon: AudioLines, kind: "synth", synth: "pink" },
+  { id: "brown", label: "Brown Noise", category: "Noise", icon: Fan, kind: "synth", synth: "brown" },
 ];
 
 export const soundById = (id: string): SoundDef | undefined =>
