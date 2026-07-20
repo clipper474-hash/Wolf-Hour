@@ -161,29 +161,28 @@ function buildSynth(audio: AudioContext, def: SoundDef & { kind: "synth" }): Syn
     srcs.push(src);
     base = 0.5;
   } else if (k === "rain") {
-    // Soft steady fall: gentler band than raw hiss…
-    const src = noiseSource(audio, "white", 3);
-    const hp = audio.createBiquadFilter();
-    hp.type = "highpass";
-    hp.frequency.value = 700;
-    hp.Q.value = 0.5;
-    const bp = audio.createBiquadFilter();
-    bp.type = "lowpass";
-    bp.frequency.value = 4200;
-    src.connect(hp).connect(bp).connect(output);
-    oscs.push(lfo(audio, 0.15, 700, bp.frequency)); // gentle shimmer
-    srcs.push(src);
+    // Two beds per the layered-rain recipe: soft pink "body" below, and the
+    // 4–8 kHz hiss that actually reads as rain, kept smooth (soft, not harsh).
+    const body = noiseSource(audio, "pink", 3);
+    const blp = audio.createBiquadFilter();
+    blp.type = "lowpass";
+    blp.frequency.value = 2000;
+    const bodyG = audio.createGain();
+    bodyG.gain.value = 0.6;
+    body.connect(blp).connect(bodyG).connect(output);
+    const hiss = noiseSource(audio, "white", 3);
+    const hbp = audio.createBiquadFilter();
+    hbp.type = "bandpass";
+    hbp.frequency.value = 5500;
+    hbp.Q.value = 0.35; // wide 4–8 kHz band
+    const hissG = audio.createGain();
+    hissG.gain.value = 0.5;
+    hiss.connect(hbp).connect(hissG).connect(output);
+    oscs.push(lfo(audio, 0.13, 0.1, hissG.gain)); // slow density drift
+    srcs.push(body, hiss);
     base = 0.5;
-    // …plus individual droplets pattering on the window
-    extraStart = () =>
-      startCrackle(audio, output, {
-        minGap: 70,
-        rndGap: 240,
-        peakLo: 0.04,
-        peakHi: 0.12,
-        hpLo: 2800,
-        hpHi: 5200,
-      });
+    // …plus pitched droplet "bloips" (rising sine chirps — the bubble sound)
+    extraStart = () => startDrips(audio, output);
   } else if (k === "ocean") {
     const src = noiseSource(audio, "brown", 5);
     const lp = audio.createBiquadFilter();
@@ -203,14 +202,26 @@ function buildSynth(audio: AudioContext, def: SoundDef & { kind: "synth" }): Syn
     const src = noiseSource(audio, "brown", 5);
     const lp = audio.createBiquadFilter();
     lp.type = "lowpass";
-    lp.frequency.value = 520;
+    lp.frequency.value = 640;
     lp.Q.value = 1.2;
     const gust = audio.createGain();
     gust.gain.value = 0.55;
     src.connect(lp).connect(gust).connect(output);
-    oscs.push(lfo(audio, 0.11, 0.32, gust.gain)); // gusts
-    oscs.push(lfo(audio, 0.07, 320, lp.frequency));
+    oscs.push(lfo(audio, 0.11, 0.35, gust.gain)); // gusts
+    oscs.push(lfo(audio, 0.07, 420, lp.frequency));
     srcs.push(src);
+    // the "air": breathy mid band that swells with its own slow cycle
+    const air = noiseSource(audio, "white", 4);
+    const abp = audio.createBiquadFilter();
+    abp.type = "bandpass";
+    abp.frequency.value = 1100;
+    abp.Q.value = 0.8;
+    const airG = audio.createGain();
+    airG.gain.value = 0.07;
+    air.connect(abp).connect(airG).connect(output);
+    oscs.push(lfo(audio, 0.13, 0.05, airG.gain));
+    oscs.push(lfo(audio, 0.09, 500, abp.frequency));
+    srcs.push(air);
     base = 0.6;
   } else if (k === "stream") {
     const src = noiseSource(audio, "white", 4);
@@ -263,8 +274,8 @@ function buildSynth(audio: AudioContext, def: SoundDef & { kind: "synth" }): Syn
     // sparse cup/saucer clinks — the "things" that make a room a café
     extraStart = () =>
       startCrackle(audio, output, {
-        minGap: 2600,
-        rndGap: 9000,
+        minGap: 1800,
+        rndGap: 6500,
         peakLo: 0.05,
         peakHi: 0.14,
         hpLo: 2400,
@@ -657,7 +668,7 @@ function startBirds(
   out: GainNode,
   opts?: { minGap?: number; rndGap?: number; gain?: number }
 ) {
-  const o = { minGap: 800, rndGap: 2600, gain: 1, ...opts };
+  const o = { minGap: 500, rndGap: 2000, gain: 1, ...opts };
   let alive = true;
   const chirp = (t: number) => {
     const notes = 2 + Math.floor(Math.random() * 3);
@@ -672,7 +683,7 @@ function startBirds(
       osc.frequency.linearRampToValueAtTime(f0 * 0.9, tt + dur);
       const env = audio.createGain();
       env.gain.setValueAtTime(0.0001, tt);
-      env.gain.exponentialRampToValueAtTime(0.12 * o.gain, tt + 0.01);
+      env.gain.exponentialRampToValueAtTime(0.3 * o.gain, tt + 0.01);
       env.gain.exponentialRampToValueAtTime(0.0001, tt + dur);
       osc.connect(env).connect(out);
       osc.start(tt);
@@ -684,6 +695,36 @@ function startBirds(
     if (!alive) return;
     if (out.gain.value > 0.002) chirp(audio.currentTime);
     window.setTimeout(step, o.minGap + Math.random() * o.rndGap);
+  };
+  step();
+  return () => {
+    alive = false;
+  };
+}
+
+// Raindrops: short sine "bloips" with a rising pitch envelope — the bubble
+// resonance a drop makes hitting water. Randomized pitch/level/timing.
+function startDrips(audio: AudioContext, out: GainNode) {
+  let alive = true;
+  const drip = (t: number) => {
+    const f0 = 900 + Math.random() * 1100;
+    const dur = 0.03 + Math.random() * 0.04;
+    const o = audio.createOscillator();
+    o.type = "sine";
+    o.frequency.setValueAtTime(f0, t);
+    o.frequency.exponentialRampToValueAtTime(f0 * 1.45, t + dur); // bubble rise
+    const env = audio.createGain();
+    env.gain.setValueAtTime(0.0001, t);
+    env.gain.exponentialRampToValueAtTime(0.09 + Math.random() * 0.09, t + 0.004);
+    env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
+    o.connect(env).connect(out);
+    o.start(t);
+    o.stop(t + dur + 0.02);
+  };
+  const step = () => {
+    if (!alive) return;
+    if (out.gain.value > 0.002) drip(audio.currentTime);
+    window.setTimeout(step, 90 + Math.random() * 320);
   };
   step();
   return () => {
@@ -746,7 +787,7 @@ function startThunder(audio: AudioContext, out: GainNode) {
       cbp.Q.value = 0.6;
       const ce = audio.createGain();
       ce.gain.setValueAtTime(0.0001, t);
-      ce.gain.exponentialRampToValueAtTime(0.55 + Math.random() * 0.25, t + 0.012);
+      ce.gain.exponentialRampToValueAtTime(1.0 + Math.random() * 0.3, t + 0.012);
       ce.gain.exponentialRampToValueAtTime(0.0001, t + cd);
       crack.connect(cbp).connect(ce).connect(out);
       crack.start(t);
@@ -760,14 +801,20 @@ function startThunder(audio: AudioContext, out: GainNode) {
     src.buffer = b;
     const lp = audio.createBiquadFilter();
     lp.type = "lowpass";
-    const f0 = big ? 420 : 240;
+    const f0 = big ? 520 : 260;
     lp.frequency.setValueAtTime(f0, t);
     lp.frequency.exponentialRampToValueAtTime(70, t + dur); // rolls away
     const env = audio.createGain();
-    const peak = big ? 0.95 + Math.random() * 0.3 : 0.4 + Math.random() * 0.3;
+    const peak = big ? 2.2 + Math.random() * 0.5 : 1.1 + Math.random() * 0.5;
     const attack = big ? 0.04 : 0.25 + Math.random() * 0.3;
     env.gain.setValueAtTime(0.0001, t);
     env.gain.exponentialRampToValueAtTime(peak, t + attack);
+    // rolling decay: the rumble re-swells once or twice as it dies away
+    // (reflections smearing) instead of one straight fade
+    const dip1 = t + dur * (0.35 + Math.random() * 0.1);
+    const swell = t + dur * (0.55 + Math.random() * 0.1);
+    env.gain.exponentialRampToValueAtTime(peak * 0.3, dip1);
+    env.gain.exponentialRampToValueAtTime(peak * (0.5 + Math.random() * 0.2), swell);
     env.gain.exponentialRampToValueAtTime(0.0001, t + dur);
     src.connect(lp).connect(env).connect(out);
     src.start(t);
@@ -778,7 +825,11 @@ function startThunder(audio: AudioContext, out: GainNode) {
     if (out.gain.value > 0.002) strike(audio.currentTime);
     window.setTimeout(step, 6000 + Math.random() * 10000);
   };
-  step();
+  // don't leave the listener waiting 6-16s: first strike lands ~1.5s in
+  window.setTimeout(() => {
+    if (alive && out.gain.value > 0.002) strike(audio.currentTime);
+  }, 1500);
+  window.setTimeout(step, 6000 + Math.random() * 10000);
   return () => {
     alive = false;
   };
@@ -873,6 +924,11 @@ export function reconcile(master: number, channels: Record<string, Channel>) {
       }
     }
   }
+}
+
+/** Diagnostic tap for /soundcheck: the live per-channel output node. */
+export function _synthNode(id: string): { output: GainNode } | null {
+  return synths.get(id) ?? null;
 }
 
 /** First user gesture — unlock/resume the audio context (autoplay policy). */
