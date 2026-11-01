@@ -6,6 +6,7 @@ import { SITE_URL } from "@/lib/site";
 import { LiquidCursor } from "@/components/cursor/LiquidCursor";
 import { BrandMark } from "@/components/brand/BrandMark";
 import { ThemeApplier } from "@/components/theme/ThemeApplier";
+import { Analytics } from "@vercel/analytics/next";
 
 // Runs before paint: restores the persisted theme so light-mode users don't
 // see a dark flash. Reads the same zustand-persist blob ("af-prefs").
@@ -81,6 +82,7 @@ export default function RootLayout({
         {children}
         <BrandMark />
         <LiquidCursor />
+        <Analytics />
       </body>
     </html>
   );
